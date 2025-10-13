@@ -11,6 +11,7 @@ namespace ClinicManagementSystem.Models.Data
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Visit> Visits { get; set; }
+        public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
