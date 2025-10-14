@@ -36,10 +36,7 @@ namespace ClinicManagementSystem.Repository.Implementations
             _context.Set<IEntity>().Update(entity);
         }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
+       
 
         
     }

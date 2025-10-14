@@ -27,5 +27,9 @@ namespace ClinicManagementSystem.Repository.Implementations
             }
         }
 
+        public void Save()
+        {
+           _context.SaveChanges();
+        }
     }
 }

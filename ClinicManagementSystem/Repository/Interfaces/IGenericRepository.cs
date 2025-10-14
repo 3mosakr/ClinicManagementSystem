@@ -7,6 +7,6 @@
         void Add(IEntity entity);
         void Update(IEntity entity);
         void Delete(IEntity entity);
-        void Save();
+        
     }
 }
