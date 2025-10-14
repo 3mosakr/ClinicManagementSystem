@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ClinicManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class InitalCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,10 +58,10 @@ namespace ClinicManagementSystem.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -175,22 +175,21 @@ namespace ClinicManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DoctorAvailability",
+                name: "DoctorAvailabilities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DayOfWeek = table.Column<int>(type: "int", nullable: false),
-                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DoctorAvailability", x => x.Id);
+                    table.PrimaryKey("PK_DoctorAvailabilities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DoctorAvailability_AspNetUsers_DoctorId",
+                        name: "FK_DoctorAvailabilities_AspNetUsers_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -204,8 +203,8 @@ namespace ClinicManagementSystem.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     PatientId = table.Column<int>(type: "int", nullable: false),
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ReceptionistId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -227,9 +226,9 @@ namespace ClinicManagementSystem.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Appointments_DoctorAvailability_DoctorAvailabilityId",
+                        name: "FK_Appointments_DoctorAvailabilities_DoctorAvailabilityId",
                         column: x => x.DoctorAvailabilityId,
-                        principalTable: "DoctorAvailability",
+                        principalTable: "DoctorAvailabilities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -247,9 +246,10 @@ namespace ClinicManagementSystem.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AppointmentId = table.Column<int>(type: "int", nullable: false),
-                    Diagnosis = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Prescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VisitDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Diagnosis = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Prescription = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    VisitDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DoctorNotes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -322,8 +322,8 @@ namespace ClinicManagementSystem.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DoctorAvailability_DoctorId",
-                table: "DoctorAvailability",
+                name: "IX_DoctorAvailabilities_DoctorId",
+                table: "DoctorAvailabilities",
                 column: "DoctorId");
 
             migrationBuilder.CreateIndex(
@@ -361,7 +361,7 @@ namespace ClinicManagementSystem.Migrations
                 name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "DoctorAvailability");
+                name: "DoctorAvailabilities");
 
             migrationBuilder.DropTable(
                 name: "Patients");

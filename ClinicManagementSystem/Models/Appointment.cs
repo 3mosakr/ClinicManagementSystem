@@ -1,10 +1,14 @@
-﻿namespace ClinicManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ClinicManagementSystem.Models
 {
     public class Appointment
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        [MaxLength(10)]
         public string Status { get; set; } = "Scheduled"; // e.g. Scheduled, Completed, Canceled
+        [MaxLength(200)]
         public string? Notes { get; set; }
 
         // Foreign Keys

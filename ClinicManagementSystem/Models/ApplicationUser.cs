@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicManagementSystem.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        [Length(3,150)]
         public string FullName { get; set; }
 
         // Navigation
