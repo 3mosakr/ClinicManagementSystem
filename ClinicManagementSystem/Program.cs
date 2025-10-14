@@ -1,5 +1,9 @@
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Models.Data;
+using ClinicManagementSystem.Repository.Implementations;
+using ClinicManagementSystem.Repository.Interfaces;
+using ClinicManagementSystem.Services.Implementations;
+using ClinicManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +20,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+// Add unit of work
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// add services Layer
+builder.Services.AddScoped<IPatientService, PatientService>();
 
 
 
