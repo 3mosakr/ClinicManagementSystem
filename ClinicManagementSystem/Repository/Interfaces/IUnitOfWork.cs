@@ -2,7 +2,9 @@
 {
     public interface IUnitOfWork
     {
-        IPatientRepository PatientRepository { get; }
-        void Save();
+		IPatientRepository PatientRepository { get; }
+        IVisitRepository VisitRepository { get; }
+
+		void Save();
     }
 }
