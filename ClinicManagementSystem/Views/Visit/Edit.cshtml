@@ -3,39 +3,58 @@
 @{
     ViewData["Title"] = "Edit Visit";
 }
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h4 class="mb-0">Edit Visit<span class="text-primary"> Details</span></h4>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Back to Visits
+    </a>
+</div>
 
-<h2>Edit Visit</h2>
+<div class="card shadow-sm mx-auto" style="">
+    <div class="card-body">
+        <form asp-action="Edit" method="post" novalidate>
+            <input type="hidden" asp-for="Id" />
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label for="AppointmentId" class="form-label">Appointment</label>
+                <select asp-for="AppointmentId" class="form-select form-select-lg" asp-items="ViewBag.Appointments">
+                    <option value="">-- Select Appointment --</option>
+                </select>
+                <span asp-validation-for="AppointmentId" class="text-danger small"></span>
+            </div>
 
-    <div class="form-group mb-3">
-        <label for="AppointmentId">Appointment</label>
-        <select asp-for="AppointmentId" class="form-control" asp-items="ViewBag.Appointments">
-            <option value="">-- Select Appointment --</option>
-        </select>
+            <div class="mb-3">
+                <label asp-for="Diagnosis" class="form-label"></label>
+                <input asp-for="Diagnosis" class="form-control form-control-lg" />
+                <span asp-validation-for="Diagnosis" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Prescription" class="form-label"></label>
+                <textarea asp-for="Prescription" class="form-control form-control-lg" rows="4"></textarea>
+                <span asp-validation-for="Prescription" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="VisitDate" class="form-label"></label>
+                <input asp-for="VisitDate" class="form-control form-control-lg" type="datetime-local" />
+                <span asp-validation-for="VisitDate" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DoctorNotes" class="form-label"></label>
+                <textarea asp-for="DoctorNotes" class="form-control form-control-lg" rows="4"></textarea>
+                <span asp-validation-for="DoctorNotes" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Diagnosis"></label>
-        <input asp-for="Diagnosis" class="form-control" />
-    </div>
-
-    <div class="form-group mb-3">
-        <label asp-for="Prescription"></label>
-        <textarea asp-for="Prescription" class="form-control"></textarea>
-    </div>
-
-    <div class="form-group mb-3">
-        <label asp-for="VisitDate"></label>
-        <input asp-for="VisitDate" class="form-control" type="datetime-local" />
-    </div>
-
-    <div class="form-group mb-3">
-        <label asp-for="DoctorNotes"></label>
-        <textarea asp-for="DoctorNotes" class="form-control"></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
