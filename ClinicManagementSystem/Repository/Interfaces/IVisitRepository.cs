@@ -5,7 +5,9 @@ namespace ClinicManagementSystem.Repository.Interfaces
 {
     public interface IVisitRepository : IGenericRepository<Visit>
 	{
-			List<Visit> GetByAppointmentId(int appointmentId);
+			List<Visit> GetAllWithDetails();
+			public Visit GetVisitWithAppointment(int id);
+			List<Appointment> GetAppointmentsWithDetails(int? Appointment = null);
 
 	}
 }

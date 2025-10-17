@@ -1,33 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ClinicManagementSystem.ViewModel.Visit
+﻿namespace ClinicManagementSystem.ViewModel.Visit
 {
-    public class VisitViewModel
+    public class VisitDetailsViewModel
     {
 		public int Id { get; set; }
-
-
-		[Required]
 		public int AppointmentId { get; set; }
-
-
-		[MaxLength(200)]
 		public string? Diagnosis { get; set; }
-
-
-		[MaxLength(1000)]
 		public string? Prescription { get; set; }
-
-
-		[DataType(DataType.DateTime)]
-		public DateTime? VisitDate { get; set; } 
-
-
-		[MaxLength(500)]
+		public DateTime? VisitDate { get; set; }
 		public string? DoctorNotes { get; set; }
-
 		public string? PatientName { get; set; }
-
 		public string? DoctorName { get; set; }
+
 	}
 }
