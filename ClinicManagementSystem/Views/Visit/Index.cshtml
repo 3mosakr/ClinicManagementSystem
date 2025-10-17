@@ -46,28 +46,43 @@
 </table>
 
 @section Scripts {
+
+
+    <style>
+      #NXConfirmButtonOk,
+        #NXConfirmButtonCancel {
+            text-decoration: none !important;
+        }
+    </style>
+
     <script>
         function confirmDelete(e) {
-            e.preventDefault(); 
-
+            e.preventDefault();
             Notiflix.Confirm.show(
-                'Confirm Delete',
-                'Are you sure you want to delete this visit?',
-                'Yes',
-                'No',
+                'Confirm Dialog',
+                'Are you sure?',
+                'Okey',
+                'Cancel',
                 function okCb() {
-                   
-                    Notiflix.Notify.success('Deletion confirmed');
+                    Notiflix.Notify.success('Visit deleted successfully');
                     setTimeout(() => {
                         e.target.submit();
                     }, 800);
                 },
                 function cancelCb() {
                     Notiflix.Notify.info('Deletion canceled');
+                },
+                {
+                    width: '320px',
+                    borderRadius: '8px',
+                    titleColor: '#e74c3c',
+                    okButtonBackground: '#e74c3c',
+                    cssAnimationStyle: 'fade',
                 }
             );
 
-            return false; 
+            return false;
         }
     </script>
 }
+
