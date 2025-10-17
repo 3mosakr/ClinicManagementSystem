@@ -17,6 +17,7 @@ namespace ClinicManagementSystem.Models
 
         // Navigation
         public virtual ICollection<Appointment>? Appointments { get; set; } = new List<Appointment>();
+        public virtual ICollection<ApplicationUser>? Users { get; set; } = new List<ApplicationUser>();
     }
 
 }

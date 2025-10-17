@@ -11,6 +11,7 @@ namespace ClinicManagementSystem.Models
         // Navigation
         public ICollection<Appointment> DoctorAppointments { get; set; } = new List<Appointment>();
         public ICollection<Appointment> ReceptionistAppointments { get; set; } = new List<Appointment>();
+        public ICollection<Patient>? Patients { get; set; } = new List<Patient>();
     }
 
 
