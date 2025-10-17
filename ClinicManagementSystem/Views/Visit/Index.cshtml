@@ -56,18 +56,33 @@
     </style>
 
     <script>
+            Notiflix.Notify.init({
+            position: 'right-bottom',
+            distance: '15px',
+            timeout: 2500, 
+            cssAnimationStyle: 'fade',
+        });
+
         function confirmDelete(e) {
             e.preventDefault();
+            const form = e.target;
+            const url = form.action;
             Notiflix.Confirm.show(
                 'Confirm Dialog',
                 'Are you sure?',
                 'Okey',
                 'Cancel',
                 function okCb() {
-                    Notiflix.Notify.success('Visit deleted successfully');
-                    setTimeout(() => {
-                        e.target.submit();
-                    }, 800);
+                    $.post(url, $(form).serialize())
+                        .done(function () {
+                            Notiflix.Notify.success('Visit deleted successfully');
+                            $(form).closest('tr').fadeOut(500, function () {
+                                $(this).remove();
+                            });
+                        })
+                        .fail(function () {
+                            Notiflix.Notify.failure('Error deleting visit');
+                        });
                 },
                 function cancelCb() {
                     Notiflix.Notify.info('Deletion canceled');
