@@ -74,6 +74,11 @@ namespace ClinicManagementSystem.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				if (vm.VisitDate == null)
+				{
+					vm.VisitDate = DateTime.Now;
+				}
+
 				var visit = new Visit
 				{
 					AppointmentId = vm.AppointmentId,
