@@ -22,7 +22,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-// register auto mapper
+// Register automapper
 builder.Services.AddAutoMapper(opt => opt.AddProfile(typeof(MappingProfile)));
 
 // Add unit of work
