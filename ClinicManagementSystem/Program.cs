@@ -26,6 +26,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // add services Layer
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IVisitService, VisitService>();
+
 
 
 

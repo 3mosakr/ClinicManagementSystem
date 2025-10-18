@@ -1,209 +1,86 @@
-﻿using ClinicManagementSystem.Models;
-using ClinicManagementSystem.Repository.Interfaces;
+﻿using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Visit;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClinicManagementSystem.Controllers
 {
-    public class VisitController : Controller
-    {
-		private readonly IUnitOfWork _unitOfWork;
-		public VisitController(IUnitOfWork unitOfWork)
-		{
-			_unitOfWork = unitOfWork;
-		}
-		public IActionResult Index()
-        {
-			var visits = _unitOfWork.VisitRepository.GetAllWithDetails();
-			var vm = visits.Select(v => new VisitViewModel
-			{
-				Id = v.Id,
-				AppointmentId = v.AppointmentId,
-				Diagnosis = v.Diagnosis,
-				Prescription = v.Prescription,
-				VisitDate = v.VisitDate,
-				DoctorNotes = v.DoctorNotes,
-				PatientName = v.Appointment?.Patient?.FullName,
-				DoctorName = v.Appointment?.Doctor?.FullName
-			}).ToList();
-			return View(vm);
-        }
+	public class VisitController : Controller
+	{
+		private readonly IVisitService _visitService;
 
-		// GET: Visit/Details
+		public VisitController(IVisitService visitService)
+		{
+			_visitService = visitService;
+		}
+
+		public IActionResult Index()
+		{
+			var vm = _visitService.GetAllVisits();
+			return View(vm);
+		}
+
 		public IActionResult Details(int id)
 		{
-			var visit = _unitOfWork.VisitRepository.GetVisitWithAppointment(id);
-			if (visit == null) return NotFound();
-
-
-			var vm = new VisitDetailsViewModel
-			{
-				Id = visit.Id,
-				AppointmentId = visit.AppointmentId,
-				Diagnosis = visit.Diagnosis,
-				Prescription = visit.Prescription,
-				VisitDate = visit.VisitDate,
-				DoctorNotes = visit.DoctorNotes,
-				PatientName = visit.Appointment?.Patient?.FullName,
-				DoctorName = visit.Appointment?.Doctor?.FullName,
-			};
-
-
+			var vm = _visitService.GetVisitDetails(id);
+			if (vm == null) return NotFound();
 			return View(vm);
 		}
 
 		public IActionResult Create()
 		{
-			var appointments = _unitOfWork.VisitRepository.GetAppointmentsWithDetails();
-
-			ViewBag.Appointments = appointments.Select(a => new SelectListItem
-			{
-				Value = a.Id.ToString(),
-				Text = $"{a.Patient.FullName} - {a.Doctor.FullName} ({a.Date:yyyy-MM-dd HH:mm})"
-			}).ToList();
-
+			ViewBag.Appointments = _visitService.GetAppointmentsSelectList();
 			return View();
 		}
 
-
-		// POST: Visit/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Create(VisitViewModel vm)
 		{
 			if (ModelState.IsValid)
 			{
-				if (vm.VisitDate == null)
-				{
-					vm.VisitDate = DateTime.Now;
-				}
-
-				var visit = new Visit
-				{
-					AppointmentId = vm.AppointmentId,
-					Diagnosis = vm.Diagnosis,
-					Prescription = vm.Prescription,
-					VisitDate = vm.VisitDate,
-					DoctorNotes = vm.DoctorNotes
-				};
-
-				_unitOfWork.VisitRepository.Add(visit);
-				_unitOfWork.Save();
-
+				_visitService.CreateVisit(vm);
 				return RedirectToAction(nameof(Index));
 			}
 
-			var appointments = _unitOfWork.VisitRepository.GetAppointmentsWithDetails();
-
-			ViewBag.Appointments = appointments.Select(a => new SelectListItem
-			{
-				Value = a.Id.ToString(),
-				Text = $"{a.Patient.FullName} - {a.Doctor.FullName} ({a.Date:yyyy-MM-dd HH:mm})"
-			}).ToList();
-
+			ViewBag.Appointments = _visitService.GetAppointmentsSelectList();
 			return View(vm);
-
-
 		}
 
-		// GET: Visit/Edit
 		public IActionResult Edit(int id)
 		{
-			var visit = _unitOfWork.VisitRepository.GetVisitWithAppointment(id);
-			if (visit == null) return NotFound();
+			var vm = _visitService.GetVisitForEdit(id);
+			if (vm == null) return NotFound();
 
-
-			var vm = new VisitViewModel
-			{
-				Id = visit.Id,
-				AppointmentId = visit.AppointmentId,
-				Diagnosis = visit.Diagnosis,
-				Prescription = visit.Prescription,
-				VisitDate = visit.VisitDate,
-				DoctorNotes = visit.DoctorNotes
-			};
-			var appointments = _unitOfWork.VisitRepository.GetAppointmentsWithDetails(visit.AppointmentId);
-			ViewBag.Appointments = appointments.Select(a => new SelectListItem
-			{
-				Value = a.Id.ToString(),
-				Text = $"{a.Patient.FullName} - {a.Doctor.FullName} ({a.Date:yyyy-MM-dd HH:mm})"
-			}).ToList();
-
-
+			ViewBag.Appointments = _visitService.GetAppointmentsSelectList(vm.AppointmentId);
 			return View(vm);
 		}
 
-		// POST: Visit/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Edit(VisitViewModel vm)
 		{
 			if (ModelState.IsValid)
 			{
-				var visit = _unitOfWork.VisitRepository.GetById(vm.Id);
-				if (visit == null) return NotFound();
-
-
-				visit.AppointmentId = vm.AppointmentId;
-				visit.Diagnosis = vm.Diagnosis;
-				visit.Prescription = vm.Prescription;
-				visit.VisitDate = vm.VisitDate;
-				visit.DoctorNotes = vm.DoctorNotes;
-
-
-				_unitOfWork.VisitRepository.Update(visit);
-				_unitOfWork.Save();
-
-
+				_visitService.UpdateVisit(vm);
 				return RedirectToAction(nameof(Index));
 			}
 
-			var appointments = _unitOfWork.VisitRepository.GetAppointmentsWithDetails();
-			ViewBag.Appointments = appointments.Select(a => new SelectListItem
-			{
-				Value = a.Id.ToString(),
-				Text = $"{a.Patient.FullName} - {a.Doctor.FullName} ({a.Date:yyyy-MM-dd HH:mm})"
-			}).ToList();
-
+			ViewBag.Appointments = _visitService.GetAppointmentsSelectList();
 			return View(vm);
-
 		}
 
-		// GET: Visit/Delete
 		public IActionResult Delete(int id)
 		{
-			var visit = _unitOfWork.VisitRepository.GetById(id);
-			if (visit == null) return NotFound();
-
-
-			var vm = new VisitViewModel
-			{
-				Id = visit.Id,
-				AppointmentId = visit.AppointmentId,
-				Diagnosis = visit.Diagnosis,
-				Prescription = visit.Prescription,
-				VisitDate = visit.VisitDate,
-				DoctorNotes = visit.DoctorNotes
-			};
-
-
+			var vm = _visitService.GetVisitForDelete(id);
+			if (vm == null) return NotFound();
 			return View(vm);
 		}
 
-		// POST: Visit/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public IActionResult DeleteConfirmed(int id)
 		{
-			var visit = _unitOfWork.VisitRepository.GetById(id);
-			if (visit == null) return NotFound();
-
-
-			_unitOfWork.VisitRepository.Delete(visit);
-			_unitOfWork.Save();
-
-
+			_visitService.DeleteVisit(id);
 			return RedirectToAction(nameof(Index));
 		}
 	}
