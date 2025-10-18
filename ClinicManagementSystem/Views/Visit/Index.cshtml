@@ -6,9 +6,12 @@
 }
 
 <div class="d-flex justify-content-between align-items-center my-4">
-    <h4 class="mb-0">
-        Visits  <span class="text-primary">Details</span> 
-    </h4>
+    <a asp-controller="Visit" style="text-decoration: none;">
+        <h4 class="mb-0 text-black">
+            Visits <span class="text-primary">Details</span>
+        </h4>
+    </a>
+
     <div>
         <form asp-action="Index" method="get" class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value="@ViewBag.SearchTerm">
