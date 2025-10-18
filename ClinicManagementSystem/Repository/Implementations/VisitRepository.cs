@@ -18,33 +18,45 @@ namespace ClinicManagementSystem.Repository.Implementations
 		{
 			return _context.Visits
 				.Include(v => v.Appointment)
-					.ThenInclude(a => a.Patient)
+				.ThenInclude(a => a.Patient)
 				.Include(v => v.Appointment)
-					.ThenInclude(a => a.Doctor)
+				.ThenInclude(a => a.Doctor)
 				.ToList();
 		}
 
 		public Visit GetVisitWithAppointment(int id)
 		{
-			return _context.Visits
-				.Include(v => v.Appointment)
-					.ThenInclude(a => a.Patient)
-				.Include(v => v.Appointment)
-					.ThenInclude(a => a.Doctor)
-				.FirstOrDefault(v => v.Id == id);
+			return GetAllWithDetails().FirstOrDefault(v => v.Id == id);
 		}
 
 		public List<Appointment> GetAppointmentsWithDetails(int? appointmentId = null)
 		{
-			var query = _context.Appointments
-				.Include(a => a.Patient)
-				.Include(a => a.Doctor)
-				.AsQueryable();
+			var query = _context.Appointments.Include(a => a.Patient).Include(a => a.Doctor).AsQueryable().Where(a => a.Visit == null);
 
 			if (appointmentId.HasValue)
 				query = query.Where(a => a.Id == appointmentId);
 
 			return query.ToList();
 		}
+
+		public List<Appointment> GetAppointmentsForEdit(int currentAppointmentId)
+		{
+			var query = _context.Appointments
+				.Include(a => a.Patient)
+				.Include(a => a.Doctor)
+				.Include(a => a.Visit)
+				.AsQueryable();
+
+			var appointments = query.Where(a => a.Visit == null).ToList();
+
+			var currentAppointment = query.FirstOrDefault(a => a.Id == currentAppointmentId);
+			if (currentAppointment != null && !appointments.Any(a => a.Id == currentAppointment.Id))
+			{
+				appointments.Add(currentAppointment);
+			}
+
+			return appointments;
+		}
+
 	}
 }

@@ -8,6 +8,8 @@ namespace ClinicManagementSystem.Repository.Interfaces
 			List<Visit> GetAllWithDetails();
 			public Visit GetVisitWithAppointment(int id);
 			List<Appointment> GetAppointmentsWithDetails(int? Appointment = null);
+			List<Appointment> GetAppointmentsForEdit(int currentAppointmentId);
+
 
 	}
 }

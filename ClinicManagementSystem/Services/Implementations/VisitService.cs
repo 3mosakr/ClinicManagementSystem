@@ -1,4 +1,5 @@
-﻿using ClinicManagementSystem.Models;
+﻿using AutoMapper;
+using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Repository.Interfaces;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Visit;
@@ -6,114 +7,61 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClinicManagementSystem.Services.Implementations
 {
-	public class VisitService : IVisitService
+    public class VisitService : IVisitService
 	{
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
 
-		public VisitService(IUnitOfWork unitOfWork)
+		public VisitService(IUnitOfWork unitOfWork, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
+			_mapper = mapper;
 		}
 
+		// Get all visits
 		public List<VisitViewModel> GetAllVisits()
 		{
 			var visits = _unitOfWork.VisitRepository.GetAllWithDetails();
-			return visits.Select(v => new VisitViewModel
-			{
-				Id = v.Id,
-				AppointmentId = v.AppointmentId,
-				Diagnosis = v.Diagnosis,
-				Prescription = v.Prescription,
-				VisitDate = v.VisitDate,
-				DoctorNotes = v.DoctorNotes,
-				PatientName = v.Appointment?.Patient?.FullName,
-				DoctorName = v.Appointment?.Doctor?.FullName
-			}).ToList();
+			return _mapper.Map<List<VisitViewModel>>(visits);
 		}
 
+		// Get visit details
 		public VisitDetailsViewModel GetVisitDetails(int id)
 		{
 			var visit = _unitOfWork.VisitRepository.GetVisitWithAppointment(id);
-			if (visit == null) return null;
-
-			return new VisitDetailsViewModel
-			{
-				Id = visit.Id,
-				AppointmentId = visit.AppointmentId,
-				Diagnosis = visit.Diagnosis,
-				Prescription = visit.Prescription,
-				VisitDate = visit.VisitDate,
-				DoctorNotes = visit.DoctorNotes,
-				PatientName = visit.Appointment?.Patient?.FullName,
-				DoctorName = visit.Appointment?.Doctor?.FullName,
-			};
+			return _mapper.Map<VisitDetailsViewModel>(visit);
 		}
 
+		// Get visit for edit
+		public VisitViewModel GetVisitForEdit(int id)
+		{
+			var visit = _unitOfWork.VisitRepository.GetVisitWithAppointment(id);
+			return _mapper.Map<VisitViewModel>(visit);
+		}
+
+		// Create visit
 		public void CreateVisit(VisitViewModel vm)
 		{
 			if (vm.VisitDate == null)
 				vm.VisitDate = DateTime.Now;
 
-			var visit = new Visit
-			{
-				AppointmentId = vm.AppointmentId,
-				Diagnosis = vm.Diagnosis,
-				Prescription = vm.Prescription,
-				VisitDate = vm.VisitDate,
-				DoctorNotes = vm.DoctorNotes
-			};
-
+			var visit = _mapper.Map<Visit>(vm);
 			_unitOfWork.VisitRepository.Add(visit);
 			_unitOfWork.Save();
 		}
 
-		public VisitViewModel GetVisitForEdit(int id)
-		{
-			var visit = _unitOfWork.VisitRepository.GetVisitWithAppointment(id);
-			if (visit == null) return null;
-
-			return new VisitViewModel
-			{
-				Id = visit.Id,
-				AppointmentId = visit.AppointmentId,
-				Diagnosis = visit.Diagnosis,
-				Prescription = visit.Prescription,
-				VisitDate = visit.VisitDate,
-				DoctorNotes = visit.DoctorNotes
-			};
-		}
-
+		// Update visit
 		public void UpdateVisit(VisitViewModel vm)
 		{
-			var visit = _unitOfWork.VisitRepository.GetById(vm.Id);
-			if (visit == null) return;
+			var existing = _unitOfWork.VisitRepository.GetById(vm.Id);
+			if (existing == null) return;
 
-			visit.AppointmentId = vm.AppointmentId;
-			visit.Diagnosis = vm.Diagnosis;
-			visit.Prescription = vm.Prescription;
-			visit.VisitDate = vm.VisitDate;
-			visit.DoctorNotes = vm.DoctorNotes;
-
-			_unitOfWork.VisitRepository.Update(visit);
+			_mapper.Map(vm, existing);
+			_unitOfWork.VisitRepository.Update(existing);
 			_unitOfWork.Save();
 		}
 
-		public VisitViewModel GetVisitForDelete(int id)
-		{
-			var visit = _unitOfWork.VisitRepository.GetById(id);
-			if (visit == null) return null;
-
-			return new VisitViewModel
-			{
-				Id = visit.Id,
-				AppointmentId = visit.AppointmentId,
-				Diagnosis = visit.Diagnosis,
-				Prescription = visit.Prescription,
-				VisitDate = visit.VisitDate,
-				DoctorNotes = visit.DoctorNotes
-			};
-		}
-
+		// Delete visit
 		public void DeleteVisit(int id)
 		{
 			var visit = _unitOfWork.VisitRepository.GetById(id);
@@ -123,13 +71,28 @@ namespace ClinicManagementSystem.Services.Implementations
 			_unitOfWork.Save();
 		}
 
-		public List<SelectListItem> GetAppointmentsSelectList(int? selectedAppointmentId = null)
+		// Get appointment select list (Create)
+		public List<SelectListItem> GetAppointmentsSelectList()
 		{
-			var appointments = _unitOfWork.VisitRepository.GetAppointmentsWithDetails(selectedAppointmentId);
+			var appointments = _unitOfWork.VisitRepository.GetAppointmentsWithDetails();
+
 			return appointments.Select(a => new SelectListItem
 			{
 				Value = a.Id.ToString(),
 				Text = $"{a.Patient.FullName} - {a.Doctor.FullName} ({a.Date:yyyy-MM-dd HH:mm})"
+			}).ToList();
+		}
+
+		// Get appointment select list (Edit)
+		public List<SelectListItem> GetAppointmentsSelectListForEdit(int currentAppointmentId)
+		{
+			var appointments = _unitOfWork.VisitRepository.GetAppointmentsForEdit(currentAppointmentId);
+
+			return appointments.Select(a => new SelectListItem
+			{
+				Value = a.Id.ToString(),
+				Text = $"{a.Patient.FullName} - {a.Doctor.FullName} ({a.Date:yyyy-MM-dd HH:mm})",
+				Selected = a.Id == currentAppointmentId
 			}).ToList();
 		}
 	}

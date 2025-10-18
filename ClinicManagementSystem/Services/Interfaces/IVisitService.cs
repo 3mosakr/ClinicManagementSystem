@@ -1,17 +1,23 @@
-﻿using ClinicManagementSystem.ViewModel.Visit;
+﻿using ClinicManagementSystem.Models;
+using ClinicManagementSystem.ViewModel.Visit;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClinicManagementSystem.Services.Interfaces
 {
 	public interface IVisitService
 	{
+		// CRUD Operations Visits
 		List<VisitViewModel> GetAllVisits();
 		VisitDetailsViewModel GetVisitDetails(int id);
-		void CreateVisit(VisitViewModel vm);
 		VisitViewModel GetVisitForEdit(int id);
+		void CreateVisit(VisitViewModel vm);
 		void UpdateVisit(VisitViewModel vm);
-		VisitViewModel GetVisitForDelete(int id);
 		void DeleteVisit(int id);
-		List<SelectListItem> GetAppointmentsSelectList(int? selectedAppointmentId = null);
+
+		// Appointment Lists
+		List<SelectListItem> GetAppointmentsSelectList(); // For Create
+		List<SelectListItem> GetAppointmentsSelectListForEdit(int currentAppointmentId); // For Edit
+
+
 	}
 }

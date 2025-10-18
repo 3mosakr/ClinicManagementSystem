@@ -1,4 +1,5 @@
-﻿@model List<ClinicManagementSystem.ViewModel.Visit.VisitViewModel>
+﻿@model List<ClinicManagementSystem.ViewModel.Visit.VisitViewModel> 
+
 
 @{
     ViewData["Title"] = "Visits";
@@ -9,8 +10,8 @@
         Visits  <span class="text-primary">Details</span> 
     </h4>
     <div>
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form asp-action="Index" method="get" class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value="@ViewBag.SearchTerm">
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
 
@@ -57,6 +58,50 @@
         }
     </tbody>
 </table>
+
+
+@if (ViewBag.TotalPages > 1)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4">
+
+            <!-- Previous -->
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@(ViewBag.CurrentPage - 1)"
+                   asp-route-searchTerm="@ViewBag.SearchTerm">
+                    Previous
+                </a>
+            </li>
+
+            <!-- Page Numbers -->
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@i"
+                       asp-route-searchTerm="@ViewBag.SearchTerm">
+                        @i
+                    </a>
+                </li>
+            }
+
+            <!-- Next -->
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@(ViewBag.CurrentPage + 1)"
+                   asp-route-searchTerm="@ViewBag.SearchTerm">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+}
+
+
 
 @section Scripts {
 

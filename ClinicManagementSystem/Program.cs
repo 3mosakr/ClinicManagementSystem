@@ -1,3 +1,4 @@
+using ClinicManagementSystem.Mapping;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Models.Data;
 using ClinicManagementSystem.Repository.Implementations;
@@ -6,6 +7,7 @@ using ClinicManagementSystem.Services.Implementations;
 using ClinicManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,11 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IVisitService, VisitService>();
 
+// Add AutoMapper 
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MappingProfile>(); 
+}, typeof(Program).Assembly);
 
 
 
