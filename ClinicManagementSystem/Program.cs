@@ -1,3 +1,4 @@
+using ClinicManagementSystem.Mapping;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Models.Data;
 using ClinicManagementSystem.Repository.Implementations;
@@ -21,11 +22,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+// register auto mapper
+builder.Services.AddAutoMapper(opt => opt.AddProfile(typeof(MappingProfile)));
+
 // Add unit of work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // add services Layer
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
 
 
 

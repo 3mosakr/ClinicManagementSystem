@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ClinicManagementSystem.Models;
+using ClinicManagementSystem.ViewModel.Doctor;
 
 namespace ClinicManagementSystem.Mapping
 {
@@ -7,6 +9,7 @@ namespace ClinicManagementSystem.Mapping
         public MappingProfile() 
         { 
             // Add Mapping
+            CreateMap<ApplicationUser, DoctorViewModel>().ReverseMap();
         }
 
     }
