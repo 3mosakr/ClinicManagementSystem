@@ -27,9 +27,12 @@ builder.Services.AddAutoMapper(opt => opt.AddProfile(typeof(MappingProfile)));
 
 // Add unit of work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 // add services Layer
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IDoctorAvailabilityService,DoctorAvailabilityService>();
+
 
 
 

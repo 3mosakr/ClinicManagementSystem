@@ -8,8 +8,8 @@
         public virtual ApplicationUser? Doctor { get; set; }
 
         public DayOfWeek DayOfWeek { get; set; } // مثلاً Monday, Tuesday...
-        public TimeSpan? StartTime { get; set; }
-        public TimeSpan? EndTime { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
 
 
         // Navigation
