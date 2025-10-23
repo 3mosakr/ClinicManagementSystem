@@ -42,7 +42,7 @@ namespace ClinicManagementSystem.Controllers
         {
             var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
 
-            ViewBag.DoctorList = new SelectList(doctors, "Id", "UserName");
+            ViewBag.DoctorList = new SelectList(doctors, "Id", "FullName");
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace ClinicManagementSystem.Controllers
             }
 
             var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
-            ViewBag.DoctorList = new SelectList(doctors, "Id", "UserName");
+            ViewBag.DoctorList = new SelectList(doctors, "Id", "FullName");
 
             return View(model);
         }
@@ -72,7 +72,7 @@ namespace ClinicManagementSystem.Controllers
                 return NotFound();
 
             var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
-            ViewBag.DoctorList = new SelectList(doctors, "Id", "UserName", vm.DoctorId);
+            ViewBag.DoctorList = new SelectList(doctors, "Id", "FullName", vm.DoctorId);
 
             return View(vm);
         }
@@ -85,7 +85,7 @@ namespace ClinicManagementSystem.Controllers
             if (!ModelState.IsValid)
             {
                 var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
-                ViewBag.DoctorList = new SelectList(doctors, "Id", "UserName", model.DoctorId);
+                ViewBag.DoctorList = new SelectList(doctors, "Id", "FullName", model.DoctorId);
                 return View(model);
             }
 

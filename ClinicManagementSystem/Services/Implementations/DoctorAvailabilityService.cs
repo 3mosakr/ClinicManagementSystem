@@ -24,7 +24,7 @@ namespace ClinicManagementSystem.Services.Implementations
             {
                 Id = a.Id,
                 DoctorId = a.DoctorId,
-                DoctorName = a.Doctor?.UserName,
+                DoctorName = a.Doctor?.FullName,
                 DayOfWeek = a.DayOfWeek, // FIX: assign as DayOfWeek, not string
                 StartTime = a.StartTime,
                 EndTime = a.EndTime
@@ -42,7 +42,7 @@ namespace ClinicManagementSystem.Services.Implementations
             {
                 Id = entity.Id,
                 DoctorId = entity.DoctorId,
-                DoctorName = entity.Doctor?.UserName ?? "Unknown",
+                DoctorName = entity.Doctor?.FullName ?? "Unknown",
                 DayOfWeek = entity.DayOfWeek, 
                 StartTime = entity.StartTime,
                 EndTime = entity.EndTime
@@ -53,6 +53,7 @@ namespace ClinicManagementSystem.Services.Implementations
             var availability = new DoctorAvailability
             {
                 DoctorId = model.DoctorId,
+                Doctor = model.DoctorName != null ? new ApplicationUser { FullName = model.DoctorName } : null,
                 DayOfWeek = model.DayOfWeek,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime
@@ -74,6 +75,7 @@ namespace ClinicManagementSystem.Services.Implementations
             }
 
             existing.DoctorId = vm.DoctorId;
+            existing.Doctor = vm.DoctorName != null ? new ApplicationUser { FullName = vm.DoctorName } : null;
             existing.DayOfWeek = day;
             existing.StartTime = vm.StartTime; 
             existing.EndTime = vm.EndTime;     
