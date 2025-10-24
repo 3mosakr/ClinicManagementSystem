@@ -6,9 +6,10 @@ namespace ClinicManagementSystem.Repository.Implementations
     public class UnitOfWork : IUnitOfWork
     {
         private IPatientRepository _patientRepository;
-        
+        private IVisitRepository _visitRepository;
 
-        ApplicationDbContext _context;
+
+		ApplicationDbContext _context;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -25,6 +26,18 @@ namespace ClinicManagementSystem.Repository.Implementations
                 }
                 return _patientRepository;
             }
+        }
+
+        public IVisitRepository VisitRepository
+        {
+            get
+            {
+                if (_visitRepository == null)
+                {
+                    _visitRepository = new VisitRepository(_context);
+				}
+                return _visitRepository;
+			}
         }
 
         public void Save()
