@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "ShowAllAppointments";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mt-4">Appointments</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <a class="btn btn-primary mt-4" asp-action="CreateAppointment" asp-controller="Appointment"">Add Appointment</a>
+        </div>
+    </div>
+    <div class="row mt-4 p-4 bg-light rounded shadow-sm border">
+
+        <input type="text" class="form-control py-3 my-4" placeholder="Search...">
+
+        <table class="table  table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Patient Name</th>
+                    <th>Doctor Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>Dr. Smith</td>
+                    <td>2024-07-01</td>
+                    <td>10:00 AM</td>
+                    <td>Confirmed</td>
+                    <td>
+                        <button class="btn btn-outline-primary me-2">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jane Roe</td>
+                    <td>Dr. Brown</td>
+                    <td>2024-07-02</td>
+                    <td>11:30 AM</td>
+                    <td>Pending</td>
+                    <td>
+                        <button class="btn btn-outline-primary me-2">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Mike Smith</td>
+                    <td>Dr. Johnson</td>
+                    <td>2024-07-03</td>
+                    <td>02:00 PM</td>
+                    <td>Cancelled</td>
+                    <td>
+                        <button class="btn btn-outline-primary me-2">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Emily Davis</td>
+                    <td>Dr. Lee</td>
+                    <td>2024-07-04</td>
+                    <td>09:00 AM</td>
+                    <td>Confirmed</td>
+                    <td>
+                        <button class="btn btn-outline-primary me-2">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Chris Wilson</td>
+                    <td>Dr. Garcia</td>
+                    <td>2024-07-05</td>
+                    <td>01:30 PM</td>
+                    <td>Pending</td>
+                    <td>
+                        <button class="btn btn-outline-primary me-2">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

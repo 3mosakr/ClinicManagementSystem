@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewData["Title"] = "CreateAppointment";
+}
+
+<div class="main-content">
+
+        <div class="container pb-5 px-lg-5">
+            <h2 class="page-title my-5">Add Appointment</h2>
+
+            <form action="" class="card border rounded shadow-sm p-4">
+                <div class="card-body">
+
+                    <div class="mb-4">
+                        <label for="patientName" class="form-label my-2">Patient Name</label>
+                        <input type="text" class="form-control py-3" id="patientName" placeholder="Enter patient name">
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="doctorName" class="form-label my-2">Doctor's Name</label>
+                            <select class="form-select py-3" id="doctorName" aria-label="Select doctor">
+                                <option selected>Select doctor</option>
+                                <option value="1">Dr. John Doe</option>
+                                <option value="2">Dr. Jane Smith</option>
+                                <option value="3">Dr. Michael Brown</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="appointmentDate" class="form-label my-2">Date</label>
+                            <input type="text" class="form-control py-3 placeholder-text" id="appointmentDate"
+                                placeholder="mm/dd/yyyy">
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="startTime" class="form-label my-2">Date</label>
+                            <input type="text" class="form-control py-3 placeholder-text" id="startTime"
+                                placeholder="Select time">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="endTime" class="form-label my-2">Time</label>
+                            <input type="text" class="form-control py-3 placeholder-text" id="endTime"
+                                placeholder="Select time">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2">Add Appointment</button>
+
+                </div>
+        </form>
+    </div>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .main-content {
+        max-width: 900px;
+        margin: 0 auto;
+        min-height: 100vh;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+</style>
+
+
+
+
