@@ -32,7 +32,7 @@ namespace ClinicManagementSystem.Mapping
 			.ForMember(dest=>dest.VisitDate, opt=>opt.MapFrom(src=>
 			(!string.IsNullOrEmpty(src.VisitDateDate) && !string.IsNullOrEmpty(src.VisitDateTime)) 
 				? DateTime.ParseExact($"{src.VisitDateDate} {src.VisitDateTime}", "yyyy-MM-dd HH:mm", null) 
-				: (DateTime?)null
+				: (DateTime?)DateTime.Now
 			));
 		}
 
