@@ -144,9 +144,19 @@
                     $.post(url, $(form).serialize())
                         .done(function () {
                             Notiflix.Notify.success('Visit deleted successfully');
-                            $(form).closest('tr').fadeOut(500, function () {
-                                $(this).remove();
-                            });
+                            const row = $(form).closest('tr');
+                            row.fadeOut(500, function () {
+                                row.remove();
+                            if ($('#visitsTable tbody tr').length === 0) {
+                                const currentPage = parseInt('@ViewBag.CurrentPage');
+
+                                const targetPage = currentPage > 1 ? currentPage - 1 : 1;
+
+                                setTimeout(function () {
+                                    window.location.href = '@Url.Action("Index", "Visit")' + '?page=' + targetPage + '&searchTerm=@ViewBag.SearchTerm';
+                                }, 1000); 
+                            }
+                                });
                         })
                         .fail(function () {
                             Notiflix.Notify.failure('Error deleting visit');
