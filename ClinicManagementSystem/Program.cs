@@ -33,7 +33,7 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IReceptionistService, ReceptionistService>();
 builder.Services.AddScoped<IVisitService, VisitService>();
-
+builder.Services.AddScoped<IDoctorAvailabilityService,DoctorAvailabilityService>();
 
 
 

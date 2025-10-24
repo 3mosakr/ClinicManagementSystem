@@ -11,12 +11,12 @@ namespace ClinicManagementSystem.Repository.Implementations
             _context = context;
         }
 
-        public List<IEntity> GetAll()
+        public virtual List<IEntity> GetAll()
         {
             return _context.Set<IEntity>().ToList();
         }
 
-        public IEntity GetById(object id)
+        public virtual IEntity GetById(object id)
         {
             return _context.Set<IEntity>().Find(id);
         }

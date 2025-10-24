@@ -5,8 +5,11 @@ namespace ClinicManagementSystem.Repository.Implementations
 {
     public class UnitOfWork : IUnitOfWork
     {
+        ApplicationDbContext _context;
         private IPatientRepository _patientRepository;
         private IVisitRepository _visitRepository;
+
+        private IDoctorAvailabilityRepository _doctorAvailabilityRepository;
 
 
 		ApplicationDbContext _context;
@@ -25,6 +28,15 @@ namespace ClinicManagementSystem.Repository.Implementations
                     _patientRepository = new PatientRepository(_context);
                 }
                 return _patientRepository;
+            }
+        }
+        public IDoctorAvailabilityRepository DoctorAvailabilityRepository
+        {
+            get
+            {
+                if (_doctorAvailabilityRepository == null)
+                    _doctorAvailabilityRepository = new DoctorAvailabilityRepository(_context);
+                return _doctorAvailabilityRepository;
             }
         }
 

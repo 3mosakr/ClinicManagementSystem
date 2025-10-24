@@ -49,6 +49,8 @@ namespace ClinicManagementSystem.Models.Data
                 .WithMany(d => d.Appointments)
                 .HasForeignKey(a => a.DoctorAvailabilityId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

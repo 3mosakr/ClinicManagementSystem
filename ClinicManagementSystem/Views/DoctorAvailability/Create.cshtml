@@ -1,0 +1,45 @@
+﻿@using ClinicManagementSystem.ViewModel.DoctorAvailability
+@model DoctorAvailabilityViewModel
+
+@{
+    ViewData["Title"] = "Create Doctor Availability";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary">Create Doctor Availability</h2>
+
+    <form asp-action="Create" asp-controller="DoctorAvailability" method="post">
+        <div class="mb-3">
+            <label asp-for="DoctorId" class="form-label "></label>
+            <select asp-for="DoctorId" class="form-select" asp-items="ViewBag.DoctorList"></select>
+            <span asp-validation-for="DoctorId" class="text-danger"></span>
+        </div>
+       
+        <div class="mb-3">
+            <label asp-for="DayOfWeek" class="form-label"></label>
+            <select asp-for="DayOfWeek" class="form-select" asp-items="Html.GetEnumSelectList<DayOfWeek>()"></select>
+            <span asp-validation-for="DayOfWeek" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="StartTime" class="form-label"></label>
+            <input asp-for="StartTime" class="form-control" type="time" />
+            <span asp-validation-for="StartTime" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EndTime" class="form-label"></label>
+            <input asp-for="EndTime" class="form-control" type="time" />
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
