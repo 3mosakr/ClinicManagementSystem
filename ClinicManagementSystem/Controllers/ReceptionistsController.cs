@@ -1,44 +1,46 @@
-﻿using ClinicManagementSystem.Services.Interfaces;
+﻿using ClinicManagementSystem.Services.Implementations;
+using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Doctor;
-using Microsoft.AspNetCore.Components;
+using ClinicManagementSystem.ViewModel.Receptionist;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Controllers
 {
-    public class DoctorsController : Controller
+    public class ReceptionistsController : Controller
     {
-        private readonly IDoctorService _doctorService;
+        private readonly IReceptionistService _receptionistService;
 
-        public DoctorsController(IDoctorService doctorService)
+        public ReceptionistsController(IReceptionistService receptionistService)
         {
-            _doctorService = doctorService;
+            _receptionistService = receptionistService;
         }
+
 
         public async Task<IActionResult> Index()
         {
-            var doctors = await _doctorService.GetAllAsync();
-            return View(doctors);
+            var receptionists = await _receptionistService.GetAllAsync();
+            return View(receptionists);    
         }
 
         public async Task<IActionResult> Details(string id)
         {
-            var doctor = await _doctorService.GetByIdAsync(id);
-            return View(doctor);
+            var receptionist = await _receptionistService.GetByIdAsync(id);
+            return View(receptionist);
         }
 
         // Create 
-        // GET: Doctors/Create
+        // GET: Receptionists/Create
         [HttpGet]
         public IActionResult Create()
         {
-            return View(nameof(Create), new CreateDoctorViewModel());
+            return View(nameof(Create), new CreateReceptionistViewModel());
         }
 
-        // POST: Doctors/Create
+        // POST: Receptionists/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateDoctorViewModel model)
+        public async Task<IActionResult> Create(CreateReceptionistViewModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -46,7 +48,7 @@ namespace ClinicManagementSystem.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var succeeded = await _doctorService.CreateAsync(model, model.Password);
+            var succeeded = await _receptionistService.CreateAsync(model, model.Password);
             if (!succeeded)
             {
                 ModelState.AddModelError(string.Empty, "Unable to create doctor. Check inputs and try again.");
@@ -56,26 +58,24 @@ namespace ClinicManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-        // GET: Doctors/Edit/id
+        // GET: Receptionists/Edit/id
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return BadRequest();
 
-            var doctor = await _doctorService.GetByIdAsync(id);
-            if (doctor == null)
+            var receptionist = await _receptionistService.GetByIdAsync(id);
+            if (receptionist == null)
                 return NotFound();
 
-            return View(doctor);
+            return View(receptionist);
         }
 
-        // POST: Doctors/Edit
+        // POST: Receptionists/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(DoctorViewModel model)
+        public async Task<IActionResult> Edit(ReceptionistViewModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -83,7 +83,7 @@ namespace ClinicManagementSystem.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var succeeded = await _doctorService.UpdateAsync(model);
+            var succeeded = await _receptionistService.UpdateAsync(model);
             if (!succeeded)
             {
                 ModelState.AddModelError(string.Empty, "Unable to update doctor. Please check the inputs and try again.");
@@ -93,21 +93,21 @@ namespace ClinicManagementSystem.Controllers
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
-        // GET: Doctors/Delete/id
+        // GET: Receptionists/Delete/id
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return BadRequest();
 
-            var doctor = await _doctorService.GetByIdAsync(id);
-            if (doctor == null)
+            var receptionist = await _receptionistService.GetByIdAsync(id);
+            if (receptionist == null)
                 return NotFound();
 
-            return View(doctor); // show confirmation view
+            return View(receptionist); // show confirmation view
         }
 
-        // POST: Doctors/Delete/id
+        // POST: Receptionists/Delete/id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -115,16 +115,16 @@ namespace ClinicManagementSystem.Controllers
             if (string.IsNullOrWhiteSpace(id))
                 return BadRequest();
 
-            var succeeded = await _doctorService.DeleteAsync(id);
+            var succeeded = await _receptionistService.DeleteAsync(id);
             if (!succeeded)
             {
                 // If deletion failed, try to reload the entity to show details/error on the same view.
-                var doctor = await _doctorService.GetByIdAsync(id);
-                if (doctor == null)
+                var receptionist = await _receptionistService.GetByIdAsync(id);
+                if (receptionist == null)
                     return NotFound();
 
-                ModelState.AddModelError(string.Empty, "Unable to delete doctor. There may be dependent data or an internal error.");
-                return View("Delete", doctor);
+                ModelState.AddModelError(string.Empty, "Unable to delete receptionist. There may be dependent data or an internal error.");
+                return View("Delete", receptionist);
             }
 
             return RedirectToAction(nameof(Index));

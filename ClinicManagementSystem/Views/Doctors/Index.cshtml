@@ -7,6 +7,10 @@
 
 <h2>Doctors</h2>
 
+<!-- create btn -->
+<div class="container mb-2">
+    <a asp-action="Create" class="btn btn-primary mb-3">Create New Doctor</a>
+</div>
 
 <div class="container">
     <table class="table table-striped table-hover table-bordered text-center align-middle">
@@ -35,6 +39,7 @@
                         @* <a asp-action="Lock" asp-route-id="@doctor.Id" class="btn btn-info ">Locked</a> *@
                         <a asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-info ">Details</a>
                         <a asp-action="Edit" asp-route-id="@doctor.Id" class="btn btn-success ">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@doctor.Id" class="btn btn-danger ">Delete</a>
                     </td>
                 </tr>
             }

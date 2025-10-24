@@ -2,47 +2,46 @@
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Doctor;
+using ClinicManagementSystem.ViewModel.Receptionist;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClinicManagementSystem.Services.Implementations
 {
-    public class DoctorService : IDoctorService
+    public class ReceptionistService : IReceptionistService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
 
-        public DoctorService(UserManager<ApplicationUser> userManager, IMapper mapper)
+        public ReceptionistService(UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
         }
 
-        public async Task<List<DoctorViewModel>> GetAllAsync()
+        public async Task<List<ReceptionistViewModel>> GetAllAsync()
         {
-            var doctors = await _userManager.GetUsersInRoleAsync("Doctor");
+            var receptionists = await _userManager.GetUsersInRoleAsync("Receptionist");
             // mapping 
-            var doctorsVM = _mapper.Map<List<DoctorViewModel>>(doctors);
+            var receptionistsVM = _mapper.Map<List<ReceptionistViewModel>>(receptionists);
 
-            return doctorsVM;
-
+            return receptionistsVM;
         }
 
-        public async Task<DoctorViewModel> GetByIdAsync(string id)
+        public async Task<ReceptionistViewModel> GetByIdAsync(string id)
         {
-            var doctor = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (doctor == null)
+            var receptionist = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (receptionist == null)
             {
                 return null;
             }
             // mapping
-            var doctorVM = _mapper.Map<DoctorViewModel>(doctor);
+            var receptionistVM = _mapper.Map<ReceptionistViewModel>(receptionist);
 
-            return doctorVM;
+            return receptionistVM;
         }
 
-        // Create new doctor
-        public async Task<bool> CreateAsync(CreateDoctorViewModel model, string password)
+        public async Task<bool> CreateAsync(CreateReceptionistViewModel model, string password)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Password is required", nameof(password));
@@ -60,7 +59,7 @@ namespace ClinicManagementSystem.Services.Implementations
                 return false;
             }
 
-            var user = new ApplicationUser
+            var receptionist = new ApplicationUser
             {
                 UserName = model.UserName?.Trim(),
                 FullName = model.FullName?.Trim(),
@@ -68,25 +67,24 @@ namespace ClinicManagementSystem.Services.Implementations
                 PhoneNumber = model.PhoneNumber
             };
 
-            var createResult = await _userManager.CreateAsync(user, password);
+            var createResult = await _userManager.CreateAsync(receptionist, password);
             if (!createResult.Succeeded)
             {
                 return false;
             }
 
-            var addToRoleResult = await _userManager.AddToRoleAsync(user, "Doctor");
+            var addToRoleResult = await _userManager.AddToRoleAsync(receptionist, "Receptionist");
             if (!addToRoleResult.Succeeded)
             {
                 // Roll back user if role assignment fails
-                await _userManager.DeleteAsync(user);
+                await _userManager.DeleteAsync(receptionist);
                 return false;
             }
 
             return true;
         }
 
-        // update
-        public async Task<bool> UpdateAsync(DoctorViewModel model)
+        public async Task<bool> UpdateAsync(ReceptionistViewModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
@@ -127,14 +125,13 @@ namespace ClinicManagementSystem.Services.Implementations
             return updateResult.Succeeded;
         }
 
-        // delete
         public async Task<bool> DeleteAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
 
             // include appointments to check for related data that would block deletion
             var user = await _userManager.Users
-                .Include(u => u.DoctorAppointments)
+                .Include(u => u.ReceptionistAppointments)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
@@ -151,5 +148,6 @@ namespace ClinicManagementSystem.Services.Implementations
             return deleteResult.Succeeded;
         }
 
+        
     }
 }
