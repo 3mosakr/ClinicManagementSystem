@@ -29,5 +29,12 @@ namespace ClinicManagementSystem.ViewModel.Visit
 		public string? PatientName { get; set; }
 
 		public string? DoctorName { get; set; }
+
+		[DataType(DataType.Date)]
+		public string? VisitDateDate { get; set; }   // format: "yyyy-MM-dd"
+
+		[DataType(DataType.Time)]
+		public string? VisitDateTime { get; set; }   // format: "HH:mm"
+
 	}
 }

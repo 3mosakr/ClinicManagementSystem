@@ -28,7 +28,13 @@
                     <dd class="col-sm-8">@Model.Prescription</dd>
 
                     <dt class="col-sm-4 text-muted">Visit Date</dt>
-                    <dd class="col-sm-8">@((Model.VisitDate)?.ToString("yyyy-MM-dd HH:mm") ?? "-")</dd>
+                    @* <dd class="col-sm-8">@((Model.VisitDate)?.ToString("yyyy-MM-dd HH:mm") ?? "-")</dd> *@
+
+                    <dd class="col-sm-8">
+                        <div>@(Model.VisitDateDate ?? "-")</div>
+                        <div class="text-muted small">@(Model.VisitDateTime ?? "-")</div>
+                    </dd>
+
 
                     <dt class="col-sm-4 text-muted">Notes</dt>
                     <dd class="col-sm-8">@Model.DoctorNotes</dd>

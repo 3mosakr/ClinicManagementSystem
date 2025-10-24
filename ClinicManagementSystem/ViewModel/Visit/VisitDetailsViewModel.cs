@@ -1,4 +1,6 @@
-﻿namespace ClinicManagementSystem.ViewModel.Visit
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ClinicManagementSystem.ViewModel.Visit
 {
     public class VisitDetailsViewModel
     {
@@ -10,6 +12,9 @@
 		public string? DoctorNotes { get; set; }
 		public string? PatientName { get; set; }
 		public string? DoctorName { get; set; }
+
+		public string? VisitDateDate => VisitDate?.ToString("yyyy-MM-dd");
+		public string? VisitDateTime => VisitDate?.ToString("HH:mm");
 
 	}
 }

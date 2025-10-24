@@ -37,7 +37,21 @@
 
             <div class="mb-3">
                 <label asp-for="VisitDate" class="form-label"></label>
-                <input asp-for="VisitDate" class="form-control form-control-lg" type="datetime-local" />
+                @* <input asp-for="VisitDate" class="form-control form-control-lg" type="datetime-local" /> *@
+
+                <div class="row g-2">
+                    <div class="col">
+                        <label asp-for="VisitDateDate" class="form-label">Date</label>
+                        <input asp-for="VisitDateDate" class="form-control" type="date" />
+                        <span asp-validation-for="VisitDateDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="VisitDateTime" class="form-label">Time</label>
+                        <input asp-for="VisitDateTime" class="form-control" type="time" />
+                        <span asp-validation-for="VisitDateTime" class="text-danger small"></span>
+                    </div>
+                </div>
+
                 <span asp-validation-for="VisitDate" class="text-danger small"></span>
             </div>
 

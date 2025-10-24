@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Visit;
 using Microsoft.AspNetCore.Mvc;
@@ -87,6 +88,7 @@ namespace ClinicManagementSystem.Controllers
 
 			ViewBag.Appointments = _visitService.GetAppointmentsSelectListForEdit(vm.AppointmentId);
 			return View(vm);
+
 		}
 
 		// =======================

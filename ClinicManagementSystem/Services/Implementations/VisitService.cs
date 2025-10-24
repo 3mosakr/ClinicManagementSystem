@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Repository.Interfaces;
 using ClinicManagementSystem.Services.Interfaces;
@@ -21,8 +22,10 @@ namespace ClinicManagementSystem.Services.Implementations
 		// Get all visits
 		public List<VisitViewModel> GetAllVisits()
 		{
+
 			var visits = _unitOfWork.VisitRepository.GetAllWithDetails();
 			return _mapper.Map<List<VisitViewModel>>(visits);
+
 		}
 
 		// Get visit details
@@ -48,6 +51,7 @@ namespace ClinicManagementSystem.Services.Implementations
 			var visit = _mapper.Map<Visit>(vm);
 			_unitOfWork.VisitRepository.Add(visit);
 			_unitOfWork.Save();
+
 		}
 
 		// Update visit
@@ -59,6 +63,7 @@ namespace ClinicManagementSystem.Services.Implementations
 			_mapper.Map(vm, existing);
 			_unitOfWork.VisitRepository.Update(existing);
 			_unitOfWork.Save();
+
 		}
 
 		// Delete visit
