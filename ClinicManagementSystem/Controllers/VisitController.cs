@@ -32,7 +32,7 @@ namespace ClinicManagementSystem.Controllers
 								|| v.DoctorName!.ToLower().Contains(searchTerm.ToLower()))
 					   .ToList();
 			}
-			int pageSize = 3;
+			int pageSize = 10;
 			var pagedVisits = vm.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 			ViewBag.CurrentPage = page;
 			ViewBag.TotalPages = (int)Math.Ceiling((double)vm.Count / pageSize);
