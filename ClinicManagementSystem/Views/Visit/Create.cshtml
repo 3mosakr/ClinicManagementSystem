@@ -4,59 +4,63 @@
     ViewData["Title"] = "Create Visit";
 }
 
-<div class="d-flex justify-content-between align-items-center my-4">
-    <h4 class="mb-0">Create Visit<span class="text-primary"> Details</span></h4>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i> Back to Visits
-    </a>
-</div>
+<div class="main-content">
+    <div class="container pb-5 px-lg-5">
+        <h2 class="page-title my-5 text-primary">Add Visit</h2>
 
-<div class="card shadow-sm mx-auto" style="">
-    <div class="card-body">
-        <form asp-action="Create" method="post" novalidate>
-            <div class="mb-3">
-                <label for="AppointmentId" class="form-label">Appointment</label>
-                <select asp-for="AppointmentId" class="form-select form-select-lg" asp-items="ViewBag.Appointments">
-                    <option value="">-- Select Appointment --</option>
-                </select>
-                <span asp-validation-for="AppointmentId" class="text-danger small"></span>
-            </div>
+        <form asp-action="Create" method="post" class="card border rounded shadow-sm p-4" novalidate>
+            <div class="card-body">
 
-            <div class="mb-3">
-                <label asp-for="Diagnosis" class="form-label"></label>
-                <input asp-for="Diagnosis" class="form-control form-control-lg" />
-                <span asp-validation-for="Diagnosis" class="text-danger small"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Prescription" class="form-label"></label>
-                <textarea asp-for="Prescription" class="form-control form-control-lg" rows="4"></textarea>
-                <span asp-validation-for="Prescription" class="text-danger small"></span>
-            </div>
-
-            <div class="row g-2">
-                <div class="col">
-                    <label asp-for="VisitDateDate" class="form-label">Date</label>
-                    <input asp-for="VisitDateDate" class="form-control" type="date" />
-                    <span asp-validation-for="VisitDateDate" class="text-danger small"></span>
+                <!-- Appointment -->
+                <div class="mb-4">
+                    <label for="AppointmentId" class="form-label my-2">Appointment</label>
+                    <select asp-for="AppointmentId" class="form-select py-3" asp-items="ViewBag.Appointments">
+                        <option value="">-- Select Appointment --</option>
+                    </select>
+                    <span asp-validation-for="AppointmentId" class="text-danger small"></span>
                 </div>
-                <div class="col">
-                    <label asp-for="VisitDateTime" class="form-label">Time</label>
-                    <input asp-for="VisitDateTime" class="form-control" type="time" />
-                    <span asp-validation-for="VisitDateTime" class="text-danger small"></span>
+
+                <!-- Diagnosis -->
+                <div class="mb-4">
+                    <label asp-for="Diagnosis" class="form-label my-2"></label>
+                    <input asp-for="Diagnosis" class="form-control py-3" placeholder="Enter diagnosis" />
+                    <span asp-validation-for="Diagnosis" class="text-danger small"></span>
                 </div>
-            </div>
 
+                <!-- Prescription -->
+                <div class="mb-4">
+                    <label asp-for="Prescription" class="form-label my-2"></label>
+                    <textarea asp-for="Prescription" class="form-control py-3" rows="4" placeholder="Enter prescription details"></textarea>
+                    <span asp-validation-for="Prescription" class="text-danger small"></span>
+                </div>
 
-            <div class="my-3">
-                <label asp-for="DoctorNotes" class="form-label"></label>
-                <textarea asp-for="DoctorNotes" class="form-control form-control-lg" rows="4"></textarea>
-                <span asp-validation-for="DoctorNotes" class="text-danger small"></span>
-            </div>
+                <!-- Date & Time -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="VisitDateDate" class="form-label my-2">Date</label>
+                        <input asp-for="VisitDateDate" type="date" class="form-control py-3" />
+                        <span asp-validation-for="VisitDateDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="VisitDateTime" class="form-label my-2">Time</label>
+                        <input asp-for="VisitDateTime" type="time" class="form-control py-3" />
+                        <span asp-validation-for="VisitDateTime" class="text-danger small"></span>
+                    </div>
+                </div>
 
-            <div class="d-flex justify-content-end gap-2">
-                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-                <button type="submit" class="btn btn-success">Save</button>
+                <!-- Doctor Notes -->
+                <div class="mb-4">
+                    <label asp-for="DoctorNotes" class="form-label my-2"></label>
+                    <textarea asp-for="DoctorNotes" class="form-control py-3" rows="4" placeholder="Enter doctor's notes"></textarea>
+                    <span asp-validation-for="DoctorNotes" class="text-danger small"></span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between gap-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary w-50 py-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary w-50 py-2">Save Visit</button>
+                </div>
+
             </div>
         </form>
     </div>
@@ -65,3 +69,51 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .main-content {
+        max-width: 900px;
+        margin: 0 auto;
+        min-height: 100vh;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .btn-outline-secondary {
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .card {
+        border-radius: 20px;
+    }
+
+    textarea.form-control {
+        resize: none;
+    }
+</style>

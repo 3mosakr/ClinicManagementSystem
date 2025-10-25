@@ -1,133 +1,208 @@
-﻿@model List<ClinicManagementSystem.ViewModel.Visit.VisitViewModel> 
-
+﻿@model List<ClinicManagementSystem.ViewModel.Visit.VisitViewModel>
 
 @{
     ViewData["Title"] = "Visits";
 }
 
-<div class="d-flex justify-content-between align-items-center my-4">
-    <a asp-controller="Visit" style="text-decoration: none;">
-        <h4 class="mb-0 text-black">
-            Visits <span class="text-primary">Details</span>
+<div class="container shadow-sm p-5 mt-4 rounded bg-white">
+
+    <!-- ================= TITLE & SEARCH ================= -->
+    <div class="d-flex justify-content-between align-items-center mt-3 mb-4 border-bottom pb-3">
+        <h4 class="fw-bold mb-0">
+            <span class="text-primary">Visits Details</span>
         </h4>
-    </a>
 
-    <div>
-        <form asp-action="Index" method="get" class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value="@ViewBag.SearchTerm">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <div class="d-flex align-items-center gap-2">
+            <form asp-action="Index" method="get" class="d-flex">
+                <input class="form-control me-2 shadow-sm rounded" type="search" placeholder="Search by patient or doctor" aria-label="Search" name="searchTerm" value="@ViewBag.SearchTerm" />
+                <button class="btn btn-outline-primary rounded shadow-sm" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
 
+            <a asp-action="Create" class="btn btn-outline-primary rounded shadow-sm d-flex align-items-center">
+                <i class="bi bi-plus-lg me-1"></i> Create Visit
+            </a>
+        </div>
     </div>
-    <a asp-action="Create" class="btn btn-outline-primary btn-sm">
-        <i class="bi bi-plus-lg me-1"></i> Create Visit
-    </a>
-</div>
 
-<table id="visitsTable" class="table table-striped table-bordered align-middle">
-    <thead class="table-light">
-        <tr>
-            <th>#</th>
-            <th>Patient Name</th>
-            <th>Doctor Name</th>
-            <th>Diagnosis</th>
-            <th>Time</th>
-            <th>Date</th>
-            <th class="text-center">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.PatientName</td>
-                <td>@item.DoctorName</td>
-                <td>@item.Diagnosis</td>
-                @* <td>@(item.VisitDate?.ToString("yyyy-MM-dd HH:mm") ?? "")</td> *@
-                <td>
-                    <div class="text-muted small">@(item.VisitDateTime ?? "")</div>
-                </td>
-                <td>
-                    <div>@(item.VisitDateDate ?? "")</div>
-                </td>
-                <td class="text-center">
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm mx-1">
-                        <i class="bi bi-eye"></i>
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm mx-1">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
-                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
-                        <button type="submit" class="btn btn-outline-danger btn-sm mx-1">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <!-- ================= TABLE ================= -->
+    <div class="table-responsive">
+        <table id="visitsTable" class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Diagnosis</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.PatientName</td>
+                            <td>@item.DoctorName</td>
+                            <td>@item.Diagnosis</td>
+                            <td><span class="badge bg-light text-muted">@item.VisitDateTime</span></td>
+                            <td><span class="fw-semibold text-secondary">@item.VisitDateDate</span></td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm mx-1 shadow-sm rounded" title="Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm mx-1 shadow-sm rounded" title="Edit">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm mx-1 shadow-sm rounded" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            <i class="bi bi-info-circle me-1"></i> No visits found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-
-@if (ViewBag.TotalPages > 1)
-{
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center mt-4">
-
-            <!-- Previous -->
-            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
-                <a class="page-link"
-                   asp-action="Index"
-                   asp-route-page="@(ViewBag.CurrentPage - 1)"
-                   asp-route-searchTerm="@ViewBag.SearchTerm">
-                    Previous
-                </a>
-            </li>
-
-            <!-- Page Numbers -->
-            @for (int i = 1; i <= ViewBag.TotalPages; i++)
-            {
-                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+    <!-- ================= PAGINATION ================= -->
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
                     <a class="page-link"
                        asp-action="Index"
-                       asp-route-page="@i"
+                       asp-route-page="@(ViewBag.CurrentPage - 1)"
                        asp-route-searchTerm="@ViewBag.SearchTerm">
-                        @i
+                        Previous
                     </a>
                 </li>
-            }
 
-            <!-- Next -->
-            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
-                <a class="page-link"
-                   asp-action="Index"
-                   asp-route-page="@(ViewBag.CurrentPage + 1)"
-                   asp-route-searchTerm="@ViewBag.SearchTerm">
-                    Next
-                </a>
-            </li>
-        </ul>
-    </nav>
-}
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@i"
+                           asp-route-searchTerm="@ViewBag.SearchTerm">
+                            @i
+                        </a>
+                    </li>
+                }
 
-
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(ViewBag.CurrentPage + 1)"
+                       asp-route-searchTerm="@ViewBag.SearchTerm">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>
 
 @section Scripts {
-
-
     <style>
-      #NXConfirmButtonOk,
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            padding: 20px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .icon-card {
+            font-size: 21px;
+            padding: 10px 13px;
+            border-radius: 50%;
+        }
+
+        .icon-card-doctor {
+            color: #28a745;
+            background-color: #28a74531;
+        }
+
+        .icon-card-patient {
+            color: #17a2b8;
+            background-color: #17a2b831;
+        }
+
+        .icon-card-appointment {
+            color: #ffc107;
+            background-color: #ffc10731;
+        }
+
+        .icon-card-cancel {
+            color: #dc3545;
+            background-color: #dc354531;
+        }
+
+        .card-details .card-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .card-details .card-text {
+            color: #6c757d;
+        }
+
+        .table thead th {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f5ff;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .btn-outline-info:hover {
+            background-color: #0dcaf0;
+            color: white;
+        }
+
+        .btn-outline-warning:hover {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #NXConfirmButtonOk,
         #NXConfirmButtonCancel {
             text-decoration: none !important;
         }
     </style>
 
     <script>
-            Notiflix.Notify.init({
+        Notiflix.Notify.init({
             position: 'right-bottom',
             distance: '15px',
-            timeout: 2500, 
+            timeout: 2500,
             cssAnimationStyle: 'fade',
         });
 
@@ -136,9 +211,9 @@
             const form = e.target;
             const url = form.action;
             Notiflix.Confirm.show(
-                'Confirm Dialog',
-                'Are you sure?',
-                'Okey',
+                'Confirm Deletion',
+                'Are you sure you want to delete this visit?',
+                'Yes, Delete',
                 'Cancel',
                 function okCb() {
                     $.post(url, $(form).serialize())
@@ -147,16 +222,14 @@
                             const row = $(form).closest('tr');
                             row.fadeOut(500, function () {
                                 row.remove();
-                            if ($('#visitsTable tbody tr').length === 0) {
-                                const currentPage = parseInt('@ViewBag.CurrentPage');
-
-                                const targetPage = currentPage > 1 ? currentPage - 1 : 1;
-
-                                setTimeout(function () {
-                                    window.location.href = '@Url.Action("Index", "Visit")' + '?page=' + targetPage + '&searchTerm=@ViewBag.SearchTerm';
-                                }, 1000); 
-                            }
-                                });
+                                if ($('#visitsTable tbody tr').length === 0) {
+                                    const currentPage = parseInt('@ViewBag.CurrentPage');
+                                    const targetPage = currentPage > 1 ? currentPage - 1 : 1;
+                                    setTimeout(function () {
+                                        window.location.href = '@Url.Action("Index", "Visit")' + '?page=' + targetPage + '&searchTerm=@ViewBag.SearchTerm';
+                                    }, 1000);
+                                }
+                            });
                         })
                         .fail(function () {
                             Notiflix.Notify.failure('Error deleting visit');
@@ -178,4 +251,3 @@
         }
     </script>
 }
-
