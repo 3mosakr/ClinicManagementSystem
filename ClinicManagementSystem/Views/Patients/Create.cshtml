@@ -3,24 +3,49 @@
 <h2>Add New Patient</h2>
 
 <form asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <label>Full Name</label>
-    <input asp-for="FullName" class="form-control" />
-    <span asp-validation-for="FullName" class="text-danger"></span>
+    <div class="mb-3">
+        <label>Full Name</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
 
-    <label>Phone Number</label>
-    <input asp-for="PhoneNumber" class="form-control" />
+    <div class="mb-3">
+        <label>Phone Number</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
 
-    <label>Address</label>
-    <input asp-for="Address" class="form-control" />
+    <div class="mb-3">
+        <label>Address</label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
 
-    <label>Gender</label>
-    <input asp-for="Gender" class="form-control" />
+    <div class="mb-3">
+        <label>Gender</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" asp-for="Gender" value="Male" id="male" />
+            <label class="form-check-label" for="male">Male</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" asp-for="Gender" value="Female" id="female" />
+            <label class="form-check-label" for="female">Female</label>
+        </div>
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
 
-    <label>Date of Birth</label>
-    <input asp-for="DateOfBirth" type="date" class="form-control" />
+    <div class="mb-3">
+        <label>Date of Birth</label>
+        <input asp-for="DateOfBirth" type="date" class="form-control" />
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+    </div>
 
     <button type="submit" class="btn btn-success mt-2">Save</button>
     <a asp-action="Index" class="btn btn-secondary mt-2">Back</a>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

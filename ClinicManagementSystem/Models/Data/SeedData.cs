@@ -126,7 +126,7 @@ namespace ClinicManagementSystem.Models.Data
                 {
                     FullName = "Ali aloka",
                     PhoneNumber = "01012345678",
-                    Gender = "Male",
+                    Gender = Enums.Gender.Male,
                     Address = "Cairo",
                     DateOfBirth = new DateTime(2000, 5, 15)
                 };

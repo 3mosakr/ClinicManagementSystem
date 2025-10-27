@@ -16,11 +16,18 @@ namespace ClinicManagementSystem.Services.Implementations
 
         public IEnumerable<Patient> GetAllPatients(string search = null)
         {
-            var patients = _unitOfWork.PatientRepository.GetAll();
-            return patients;
+			var patient = _unitOfWork.PatientRepository.GetAll();
+            if (!string.IsNullOrEmpty(search))
+                patient = patient.Where(p => p.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            return patient;
         }
 
-        public Patient GetPatientById(int id) => _unitOfWork.PatientRepository.GetById(id);
+		public Patient GetPatientById(int id)
+		{
+
+			return _unitOfWork.PatientRepository.GetById(id);
+        }
+
 
         public void AddPatient(Patient patient)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Reflection.Emit;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClinicManagementSystem.Models.Data
@@ -50,7 +51,11 @@ namespace ClinicManagementSystem.Models.Data
                 .HasForeignKey(a => a.DoctorAvailabilityId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
-        }
+			// Enum to string for patiennts
+			builder.Entity<Patient>()
+	            .Property(p => p.Gender)
+	            .HasConversion<string>()
+	            .HasMaxLength(10);
+		}
     }
 }

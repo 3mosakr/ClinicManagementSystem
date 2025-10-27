@@ -1,4 +1,5 @@
-﻿using ClinicManagementSystem.Models;
+﻿using AutoMapper;
+using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +10,17 @@ namespace ClinicManagementSystem.Controllers
     public class PatientsController : Controller
     {
         private readonly IPatientService _service;
+		private readonly IMapper _mapper;
 
-        public PatientsController(IPatientService service)
+		public PatientsController(IPatientService service, IMapper mapper)
         {
             _service = service;
-        }
+			_mapper = mapper;
+		}
 
-        public IActionResult Index(string search)
+		public IActionResult Index(string search)
         {
-            var patients = _service.GetAllPatients();
-
-            if (!string.IsNullOrEmpty(search))
-                patients = patients.Where(p => p.FullName.Contains(search));
-
+            var patients = _service.GetAllPatients(search);
             ViewBag.Search = search;
             return View(patients);
         }
@@ -33,24 +32,19 @@ namespace ClinicManagementSystem.Controllers
             return View(patient);
         }
 
-        public IActionResult Create() => View();
-
+        public IActionResult Create()
+        {
+            return View(nameof(Create),new PatientViewModel());
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(PatientViewModel vm)
         {
             if (!ModelState.IsValid) return View(vm);
 
-            var patient = new Patient
-            {
-                FullName = vm.FullName,
-                PhoneNumber = vm.PhoneNumber,
-                Address = vm.Address,
-                Gender = vm.Gender,
-                DateOfBirth = vm.DateOfBirth
-            };
+            var patient = _mapper.Map<Patient>(vm);
+			_service.AddPatient(patient);
 
-            _service.AddPatient(patient);
             TempData["Message"] = "Patient created successfully!";
             return RedirectToAction(nameof(Index));
         }
@@ -60,17 +54,8 @@ namespace ClinicManagementSystem.Controllers
             var patient = _service.GetPatientById(id);
             if (patient == null) return NotFound();
 
-            var vm = new PatientViewModel
-            {
-                Id = patient.Id,
-                FullName = patient.FullName,
-                PhoneNumber = patient.PhoneNumber,
-                Address = patient.Address,
-                Gender = patient.Gender,
-                DateOfBirth = patient.DateOfBirth
-            };
-
-            return View(vm);
+            var vm = _mapper.Map<PatientViewModel>(patient);
+			return View(vm);
         }
 
         [HttpPost]
@@ -79,17 +64,9 @@ namespace ClinicManagementSystem.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            var patient = new Patient
-            {
-                Id = vm.Id,
-                FullName = vm.FullName,
-                PhoneNumber = vm.PhoneNumber,
-                Address = vm.Address,
-                Gender = vm.Gender,
-                DateOfBirth = vm.DateOfBirth
-            };
+			var patient = _mapper.Map<Patient>(vm);
+			_service.UpdatePatient(patient);
 
-            _service.UpdatePatient(patient);
             TempData["Message"] = "Patient updated successfully!";
             return RedirectToAction(nameof(Index));
         }

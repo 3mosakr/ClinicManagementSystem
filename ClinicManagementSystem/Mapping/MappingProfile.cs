@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using ClinicManagementSystem.Enums;
 using ClinicManagementSystem.Models;
+using ClinicManagementSystem.ViewModel;
 using ClinicManagementSystem.ViewModel.Doctor;
 using ClinicManagementSystem.ViewModel.Receptionist;
 using ClinicManagementSystem.ViewModel.Visit;
@@ -14,6 +16,8 @@ namespace ClinicManagementSystem.Mapping
             CreateMap<ApplicationUser, DoctorViewModel>().ReverseMap();
 
             CreateMap<ApplicationUser, ReceptionistViewModel>().ReverseMap();
+
+			CreateMap<Patient,PatientViewModel>().ReverseMap();
 
 			// Add Mapping Visits
 

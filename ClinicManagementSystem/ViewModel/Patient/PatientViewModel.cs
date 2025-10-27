@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
+using ClinicManagementSystem.Enums;
 
 namespace ClinicManagementSystem.ViewModel
 {
@@ -13,16 +14,16 @@ namespace ClinicManagementSystem.ViewModel
         public string FullName { get; set; }
 
         [Phone(ErrorMessage = "Invalid phone number")]
-        [StringLength(15)]
-        public string? PhoneNumber { get; set; }
+		[StringLength(15, MinimumLength = 11, ErrorMessage = "Phone number must be 11 digits at least.")]
+		public string? PhoneNumber { get; set; }
 
         [StringLength(100)]
         public string? Address { get; set; }
 
-        [StringLength(7)]
-        public string? Gender { get; set; }
+        [Required]
+        public Gender Gender { get; set; } = Gender.Unspecified;
 
-        [DataType(DataType.Date)]
+		[DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
     }
 }
