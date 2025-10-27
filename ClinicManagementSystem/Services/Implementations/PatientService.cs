@@ -1,6 +1,7 @@
 ﻿using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Repository.Interfaces;
 using ClinicManagementSystem.Services.Interfaces;
+using NuGet.Protocol.Core.Types;
 
 namespace ClinicManagementSystem.Services.Implementations
 {
@@ -13,14 +14,33 @@ namespace ClinicManagementSystem.Services.Implementations
             _unitOfWork = unitOfWork;
         }
 
-        public List<Patient> GetAllPatients()
+        public IEnumerable<Patient> GetAllPatients(string search = null)
         {
-            return _unitOfWork.PatientRepository.GetAll();
+            var patients = _unitOfWork.PatientRepository.GetAll();
+            if (!string.IsNullOrEmpty(search))
+                patients = (List<Patient>)patients.Where(p => p.FullName.Contains(search));
+            return patients;
         }
 
-        public Patient GetPatientById(int id)
+        public Patient GetPatientById(int id) => _unitOfWork.PatientRepository.GetById(id);
+
+        public void AddPatient(Patient patient)
         {
-            return _unitOfWork.PatientRepository.GetById(id);
+            _unitOfWork.PatientRepository.Add(patient);
+            _unitOfWork.Save();
+        }
+
+        public void UpdatePatient(Patient patient)
+        {
+            _unitOfWork.PatientRepository.Update(patient);
+            _unitOfWork.Save();
+        }
+
+        public void DeletePatient(int id)
+        {
+            var patient = _unitOfWork.PatientRepository.GetById(id);
+            _unitOfWork.PatientRepository.Delete(patient);
+            _unitOfWork.Save();
         }
     }
 }

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ClinicManagementSystem.Models.Patient>
+@{
+    ViewData["Title"] = "Patients";
+}
+
+<h2>Patients List</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<form method="get">
+    <input type="text" name="search" value="@ViewBag.Search" placeholder="Search by name..." />
+    <button type="submit">Search</button>
+    <a asp-action="Create" class="btn btn-primary">Add New Patient</a>
+</form>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Phone</th>
+            <th>Gender</th>
+            <th>Date of Birth</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FullName</td>
+                <td>@item.PhoneNumber</td>
+                <td>@item.Gender</td>
+                <td>@item.DateOfBirth?.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

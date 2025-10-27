@@ -33,11 +33,6 @@ namespace ClinicManagementSystem.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpGet("patient")]
-        public IActionResult getPatient()
-        {
-            var p = _patientService.GetPatientById(1);
-            return Ok(p);
-        }
+        
     }
 }

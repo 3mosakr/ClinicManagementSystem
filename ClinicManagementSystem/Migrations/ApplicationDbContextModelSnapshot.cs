@@ -34,7 +34,7 @@ namespace ClinicManagementSystem.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("ApplicationUserPatient");
+                    b.ToTable("ApplicationUserPatient", (string)null);
                 });
 
             modelBuilder.Entity("ClinicManagementSystem.Models.ApplicationUser", b =>
@@ -150,7 +150,7 @@ namespace ClinicManagementSystem.Migrations
 
                     b.HasIndex("ReceptionistId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("ClinicManagementSystem.Models.DoctorAvailability", b =>
@@ -178,7 +178,7 @@ namespace ClinicManagementSystem.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("DoctorAvailabilities");
+                    b.ToTable("DoctorAvailabilities", (string)null);
                 });
 
             modelBuilder.Entity("ClinicManagementSystem.Models.Patient", b =>
@@ -210,7 +210,7 @@ namespace ClinicManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("ClinicManagementSystem.Models.Visit", b =>
@@ -244,7 +244,7 @@ namespace ClinicManagementSystem.Migrations
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("Visits");
+                    b.ToTable("Visits", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
