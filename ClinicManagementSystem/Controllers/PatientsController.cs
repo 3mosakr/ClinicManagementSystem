@@ -17,7 +17,11 @@ namespace ClinicManagementSystem.Controllers
 
         public IActionResult Index(string search)
         {
-            var patients = _service.GetAllPatients(search);
+            var patients = _service.GetAllPatients();
+
+            if (!string.IsNullOrEmpty(search))
+                patients = patients.Where(p => p.FullName.Contains(search));
+
             ViewBag.Search = search;
             return View(patients);
         }

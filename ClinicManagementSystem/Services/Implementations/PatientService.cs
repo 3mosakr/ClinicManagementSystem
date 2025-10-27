@@ -17,8 +17,6 @@ namespace ClinicManagementSystem.Services.Implementations
         public IEnumerable<Patient> GetAllPatients(string search = null)
         {
             var patients = _unitOfWork.PatientRepository.GetAll();
-            if (!string.IsNullOrEmpty(search))
-                patients = (List<Patient>)patients.Where(p => p.FullName.Contains(search));
             return patients;
         }
 
