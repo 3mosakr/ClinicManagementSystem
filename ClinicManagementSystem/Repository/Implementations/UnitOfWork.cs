@@ -9,7 +9,7 @@ namespace ClinicManagementSystem.Repository.Implementations
         private IPatientRepository? _patientRepository;
         private IVisitRepository? _visitRepository;
         private IDoctorAvailabilityRepository? _doctorAvailabilityRepository;
-
+        private IAppointmentRepositry _appointmentRepositry;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -48,6 +48,17 @@ namespace ClinicManagementSystem.Repository.Implementations
 				}
                 return _visitRepository;
 			}
+        }
+
+        IAppointmentRepositry IUnitOfWork.AppointmentRepositry {
+            get
+            {
+                if (_appointmentRepositry == null)
+                {
+                    _appointmentRepositry = new AppointmentRepositry(_context);
+                }
+                return _appointmentRepositry;
+            }
         }
 
         public void Save()

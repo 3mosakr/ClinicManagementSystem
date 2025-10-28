@@ -35,8 +35,8 @@ builder.Services.AddScoped<IReceptionistService, ReceptionistService>();
 builder.Services.AddScoped<IVisitService, VisitService>();
 builder.Services.AddScoped<IDoctorAvailabilityService,DoctorAvailabilityService>();
 
-
-
+builder.Services.AddScoped<IAppointmentRepositry, AppointmentRepositry>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 
 var app = builder.Build();

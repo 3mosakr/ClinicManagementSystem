@@ -20,12 +20,11 @@ namespace ClinicManagementSystem.Repository.Implementations
                            .ToList();
         }
 
-        public override DoctorAvailability GetById(object id)
+        public List<DoctorAvailability> GetByDoctorId(string id)
         {
-            var intId = Convert.ToInt32(id);
-            return _context.DoctorAvailabilities
-                           .Include(a => a.Doctor)
-                           .FirstOrDefault(a => a.Id == intId);
+            var availabilities = _context.DoctorAvailabilities.Include(a => a.Doctor).Where(a => a.DoctorId == id).ToList();
+
+            return availabilities;
         }
     }
 }

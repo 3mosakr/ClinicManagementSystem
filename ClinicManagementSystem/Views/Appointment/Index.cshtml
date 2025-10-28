@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@model TotalCountOfDataViewModel
+
+<div class="container shadow-sm p-5">
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="card my-4 d-flex align-items-center flex-row gap-4">
+                <div class="icon-card icon-card-doctor">
+                    <i class="fa-solid fa-user-doctor"></i>
+                </div>
+                <div class="card-details">
+                    <h5 class="card-title my-1">@Model.TotalDoctors</h5>
+                    <p class="card-text">Doctors</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card my-4 d-flex align-items-center flex-row gap-4">
+                <div class="icon-card icon-card-patient">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="card-details">
+                    <h5 class="card-title my-1">@Model.TotalPatients</h5>
+                    <p class="card-text">Patients</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card my-4 d-flex align-items-center flex-row gap-4">
+                <div class="icon-card icon-card-appointment">
+                    <i class="fa-solid fa-calendar-week"></i>
+                </div>
+                <div class="card-details">
+                    <h5 class="card-title my-1">@Model.TotalCurrentAppointments</h5>
+                    <p class="card-text">Today's Appointment</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card my-4 d-flex align-items-center flex-row gap-4">
+                <div class="icon-card icon-card-cancel">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <div class="card-details">
+                    <h5 class="card-title my-1">@Model.TotalCancelAppointments</h5>
+                    <p class="card-text">Cancle Appointment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <a class="card card-link card-link-doctors" asp-controller="Appointment" asp-action="ShowAllDoctors">
+                Doctors
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a class="card card-link card-link-patients" asp-controller="Appointment" asp-action="ShowAllPatients">
+                Patients
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a class="card card-link card-link-appointments" asp-controller="Appointment" asp-action="ShowAllAppointments">
+                Appointments
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    a {
+        text-decoration: none;
+    }
+    
+    .card {
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        border: none;
+    }
+
+    .card-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 120px;
+        text-align: center;
+        font-size: 20px;
+        transition:   0.5s;
+        cursor: pointer;
+        margin-top: 40px;
+    }
+    .card-link:hover {
+    transform: translateY(-5px);
+    }
+    .card-link-doctors {
+        background: linear-gradient(35deg,#0722edbd,#165ecb,#009dff);
+        color: white;
+    }
+    .card-link-patients {
+        background: linear-gradient(35deg,#01a7d1,#5bc1e6,#4adde2);
+        background-color: #00CAFF;
+        color: white;
+    }
+    .card-link-appointments {
+        background: linear-gradient(35deg,#4FB7B3,#43919B,#0aaec0);
+
+        background-color: #00FFDE;
+        color: white;
+    }
+    .icon-card {
+        font-size: 21px;
+        padding: 10px 13px;
+        border-radius: 50%;
+    }
+
+    .icon-card-doctor {
+        color: #28a745;
+        background-color: #28a74531;
+    }
+
+    .icon-card-patient {
+        color: #17a2b8;
+        background-color: #17a2b831;
+    }
+
+    .icon-card-appointment {
+        color: #ffc107;
+        background-color: #ffc10731;
+    }
+
+    .icon-card-cancel {
+        color: #dc3545;
+        background-color: #dc354531;
+    }
+
+    .card-details .card-title {
+        margin: 0;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .card-details .card-text {
+        margin: 0;
+        color: #6c757d;
+    }
+</style>
+

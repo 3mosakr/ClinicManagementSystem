@@ -1,0 +1,162 @@
+﻿@{
+    ViewData["Title"] = "CreateAppointment";
+}
+@model AppointmentViewModel
+
+<div class="main-content">
+    <div class="container pb-5 px-lg-5">
+        <h2 class="page-title my-5">Add Appointment</h2>
+
+        <form class="card border rounded shadow-sm p-4" asp-action="CreateAppointment" asp-controller="Appointment" method="post">
+            <div class="card-body">
+               <div class="text-danger" asp-validation-summary="All"></div>
+
+                <!-- ✅ Patient Search -->
+                <div class="mb-4 position-relative">
+                    <label for="patientSearch" class="form-label fw-bold">Search Patient</label>
+                    <input type="text" id="PatientName" class="form-control py-3" placeholder="Type patient name..." autocomplete="off" asp-for="PatientName">
+                    <input type="hidden" asp-for="PatientId" id="PatientId">
+                    <span asp-validation-for="PatientId" class="text-danger"></span>
+                    <span asp-validation-for="PatientName" class="text-danger"></span>
+                    <div id="searchResults" class="list-group position-absolute w-100 mt-1 shadow-sm" style="z-index:1000;"></div>
+                </div>
+
+                <div class="row mb-4">
+                    <!-- ✅ Doctor Select -->
+                    <div class="col-md-6">
+                        <label for="DoctorId" class="form-label my-2">Doctor's Name</label>
+                        @if (Model.Doctors.Count == 1)
+                        {
+                            <input type="hidden" asp-for="DoctorId" value="@Model.Doctors[0].Id" id="DoctorId" />
+                            <input type="text" class="form-control py-3" value="@Model.Doctors[0].FullName" readonly />
+                        }
+                        else
+                        {
+                            <select class="form-select py-3" asp-for="DoctorId" id="DoctorId">
+                                <option value="">-- Select Doctor --</option>
+                                @foreach (var doctor in Model.Doctors)
+                                {
+                                    <option value="@doctor.Id">@doctor.FullName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="DoctorId" class="text-danger"></span>
+                        }
+                    </div>
+
+                    <!-- ✅ Date -->
+                    <div class="col-md-6">
+                        <label for="AppointmentDateOnly" class="form-label my-2">Appointment Date</label>
+                        <input type="date" asp-for="AppointmentDateOnly" id="AppointmentDateOnly" class="form-control py-3">
+                        <span asp-validation-for="AppointmentDateOnly" class="text-danger"></span>
+                        <small class="text-danger" id="dateError"></small>
+                        <small class="text-muted" id="availableDaysHint"></small>
+                    </div>
+                </div>
+
+                <!-- ✅ Time -->
+                <div class="row mb-4">
+                    <div class="col">
+                        <label for="AppointmentTimeOnly" class="form-label my-2">Time</label>
+                        <input type="time" asp-for="AppointmentTimeOnly" id="AppointmentTimeOnly" class="form-control py-3 placeholder-text">
+                        <span asp-validation-for="AppointmentTimeOnly" class="text-danger"></span>
+                        <small class="text-danger" id="timeError"></small>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2">Add Appointment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .main-content {
+        max-width: 900px;
+        margin: 0 auto;
+        min-height: 100vh;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+</style>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $.validator.setDefaults({
+            ignore: []
+        });
+
+        $(function () {
+            console.log("✅ Validation script loaded");
+
+            if ($("#PatientId").val() === "0") {
+                $("#PatientId").val("");
+            }
+
+            let doctorAvailability = [];
+            let selectedDayAvailability = null;
+
+            function parseTimeToMinutes(timeStr) {
+                if (!timeStr) return null;
+                const [hours, minutes] = timeStr.split(':').map(Number);
+                return hours * 60 + minutes;
+            }
+
+            // ✅ Patient Search
+            $("#PatientName").on("input", function () {
+                var term = $(this).val();
+                if (term.length > 1) {
+                    $.get('@Url.Action("SearchPatients", "Appointment")', { term: term }, function (data) {
+                        $("#searchResults").empty();
+                        $.each(data, function (i, item) {
+                            $("#searchResults").append(
+                                `<button type="button" class="list-group-item list-group-item-action py-2" data-id="${item.id}">${item.name}</button>`
+                            );
+                        });
+                    });
+                } else {
+                    $("#searchResults").empty();
+                }
+            });
+
+            // ✅ Select Patient
+            $(document).on("click", "#searchResults button", function () {
+                var id = $(this).data("id");
+                var name = $(this).text();
+                $("#PatientId").val(id);
+                $("#PatientName").val(name);
+                $("#searchResults").empty();
+                $("#PatientId").valid();
+            });
+
+            // ✅ Doctor Change
+            $("#DoctorId").change(function () {
+                var doctorId = $(this).val();
+                $("#availableDaysHint").text('');
+                doctorAvailability = [];
+                if (doctorId) {
+                    $.get('@Url.Action("GetDoctorAvailability", "Appointment")', { doctorId: doctorId }, function (data) {
+                        doctorAvailability = data || [];
+                        if (doctorAvailability.length === 0) {
+                            $("#availableDaysHint").text('No availability set for this doctor.');
+                        } else {
+                            let days = doctorAvailability.map(a => a.day).join(", ");
+                            $("#availableDaysHint").text("Available on: " + days);
+                        }
+                    });
+                }
+            });
+
+        }); // ✅ properly closed document ready
+    </script>
+}
