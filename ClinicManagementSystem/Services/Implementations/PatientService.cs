@@ -47,5 +47,11 @@ namespace ClinicManagementSystem.Services.Implementations
             _unitOfWork.PatientRepository.Delete(patient);
             _unitOfWork.Save();
         }
+
+        public List<Patient> GetPatientByName(string name)
+        {
+            return _unitOfWork.PatientRepository.SearchPatientsByName(name);
+        }
+
     }
 }

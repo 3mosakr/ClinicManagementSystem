@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "ViewAppointmentsOfDoctor";
+}
+@model List<DoctorAvailabilityViewModel>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">
+            <i class="fa-solid fa-user-doctor me-2 text-secondary"></i>
+            @Model.FirstOrDefault()?.DoctorName's Availability
+        </h2>
+
+        <a asp-action="ShowAllDoctors" class="btn btn-outline-primary">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Doctors
+        </a>
+	</div>
+
+    <div class="row g-4">
+        
+        @foreach (var item in Model)
+        {
+            var duration = item.EndTime - item.StartTime;
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-lg border-0 rounded-2 hover-card">
+                    <div class="card-body p-4">
+                        <h5 class="card-title text-success fw-bold mb-3">
+                            <i class="fa-solid fa-calendar-days me-2"></i>@item.DayOfWeek
+                        </h5>
+
+                        <dl class="row p-2 rounded-3">
+                            <dt class="col-5 fw-semibold text-secondary my-2">Availability ID:</dt>
+                            <dd class="col-7 my-2">@item.Id</dd>
+
+                            <dt class="col-5 fw-semibold text-secondary my-2">Start Time:</dt>
+                            <dd class="col-7 text-primary my-2">@item.StartTime</dd>
+
+                            <dt class="col-5 fw-semibold text-secondary my-2">End Time:</dt>
+                            <dd class="col-7 text-danger my-2">@item.EndTime</dd>
+
+                            <dt class="col-5 fw-semibold text-secondary my-2">Duration:</dt>
+                            <dd class="col-7 my-2">@duration.TotalHours.ToString("0.#") hours</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Optional custom styles -->
+<style>
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        dt {
+            font-size: 1.2rem;
+		    font-weight: 500;
+	    }
+        dd{
+		    font-weight: 500;
+        }
+</style>

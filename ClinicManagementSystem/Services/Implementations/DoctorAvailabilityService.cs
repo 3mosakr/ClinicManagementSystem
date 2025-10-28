@@ -92,6 +92,25 @@ namespace ClinicManagementSystem.Services.Implementations
             _unitOfWork.Save();
         }
 
+        public List<DoctorAvailabilityViewModel> GetByDoctorId(string doctorId)
+        {
+            var availabilities = _unitOfWork.DoctorAvailabilityRepository.GetByDoctorId(doctorId);
+
+            if (availabilities == null || !availabilities.Any())
+                return new List<DoctorAvailabilityViewModel>();
+
+            return availabilities.Select(a => new DoctorAvailabilityViewModel
+            {
+                Id = a.Id,
+                DoctorId = a.DoctorId,
+                DoctorName = a.Doctor?.FullName ?? "Unknown",
+                DayOfWeek = a.DayOfWeek,
+                StartTime = a.StartTime,
+                EndTime = a.EndTime
+            }).ToList();
+        }
+
+
         // helper to parse "HH:mm" or "hh:mm tt" etc.
         //private TimeSpan? ParseTimeSpanOrNull(string input)
         //{

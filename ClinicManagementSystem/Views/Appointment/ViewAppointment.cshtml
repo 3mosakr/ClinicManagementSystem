@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "ViewAppointment";
+}
+@model AppointmentViewModel
+<div class="container my-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4 py-3">
+            <h2 class="mb-0"><i class="bi bi-calendar-check"></i> Appointment Details</h2>
+        </div>
+        <div class="card-body p-4">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Appointment ID</h6>
+                    <p class="fw-semibold">@Model.AppointmentId</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Doctor</h6>
+                    <p class="fw-semibold">@Model.DoctorName</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Patient</h6>
+                    <p class="fw-semibold">@Model.PatientName</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Date</h6>
+                    <p class="fw-semibold">@Model.AppointmentDateOnly?.ToString("yyyy-MM-dd")</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Time</h6>
+                    <p class="fw-semibold">@Model.AppointmentTimeOnly?.ToString(@"hh\:mm")</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Status</h6>
+                    <span class="badge
+                        @(Model.Status == "Scheduled" ? "bg-warning" :
+                                                    Model.Status == "Completed" ? "bg-success" :
+                                                    Model.Status == "Canceled" ? "bg-danger" : "bg-secondary") px-4 py-3">
+                        @Model.Status
+                    </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <h6 class="text-muted">Notes</h6>
+                    <div class="p-3 border rounded-3 bg-light">
+                        <p class="mb-0">@(!string.IsNullOrEmpty(Model.Notes) ? Model.Notes : "No notes provided")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("ShowAllAppointments", "Appointment")" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+                <a href="@Url.Action("EditAppointment", "Appointment", new { id = Model.AppointmentId })" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .main-content {
+        max-width: 900px;
+        margin: 0 auto;
+        min-height: 100vh;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .card {
+        border-radius: 1rem;
+    }
+</style>
+
