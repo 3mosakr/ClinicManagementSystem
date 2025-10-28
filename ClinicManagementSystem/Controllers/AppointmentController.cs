@@ -203,7 +203,7 @@ namespace ClinicManagementSystem.Controllers
 
             var appointment = new Appointment
             {
-                ReceptionistId = "910334b1-3b13-4787-9fec-fc818d8611d0",
+                ReceptionistId = "e16e76bf-f757-4c93-871a-3db69a87c2aa",
                 DoctorId = appointmentView.DoctorId,
                 PatientId = appointmentView.PatientId,
                 Date = appointmentView.AppointmentDateOnly.Value.Date + appointmentView.AppointmentTimeOnly.Value,
@@ -259,7 +259,7 @@ namespace ClinicManagementSystem.Controllers
                 var appointment = new Appointment
                 {
                     Id = appointmentView.AppointmentId.Value,
-                    ReceptionistId = "910334b1-3b13-4787-9fec-fc818d8611d0", 
+                    ReceptionistId = "e16e76bf-f757-4c93-871a-3db69a87c2aa", 
                     DoctorId = appointmentView.DoctorId,
                     PatientId = appointmentView.PatientId,
                     Date = appointmentView.AppointmentDateOnly.Value.Date + appointmentView.AppointmentTimeOnly.Value,
