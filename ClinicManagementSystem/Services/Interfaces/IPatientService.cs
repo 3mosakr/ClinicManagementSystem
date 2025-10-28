@@ -9,5 +9,7 @@ namespace ClinicManagementSystem.Services.Interfaces
         void AddPatient(Patient patient);
         void UpdatePatient(Patient patient);
         void DeletePatient(int id);
+
+        List<Patient> GetPatientByName(string name);
     }
 }

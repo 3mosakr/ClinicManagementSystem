@@ -106,18 +106,18 @@ namespace ClinicManagementSystem.Controllers
 
 
 
-        //[HttpGet]
-        //public JsonResult SearchPatients(string term)
-        //{
-        //    var patients = _patientService.GetPatientByName(term);
-        //    var result = patients.Select(p => new
-        //    {
-        //        id = p.Id,
-        //        name = p.FullName
-        //    }).ToList();
+        [HttpGet]
+        public JsonResult SearchPatients(string term)
+        {
+            var patients = _patientService.GetPatientByName(term);
+            var result = patients.Select(p => new
+            {
+                id = p.Id,
+                name = p.FullName
+            }).ToList();
 
-        //    return Json(result);
-        //}
+            return Json(result);
+        }
 
 
 

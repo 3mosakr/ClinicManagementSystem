@@ -52,5 +52,6 @@ namespace ClinicManagementSystem.Services.Implementations
         {
             return _unitOfWork.PatientRepository.SearchPatientsByName(name);
         }
+
     }
 }
