@@ -22,5 +22,10 @@ namespace ClinicManagementSystem.Services.Implementations
         {
             return _unitOfWork.PatientRepository.GetById(id);
         }
+
+        public List<Patient> GetPatientByName(string name)
+        {
+            return _unitOfWork.PatientRepository.SearchPatientsByName(name);
+        }
     }
 }

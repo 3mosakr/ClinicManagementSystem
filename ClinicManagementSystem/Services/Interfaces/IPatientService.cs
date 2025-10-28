@@ -8,5 +8,7 @@ namespace ClinicManagementSystem.Services.Interfaces
         List<Patient> GetAllPatients();
         // get patient by id
         Patient GetPatientById(int id);
+
+        List<Patient> GetPatientByName(string name);
     }
 }

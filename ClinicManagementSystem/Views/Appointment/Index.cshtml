@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Index";
 }
+@model TotalCountOfDataViewModel
 
 <div class="container shadow-sm p-5">
     <div class="row">
@@ -11,7 +12,7 @@
                     <i class="fa-solid fa-user-doctor"></i>
                 </div>
                 <div class="card-details">
-                    <h5 class="card-title my-1">10</h5>
+                    <h5 class="card-title my-1">@Model.TotalDoctors</h5>
                     <p class="card-text">Doctors</p>
                 </div>
             </div>
@@ -23,7 +24,7 @@
                     <i class="fa-solid fa-user"></i>
                 </div>
                 <div class="card-details">
-                    <h5 class="card-title my-1">25</h5>
+                    <h5 class="card-title my-1">@Model.TotalPatients</h5>
                     <p class="card-text">Patients</p>
                 </div>
             </div>
@@ -35,7 +36,7 @@
                     <i class="fa-solid fa-calendar-week"></i>
                 </div>
                 <div class="card-details">
-                    <h5 class="card-title my-1">16</h5>
+                    <h5 class="card-title my-1">@Model.TotalCurrentAppointments</h5>
                     <p class="card-text">Today's Appointment</p>
                 </div>
             </div>
@@ -47,7 +48,7 @@
                     <i class="fa-solid fa-ban"></i>
                 </div>
                 <div class="card-details">
-                    <h5 class="card-title my-1">3</h5>
+                    <h5 class="card-title my-1">@Model.TotalCancelAppointments</h5>
                     <p class="card-text">Cancle Appointment</p>
                 </div>
             </div>

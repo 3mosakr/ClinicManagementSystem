@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClinicManagementSystem.Repository.Implementations
 {
-    public class AppointmentRepositry : GenericRepository<Appointment>,IAppointmentRepositry
+    public class AppointmentRepositry : GenericRepository<Appointment>, IAppointmentRepositry
     {
         private readonly ApplicationDbContext context;
 
@@ -22,6 +22,25 @@ namespace ClinicManagementSystem.Repository.Implementations
                 .Include(a => a.DoctorAvailability)
                 .Where(a => a.DoctorId == doctorId)
                 .ToList();
+        }
+
+
+        public List<Appointment> GetAllWithIncludes()
+        {
+            return context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor)
+                .ToList();
+
+        }
+
+        public Appointment GetAppointmentWithIncludes(int id)
+        {
+            return context.Appointments
+               .Include(a => a.Patient)
+               .Include(a => a.Doctor)
+               .Include(a => a.Receptionist)
+               .FirstOrDefault(a=>a.Id == id);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace ClinicManagementSystem.Models
     public class Appointment
     {
         public int Id { get; set; }
+        [Required]
         public DateTime Date { get; set; }
         [MaxLength(10)]
         public string Status { get; set; } = "Scheduled"; // e.g. Scheduled, Completed, Canceled
@@ -12,7 +13,9 @@ namespace ClinicManagementSystem.Models
         public string? Notes { get; set; }
 
         // Foreign Keys
+        [Required]
         public int PatientId { get; set; }
+        [Required]
         public string DoctorId { get; set; }
         public string ReceptionistId { get; set; }
         public int? DoctorAvailabilityId { get; set; }

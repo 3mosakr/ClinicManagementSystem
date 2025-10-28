@@ -16,5 +16,10 @@ namespace ClinicManagementSystem.Repository.Implementations
         {
             return _context.Patients.FirstOrDefault(p => p.FullName == name);
         }
+
+        public List<Patient> SearchPatientsByName(string name)
+        {
+            return _context.Patients.Where(p => p.FullName.Contains(name)).OrderBy(p => p.FullName).Take(10).ToList();
+        }
     }
 }
