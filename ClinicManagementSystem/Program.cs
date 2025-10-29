@@ -3,6 +3,7 @@ using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Models.Data;
 using ClinicManagementSystem.Repository.Implementations;
 using ClinicManagementSystem.Repository.Interfaces;
+using ClinicManagementSystem.Services;
 using ClinicManagementSystem.Services.Implementations;
 using ClinicManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -17,10 +18,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add Identity (includes RoleManager automatically)
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+// Add Identity (includes RoleManager automatically) and Configure Identity options
+builder.Services.AddIdentityRegisterationService();
+
 
 // Register automapper
 builder.Services.AddAutoMapper(opt => opt.AddProfile(typeof(MappingProfile)));
