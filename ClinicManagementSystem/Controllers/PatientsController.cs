@@ -18,11 +18,28 @@ namespace ClinicManagementSystem.Controllers
 			_mapper = mapper;
 		}
 
-		public IActionResult Index(string search)
+		public IActionResult Index(string search, int page = 1)
         {
-            var patients = _service.GetAllPatients(search);
-            ViewBag.Search = search;
-            return View(patients);
+            var patients = _service.GetAllPatients(search).ToList();
+			int pageSize = 10;
+
+			if (!string.IsNullOrEmpty(search))
+			{
+				patients = patients.Where(p =>
+					p.FullName!.ToLower().Contains(search.ToLower()) ||
+					p.PhoneNumber!.Contains(search)
+				).ToList();
+			}
+
+			var pagedPatients = patients
+	        .Skip((page - 1) * pageSize)
+	        .Take(pageSize)
+	        .ToList();
+
+			ViewBag.Search = search;
+			ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)patients.Count / pageSize);
+			return View(pagedPatients);
         }
 
         public IActionResult Details(int id)

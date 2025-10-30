@@ -1,14 +1,74 @@
 ﻿@model ClinicManagementSystem.Models.Patient
 
-<h2>Patient Details</h2>
+@{
+    ViewData["Title"] = "Patient Details";
+}
 
-<table class="table table-bordered">
-    <tr><th>Full Name</th><td>@Model.FullName</td></tr>
-    <tr><th>Phone</th><td>@Model.PhoneNumber</td></tr>
-    <tr><th>Address</th><td>@Model.Address</td></tr>
-    <tr><th>Gender</th><td>@Model.Gender</td></tr>
-    <tr><th>Date of Birth</th><td>@Model.DateOfBirth?.ToShortDateString()</td></tr>
-</table>
+<div class="container my-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4 py-3">
+            <h2 class="mb-0"><i class="bi bi-person-vcard"></i> Patient Details</h2>
+        </div>
 
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-<a asp-action="Index" class="btn btn-secondary">Back</a>
+        <div class="card-body p-4">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Full Name</h6>
+                    <p class="fw-semibold">@Model.FullName</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Phone</h6>
+                    <p class="fw-semibold">@Model.PhoneNumber</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Address</h6>
+                    <p class="fw-semibold">@Model.Address</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Gender</h6>
+                    <p class="fw-semibold">
+                        @Model.Gender
+                    </p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Date of Birth</h6>
+                    <p class="fw-semibold">@Model.DateOfBirth?.ToString("yyyy-MM-dd")</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Patient ID</h6>
+                    <p class="fw-semibold">@Model.Id</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a asp-action="Index" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 1rem;
+    }
+
+    .bg-pink {
+        background-color: #ff7eb9;
+    }
+</style>

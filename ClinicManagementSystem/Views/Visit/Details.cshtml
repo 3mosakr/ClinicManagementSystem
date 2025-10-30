@@ -1,157 +1,94 @@
 ﻿@model ClinicManagementSystem.ViewModel.Visit.VisitDetailsViewModel
-
 @{
     ViewData["Title"] = "Visit Details";
 }
 
-<div class="main-content">
-    <div class="container pb-5 px-lg-5">
-        <div class="d-flex justify-content-between align-items-center my-5">
-            <h2 class="page-title mb-0">Visit Details</h2>
-            <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2">
-                <i class="bi bi-arrow-left me-2"></i> Back to Visits
-            </a>
+<div class="container my-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4 py-3">
+            <h2 class="mb-0"><i class="bi bi-journal-medical"></i> Visit Details</h2>
         </div>
 
-        <div class="card border rounded shadow-sm p-4">
-            <div class="card-body">
-                <div class="row g-4">
-                    <!-- Left Section -->
-                    <div class="col-md-8">
-
-                        <div class="detail-group mb-4">
-                            <label class="text-muted mb-1">Diagnosis</label>
-                            <div>@Model.Diagnosis</div>
-                        </div>
-
-                        <div class="detail-group mb-4">
-                            <label class="text-muted mb-1">Prescription</label>
-                            <div>@Model.Prescription</div>
-                        </div>
-
-                        <div class="detail-group mb-4">
-                            <label class="text-muted mb-1">Visit Date</label>
-                            <div>@(Model.VisitDateDate ?? "-")</div>
-                            <div class="text-muted small">@(Model.VisitDateTime ?? "-")</div>
-                        </div>
-
-                        <div class="detail-group mb-4">
-                            <label class="text-muted mb-1">Doctor Notes</label>
-                            <div>@Model.DoctorNotes</div>
-                        </div>
-                    </div>
-
-                    <!-- Right Section -->
-                    <div class="col-md-4">
-                        <div class="p-4 border rounded bg-light h-100 d-flex flex-column justify-content-between">
-                            <div>
-                                <h6 class="text-uppercase text-muted small mb-3">Quick Info</h6>
-                                <p class="mb-2"><span class="text-muted">Doctor:</span> <span class="fw-semibold">@Model.DoctorName</span></p>
-                                <p class="mb-2"><span class="text-muted">Patient:</span> <span class="fw-semibold">@Model.PatientName</span></p>
-                            </div>
-
-                            <div class="mt-4">
-                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning w-100 mb-2 py-2">
-                                    <i class="bi bi-pencil-square me-2"></i> Edit Visit
-                                </a>
-                                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" onsubmit="return confirmDelete(event);">
-                                    <button type="submit" class="btn btn-outline-danger w-100 py-2">
-                                        <i class="bi bi-trash me-2"></i> Delete Visit
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+        <div class="card-body p-4">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Patient</h6>
+                    <p class="fw-semibold">@Model.PatientName</p>
                 </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Doctor</h6>
+                    <p class="fw-semibold">@Model.DoctorName</p>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Visit Date</h6>
+                    <p class="fw-semibold">@Model.VisitDateDate</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Time</h6>
+                    <p class="fw-semibold">@Model.VisitDateTime</p>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="mb-4">
+                <h6 class="text-muted mb-1"><i class="bi bi-clipboard2-pulse"></i> Diagnosis</h6>
+                <div class="p-3 border rounded-3 bg-light">@Model.Diagnosis</div>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="text-muted mb-1"><i class="bi bi-capsule-pill"></i> Prescription</h6>
+                <div class="p-3 border rounded-3 bg-light">@Model.Prescription</div>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="text-muted mb-1"><i class="bi bi-journal-text"></i> Doctor Notes</h6>
+                <div class="p-3 border rounded-3 bg-light">@Model.DoctorNotes</div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Index", "Visit")" class="btn btn-outline-secondary me-2 px-4 py-2">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-4 py-2">
+                    <i class="bi bi-pencil-square"></i> Edit Visit
+                </a>
+
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline" onsubmit="return confirmDeleteVisit(event);">
+                    <button type="submit" class="btn btn-outline-danger px-4 py-2 ms-2">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
 
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+    .card {
+        border-radius: 1rem;
+    }
 
-        .main-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            min-height: 100vh;
-        }
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+    }
 
-        .page-title {
-            font-size: 2rem;
-            font-weight: 700;
-        }
+    .bg-light {
+        background-color: #f1f3f5 !important;
+    }
 
-        .card {
-            border-radius: 16px;
-        }
+    h6 {
+        font-weight: 600;
+        color: #6c757d;
+    }
+</style>
 
-        .detail-group label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #6c757d;
-        }
-
-        .detail-group div {
-            font-size: 1rem;
-            color: #333;
-        }
-
-        .btn-outline-secondary {
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .btn-warning {
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .btn-outline-danger {
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .bg-light {
-            background-color: #f1f3f5 !important;
-        }
-    </style>
-
-    <script>
-        Notiflix.Notify.init({
-            position: 'right-bottom',
-            distance: '15px',
-            timeout: 2500,
-            cssAnimationStyle: 'fade',
-        });
-
-        function confirmDelete(e) {
-            e.preventDefault();
-            Notiflix.Confirm.show(
-                'Confirm Deletion',
-                'Are you sure you want to delete this visit?',
-                'Delete',
-                'Cancel',
-                function okCb() {
-                    e.target.submit();
-                },
-                function cancelCb() {
-                    Notiflix.Notify.info('Deletion canceled');
-                },
-                {
-                    width: '320px',
-                    borderRadius: '8px',
-                    titleColor: '#e74c3c',
-                    okButtonBackground: '#e74c3c',
-                    cssAnimationStyle: 'fade',
-                }
-            );
-            return false;
-        }
-    </script>
-}
