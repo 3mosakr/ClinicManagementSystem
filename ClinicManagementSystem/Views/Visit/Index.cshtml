@@ -77,7 +77,7 @@
 
                                 <form asp-action="Delete" asp-route-id="@item.Id"
                                       method="post" style="display:inline;"
-                                      onsubmit="return confirm('Are you sure?');">
+                                      onsubmit="return confirmDeleteVisit(event);">
 
                                     <button type="submit" class="btn btn-outline-danger btn-sm">
                                         <i class="bi bi-trash"></i> Delete
@@ -131,8 +131,4 @@
     }
 </div>
 
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
-</style>
+
