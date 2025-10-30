@@ -122,6 +122,9 @@ namespace ClinicManagementSystem.Services.Implementations
                 }
             }
 
+            //Update lockout enabled
+            user.LockoutEnabled = model.LockoutEnabled;
+
             // Persist other property changes
             var updateResult = await _userManager.UpdateAsync(user);
             return updateResult.Succeeded;

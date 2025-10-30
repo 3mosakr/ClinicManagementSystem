@@ -4,49 +4,65 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="main-content">
+    <div class="container pb-5 px-lg-5">
+        <h2>Create Doctor</h2>
 
-<h4>CreateDoctorViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+        <form asp-action="Create" class="card border rounded shadow-sm p-4">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <!-- UserName -->
+            <div class="mb-4">
+                <label asp-for="UserName" class="form-label my-2">User Name</label>
+                <input asp-for="UserName" class="form-control py-3" placeholder="Enter username" />
+                <span asp-validation-for="UserName" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+
+            <!-- FullName -->
+            <div class="mb-4">
+                <label asp-for="FullName" class="form-label my-2">Full Name</label>
+                <input asp-for="FullName" class="form-control py-3" placeholder="Enter FullName" />
+                <span asp-validation-for="FullName" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+
+            <!-- Email -->
+            <div class="mb-4">
+                <label asp-for="Email" class="form-label my-2"></label>
+                <input asp-for="Email" class="form-control py-3" placeholder="Enter email" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+            <!-- PhoneNumber -->
+            <div class="mb-4">
+                <label asp-for="PhoneNumber" class="form-label my-2">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control py-3" placeholder="Enter phone number" />
+                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+
+            <!-- Password -->
+            <div class="mb-4">
+                <label asp-for="Password" class="form-label my-2"></label>
+                <input asp-for="Password" class="form-control py-3" placeholder="Enter password" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <!-- ConfirmPassword -->
+            <div class="mb-4">
+                <label asp-for="ConfirmPassword" class="form-label my-2"></label>
+                <input asp-for="ConfirmPassword" class="form-control py-3" placeholder="Confirm Password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
             </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between gap-3">
+                <a asp-action="Index" class="btn btn-outline-secondary w-50 py-2">Cancel</a>
+                <button type="submit" class="btn btn-primary w-50 py-2" >Create Doctor</button>
+            </div>
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

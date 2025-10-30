@@ -20,12 +20,37 @@ namespace ClinicManagementSystem.Controllers
             _userManager = userManager;
         }
 
-        // GET: /DoctorAvailability/
+        //GET: /DoctorAvailability/
+
         public IActionResult Index()
         {
             var list = _service.GetAll();
             return View(list);
         }
+        // GET: /DoctorAvailability/
+        //public async Task<IActionResult> Index()
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+
+        //    if (user == null)
+        //        return Challenge(); 
+
+        //    if (await _userManager.IsInRoleAsync(user, "Admin"))
+        //    {
+        //        var allAvailabilities = _service.GetAll();
+        //        return View(allAvailabilities);
+        //    }
+
+        //    if (await _userManager.IsInRoleAsync(user, "Doctor"))
+        //    {
+        //        var doctorAvailabilities = _service.GetByDoctorId(user.Id);
+        //        return View(doctorAvailabilities);
+        //    }
+
+        //    // If other roles exist
+        //    return Forbid();
+        //}
+
 
         // GET: /DoctorAvailability/Details/id
         public IActionResult Details(int id)

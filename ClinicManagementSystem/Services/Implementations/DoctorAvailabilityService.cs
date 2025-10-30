@@ -25,7 +25,7 @@ namespace ClinicManagementSystem.Services.Implementations
                 Id = a.Id,
                 DoctorId = a.DoctorId,
                 DoctorName = a.Doctor?.FullName,
-                DayOfWeek = a.DayOfWeek, // FIX: assign as DayOfWeek, not string
+                DayOfWeek = a.DayOfWeek, 
                 StartTime = a.StartTime,
                 EndTime = a.EndTime
             }).ToList();
@@ -111,6 +111,7 @@ namespace ClinicManagementSystem.Services.Implementations
         }
 
 
+
         // helper to parse "HH:mm" or "hh:mm tt" etc.
         //private TimeSpan? ParseTimeSpanOrNull(string input)
         //{
@@ -129,6 +130,6 @@ namespace ClinicManagementSystem.Services.Implementations
         //        return ts;
 
         //    return null;
-        //}      
+        //}
     }
 }
