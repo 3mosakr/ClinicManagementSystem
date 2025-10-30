@@ -10,7 +10,7 @@ namespace ClinicManagementSystem.Services.Interfaces
 		List<VisitViewModel> GetAllVisits();
 		VisitDetailsViewModel GetVisitDetails(int id);
 		VisitViewModel GetVisitForEdit(int id);
-		void CreateVisit(VisitViewModel vm);
+		void CreateVisit(VisitCreateViewModel vm);
 		void UpdateVisit(VisitViewModel vm);
 		void DeleteVisit(int id);
 

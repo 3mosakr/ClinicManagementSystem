@@ -43,7 +43,7 @@ namespace ClinicManagementSystem.Services.Implementations
 		}
 
 		// Create visit
-		public void CreateVisit(VisitViewModel vm)
+		public void CreateVisit(VisitCreateViewModel vm)
 		{
 			if (vm.VisitDate == null)
 				vm.VisitDate = DateTime.Now;

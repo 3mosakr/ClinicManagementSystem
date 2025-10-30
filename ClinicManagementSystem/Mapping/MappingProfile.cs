@@ -19,6 +19,7 @@ namespace ClinicManagementSystem.Mapping
 
 			CreateMap<Patient,PatientViewModel>().ReverseMap();
 
+
 			// Add Mapping Visits
 
 			CreateMap<Visit, VisitViewModel>()

@@ -65,7 +65,7 @@ namespace ClinicManagementSystem.Controllers
 		// =======================
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Create(VisitViewModel vm)
+		public IActionResult Create(VisitCreateViewModel vm)
 		{
 			if (ModelState.IsValid)
 			{
