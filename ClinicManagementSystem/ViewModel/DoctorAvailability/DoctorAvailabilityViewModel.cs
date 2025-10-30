@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ClinicManagementSystem.Validations;
 
 namespace ClinicManagementSystem.ViewModel.DoctorAvailability
 {
@@ -15,9 +16,12 @@ namespace ClinicManagementSystem.ViewModel.DoctorAvailability
         public DayOfWeek DayOfWeek { get; set; }
 
         [Display(Name = "Start Time")]
+        [Required(ErrorMessage = "Start time is required")]
         public TimeSpan StartTime { get; set; }
 
         [Display(Name = "End Time")]
+        [Required(ErrorMessage = "End time is required")]
+        [EndTimeAfterStartTime]
         public TimeSpan EndTime { get; set; }
     }
 }
