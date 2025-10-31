@@ -24,6 +24,6 @@ namespace ClinicManagementSystem.ViewModel
         public Gender Gender { get; set; } = Gender.Unspecified;
 
 		[DataType(DataType.Date)]
-        public DateTime? DateOfBirth { get; set; }
+		public DateTime? DateOfBirth { get; set; }
     }
 }

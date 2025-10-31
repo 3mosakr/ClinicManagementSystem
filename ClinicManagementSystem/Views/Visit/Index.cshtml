@@ -37,6 +37,14 @@
         </div>
     </div>
 
+	<!-- Alert -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle me-2"></i> @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
 
     <!-- Table -->
     <div class="table-responsive shadow-sm rounded-4">
@@ -77,7 +85,7 @@
 
                                 <form asp-action="Delete" asp-route-id="@item.Id"
                                       method="post" style="display:inline;"
-                                      onsubmit="return confirmDeleteVisit(event);">
+                                      onsubmit="return confirmDelete(event);">
 
                                     <button type="submit" class="btn btn-outline-danger btn-sm">
                                         <i class="bi bi-trash"></i> Delete
@@ -132,3 +140,16 @@
 </div>
 
 
+@if (TempData["ShowDeleteToast"] != null)
+{
+    <script>
+        window.onload = function() {
+            const toast = new bootstrap.Toast(document.getElementById("deleteToast"));
+            toast.show();
+        }
+
+    </script>
+}
+
+@await Html.PartialAsync("_ConfirmDelete")
+@await Html.PartialAsync("_ToastNotification")

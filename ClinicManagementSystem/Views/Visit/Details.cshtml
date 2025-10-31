@@ -3,7 +3,7 @@
     ViewData["Title"] = "Visit Details";
 }
 
-<div class="container my-5">
+<div class=" my-5">
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-header bg-primary text-white text-center rounded-top-4 py-3">
             <h2 class="mb-0"><i class="bi bi-journal-medical"></i> Visit Details</h2>
@@ -54,15 +54,15 @@
                     <i class="bi bi-arrow-left"></i> Back
                 </a>
 
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-4 py-2">
-                    <i class="bi bi-pencil-square"></i> Edit Visit
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary px-4 py-2">
+                    <i class="bi bi-pencil"></i> Edit Visit
                 </a>
 
-                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline" onsubmit="return confirmDeleteVisit(event);">
+                @* <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline" onsubmit="return confirmDelete(event);">
                     <button type="submit" class="btn btn-outline-danger px-4 py-2 ms-2">
                         <i class="bi bi-trash"></i> Delete
                     </button>
-                </form>
+                </form> *@
             </div>
         </div>
     </div>

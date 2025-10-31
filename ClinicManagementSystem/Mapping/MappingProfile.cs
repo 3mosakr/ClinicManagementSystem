@@ -32,6 +32,14 @@ namespace ClinicManagementSystem.Mapping
 			.ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Appointment.Patient.FullName))
 			.ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Appointment.Doctor.FullName));
 
+			CreateMap<VisitCreateViewModel, Visit>()
+			.ForMember(dest => dest.Appointment, opt => opt.Ignore())
+			.ForMember(dest=>dest.VisitDate, opt=>opt.MapFrom(src=>
+			(!string.IsNullOrEmpty(src.VisitDateDate) && !string.IsNullOrEmpty(src.VisitDateTime)) 
+				? DateTime.ParseExact($"{src.VisitDateDate} {src.VisitDateTime}", "yyyy-MM-dd HH:mm", null) 
+				: (DateTime?)DateTime.Now
+			));
+
 			CreateMap<VisitViewModel, Visit>()
 			.ForMember(dest => dest.Appointment, opt => opt.Ignore())
 			.ForMember(dest=>dest.VisitDate, opt=>opt.MapFrom(src=>

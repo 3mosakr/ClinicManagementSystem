@@ -5,34 +5,30 @@
 }
 
 <div class="main-content">
-    <div class="container pb-5 px-lg-5">
+    <div class=" pb-5 px-lg-5">
         <h2 class="page-title my-5 text-primary">Add Patient</h2>
 
-        <form asp-action="Create" method="post" class="card border rounded shadow-sm p-4" novalidate>
+        <form asp-action="Create" method="post" class="card border rounded shadow-sm p-4">
             <div class="card-body">
 
-                <!-- Full Name -->
                 <div class="mb-4">
                     <label asp-for="FullName" class="form-label my-2"></label>
                     <input asp-for="FullName" class="form-control py-3" placeholder="Enter full name" />
                     <span asp-validation-for="FullName" class="text-danger small"></span>
                 </div>
 
-                <!-- Phone -->
                 <div class="mb-4">
                     <label asp-for="PhoneNumber" class="form-label my-2"></label>
                     <input asp-for="PhoneNumber" class="form-control py-3" placeholder="Enter phone number" />
                     <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                 </div>
 
-                <!-- Address -->
                 <div class="mb-4">
                     <label asp-for="Address" class="form-label my-2"></label>
                     <input asp-for="Address" class="form-control py-3" placeholder="Enter address" />
                     <span asp-validation-for="Address" class="text-danger small"></span>
                 </div>
 
-                <!-- Gender -->
                 <div class="mb-4">
                     <label class="form-label my-2">Gender</label>
                     <div class="d-flex gap-4 mt-2">
@@ -49,14 +45,12 @@
                     <span asp-validation-for="Gender" class="text-danger small"></span>
                 </div>
 
-                <!-- Date of Birth -->
                 <div class="mb-4">
                     <label asp-for="DateOfBirth" class="form-label my-2">Date of Birth</label>
                     <input asp-for="DateOfBirth" type="date" class="form-control py-3" />
                     <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
                 </div>
 
-                <!-- Buttons -->
                 <div class="d-flex justify-content-between gap-3">
                     <a asp-action="Index" class="btn btn-outline-secondary w-50 py-2">Cancel</a>
                     <button type="submit" class="btn btn-primary w-50 py-2">Save Patient</button>

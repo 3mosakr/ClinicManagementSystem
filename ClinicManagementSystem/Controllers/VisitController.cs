@@ -70,9 +70,9 @@ namespace ClinicManagementSystem.Controllers
 			if (ModelState.IsValid)
 			{
 				_visitService.CreateVisit(vm);
+				TempData["Message"] = "Visit created successfully!";
 				return RedirectToAction(nameof(Index));
 			}
-
 			ViewBag.Appointments = _visitService.GetAppointmentsSelectList();
 			return View(vm);
 		}
@@ -101,6 +101,7 @@ namespace ClinicManagementSystem.Controllers
 			if (ModelState.IsValid)
 			{
 				_visitService.UpdateVisit(vm);
+				TempData["Message"] = "Visit updated successfully!";
 				return RedirectToAction(nameof(Index));
 			}
 
@@ -116,6 +117,7 @@ namespace ClinicManagementSystem.Controllers
 		public IActionResult DeleteConfirmed(int id)
 		{
 			_visitService.DeleteVisit(id);
+			TempData["ShowDeleteToast"] = true;
 			return RedirectToAction(nameof(Index));
 		}
 	}

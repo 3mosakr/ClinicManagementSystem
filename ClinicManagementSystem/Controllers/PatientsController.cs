@@ -19,8 +19,8 @@ namespace ClinicManagementSystem.Controllers
 		}
 
 		public IActionResult Index(string search, int page = 1)
-        {
-            var patients = _service.GetAllPatients(search).ToList();
+		{
+			var patients = _service.GetAllPatients(search).ToList();
 			int pageSize = 10;
 
 			if (!string.IsNullOrEmpty(search))
@@ -31,18 +31,21 @@ namespace ClinicManagementSystem.Controllers
 				).ToList();
 			}
 
-			var pagedPatients = patients
-	        .Skip((page - 1) * pageSize)
-	        .Take(pageSize)
-	        .ToList();
+			var patientVM = _mapper.Map<List<PatientViewModel>>(patients);
+
+			var pagedPatients = patientVM
+				.Skip((page - 1) * pageSize)
+				.Take(pageSize)
+				.ToList();
 
 			ViewBag.Search = search;
 			ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)patients.Count / pageSize);
-			return View(pagedPatients);
-        }
+			ViewBag.TotalPages = (int)Math.Ceiling((double)patientVM.Count / pageSize);
 
-        public IActionResult Details(int id)
+			return View(pagedPatients);
+		}
+
+		public IActionResult Details(int id)
         {
             var patient = _service.GetPatientById(id);
             if (patient == null) return NotFound();
@@ -100,8 +103,8 @@ namespace ClinicManagementSystem.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             _service.DeletePatient(id);
-            TempData["Message"] = "Patient deleted successfully!";
-            return RedirectToAction(nameof(Index));
+			TempData["ShowDeleteToast"] = true;
+			return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -6,6 +6,7 @@ namespace ClinicManagementSystem.ViewModel.Visit
     {
 		[Required]
 		public int AppointmentId { get; set; }
+		[Required]
 		[MaxLength(200)]
 		public string? Diagnosis { get; set; }
 		[MaxLength(1000)]
