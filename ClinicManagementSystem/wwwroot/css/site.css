@@ -1,5 +1,5 @@
 ﻿
-html {
+/*html {
     font-size: 14px;
     position: relative;
     min-height: 100%;
@@ -43,6 +43,10 @@ input[type="time"] {
 
 
 
+body {
+    background-color: #f8f9fa;
+}
+*/
 a {
     text-decoration: none;
 }
@@ -67,8 +71,8 @@ a {
 }
 
 .card-link:hover {
-        transform: translateY(-5px);
-    }
+    transform: translateY(-5px);
+}
 
 .card-link-doctors {
     background: linear-gradient(35deg,#0722edbd,#165ecb,#009dff);
@@ -125,3 +129,73 @@ a {
 }
 
 
+/* ==== Patients Page Styles ==== */
+/*.table thead th {
+    font-weight: 600;
+    color: #495057;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f5ff;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-outline-info:hover {
+    background-color: #0dcaf0;
+    color: white;
+}
+
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: white;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.alert {
+    border-left: 4px solid #198754 ;
+}*/
+
+
+
+/* Smooth Sidebar Animation */
+/*.sidebar-mini .main-sidebar {
+    transition: width .3s ease;
+}
+
+.sidebar-collapse .main-sidebar {
+    width: 70px !important;
+}*/
+
+/* Glass UI */
+/*.glass-nav, .glass-content {
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.7);
+}*/
+
+/* Modern Sidebar */
+/*.modern-sidebar {
+    background: #0a2540 !important;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}*/
+
+/* Sidebar links */
+/*.nav-sidebar .nav-link {
+    border-radius: 8px;
+    margin: 4px 8px;
+    transition: 0.2s;
+}
+
+    .nav-sidebar .nav-link.active,
+    .nav-sidebar .nav-link:hover {
+        background: #1d4ed8;
+    }*/
+
+/* Icons */
+/*.nav-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}*/
