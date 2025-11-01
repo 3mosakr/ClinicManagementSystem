@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "CreateAppointment";
 }
 @model AppointmentViewModel
@@ -106,12 +106,6 @@
             let doctorAvailability = [];
             let selectedDayAvailability = null;
 
-            function parseTimeToMinutes(timeStr) {
-                if (!timeStr) return null;
-                const [hours, minutes] = timeStr.split(':').map(Number);
-                return hours * 60 + minutes;
-            }
-
             // ✅ Patient Search
             $("#PatientName").on("input", function () {
                 var term = $(this).val();
@@ -158,5 +152,366 @@
             });
 
         }); // ✅ properly closed document ready
+    </script>
+} *@
+
+
+
+
+
+@{
+    ViewData["Title"] = "";
+}
+@model AppointmentViewModel
+
+<div class="main-content">
+    <div class="container pb-5 px-lg-5">
+        <h2 class="page-title my-5 text-primary"><i class="bi bi-plus-circle-fill"></i> Add Appointment</h2>
+
+        <form class="card border rounded shadow-sm p-4" asp-action="CreateAppointment" asp-controller="Appointment" method="post">
+            <div class="card-body">
+                @* <div class="text-danger" asp-validation-summary="All"></div> *@
+
+                <!-- ✅ Patient Search -->
+                <div class="mb-4 position-relative">
+                    <label for="patientSearch" class="form-label fw-bold">Search Patient</label>
+                    <input type="text" id="PatientName" class="form-control py-3" placeholder="Type patient name..." autocomplete="off" asp-for="PatientName">
+                    <input type="hidden" asp-for="PatientId" id="PatientId">
+                    <span asp-validation-for="PatientId" class="text-danger"></span>
+                    <span asp-validation-for="PatientName" class="text-danger"></span>
+                    <div id="searchResults" class="list-group position-absolute w-100 mt-1 shadow-sm" style="z-index:1000; display:none;"></div>
+                </div>
+
+                <div class="row mb-4">
+                    <!-- ✅ Doctor Select -->
+                    <div class="col-md-6">
+                        <label for="DoctorId" class="form-label my-2">Doctor's Name</label>
+                        @if (Model.Doctors.Count == 1)
+                        {
+                            <input type="hidden" asp-for="DoctorId" value="@Model.Doctors[0].Id" id="DoctorId" />
+                            <input type="text" class="form-control py-3" value="@Model.Doctors[0].FullName" readonly />
+                        }
+                        else
+                        {
+                            <select class="form-select py-3" asp-for="DoctorId" id="DoctorId">
+                                <option value="">-- Select Doctor --</option>
+                                @foreach (var doctor in Model.Doctors)
+                                {
+                                    <option value="@doctor.Id">@doctor.FullName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="DoctorId" class="text-danger"></span>
+                        }
+                    </div>
+
+                    <!-- ✅ Date -->
+                    <div class="col-md-6">
+                        <label for="AppointmentDateOnly" class="form-label my-2">Appointment Date</label>
+                        <input type="date" asp-for="AppointmentDateOnly" id="AppointmentDateOnly" class="form-control py-3">
+                        <span asp-validation-for="AppointmentDateOnly" class="text-danger"></span>
+                        <small class="text-danger" id="dateError"></small>
+                    </div>
+                </div>
+
+                <!-- ✅ Time -->
+                <div class="row mb-4">
+                    <div class="col">
+                        <label for="AppointmentTimeOnly" class="form-label my-2">Appointment Time</label>
+                        <input type="time" asp-for="AppointmentTimeOnly" id="AppointmentTimeOnly" class="form-control py-3">
+                        <span asp-validation-for="AppointmentTimeOnly" class="text-danger"></span>
+                        <small class="text-danger" id="timeError"></small>
+                    </div>
+                </div>
+
+                <!-- ✅ Doctor Availability Section -->
+                <div class="row mb-4" id="doctorAvailabilitySection" style="display: none;">
+                    <div class="col-12">
+                        <div class="card bg-light border-0">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3">
+                                    <i class="fas fa-calendar-alt me-2"></i>Doctor's Working Schedule
+                                </h6>
+
+                                <!-- Available Days -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Available Days & Times</label>
+                                    <div id="availableDays" class="d-flex flex-wrap gap-2">
+                                        <!-- Days will be populated by JavaScript -->
+                                    </div>
+                                    <small class="text-muted mt-2 d-block">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Please select a date that matches one of the available days above
+                                    </small>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2">Add Appointment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .day-card {
+        padding: 15px;
+        border: 2px solid #dee2e6;
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        min-width: 150px;
+        text-align: center;
+    }
+
+        .day-card:hover {
+            border-color: #0d6efd;
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .day-card.selected {
+            background: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+        }
+
+    .day-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .day-time {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .day-card.selected .day-time {
+        opacity: 1;
+    }
+</style>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script>
+        $.validator.setDefaults({
+            ignore: []
+        });
+
+        $(function () {
+            console.log("✅ Validation script loaded");
+
+            if ($("#PatientId").val() === "0") {
+                $("#PatientId").val("");
+            }
+
+            let doctorAvailability = [];
+            let selectedDay = null;
+
+            // ✅ Patient Search
+            $("#PatientName").on("input", function () {
+                var term = $(this).val();
+                if (term.length > 1) {
+                    $.get('@Url.Action("SearchPatients", "Appointment")', { term: term }, function (data) {
+                        if (data && data.length > 0) {
+                            $("#searchResults").empty().show();
+                            $.each(data, function (i, item) {
+                                $("#searchResults").append(
+                                    `<button type="button" class="list-group-item list-group-item-action py-2" data-id="${item.id}">${item.name}</button>`
+                                );
+                            });
+                        } else {
+                            $("#searchResults").hide();
+                        }
+                    });
+                } else {
+                    $("#searchResults").hide();
+                }
+            });
+
+            // ✅ Select Patient
+            $(document).on("click", "#searchResults button", function () {
+                var id = $(this).data("id");
+                var name = $(this).text();
+                $("#PatientId").val(id);
+                $("#PatientName").val(name);
+                $("#searchResults").hide();
+                $("#PatientId").valid();
+            });
+
+            // Hide search results when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#searchResults').length && !$(e.target).is('#PatientName')) {
+                    $('#searchResults').hide();
+                }
+            });
+
+            // ✅ Doctor Change
+            $("#DoctorId").change(function () {
+                var doctorId = $(this).val();
+                doctorAvailability = [];
+                selectedDay = null;
+
+                // Reset UI
+                $("#availableDays").empty();
+                $("#selectedDayInfo").hide();
+                $("#AppointmentDateOnly").val("");
+                $("#AppointmentTimeOnly").val("");
+                $("#dateError").text("");
+                $("#timeError").text("");
+
+                if (doctorId) {
+                    // Show loading state
+                    $("#doctorAvailabilitySection").show();
+                    $("#availableDays").html('<div class="text-muted"><i class="fas fa-spinner fa-spin me-2"></i>Loading availability...</div>');
+
+                    $.get('@Url.Action("GetDoctorAvailability", "Appointment")', { doctorId: doctorId }, function (data) {
+                        doctorAvailability = data || [];
+
+                        if (doctorAvailability.length === 0) {
+                            $("#availableDays").html('<div class="text-warning"><i class="fas fa-exclamation-triangle me-2"></i>No availability set for this doctor.</div>');
+                        } else {
+                            displayAvailableDays(doctorAvailability);
+                        }
+                    }).fail(function () {
+                        $("#availableDays").html('<div class="text-danger"><i class="fas fa-times-circle me-2"></i>Error loading availability.</div>');
+                    });
+                } else {
+                    $("#doctorAvailabilitySection").hide();
+                }
+            });
+
+            // ✅ Date Change - Validate against selected day
+            $("#AppointmentDateOnly").change(function () {
+                validateSelectedDate();
+            });
+
+            // ✅ Time Change - Validate against working hours
+            $("#AppointmentTimeOnly").change(function () {
+                validateSelectedTime();
+            });
+
+            function displayAvailableDays(availability) {
+                $("#availableDays").empty();
+
+                const dayNames = {
+                    'Sunday': 'Sunday',
+                    'Monday': 'Monday',
+                    'Tuesday': 'Tuesday',
+                    'Wednesday': 'Wednesday',
+                    'Thursday': 'Thursday',
+                    'Friday': 'Friday',
+                    'Saturday': 'Saturday'
+                };
+
+                availability.forEach(dayAvailability => {
+                    const dayCard = $(`
+                        <div class="day-card">
+                            <div class="day-name">${dayNames[dayAvailability.day]}</div>
+                            <div class="day-time">${formatTime(dayAvailability.start)} - ${formatTime(dayAvailability.end)}</div>
+                        </div>
+                    `).data('availability', dayAvailability)
+                      .click(function() {
+                          // Remove previous selection
+                          $(".day-card").removeClass("selected");
+                          $(this).addClass("selected");
+
+                          selectedDay = dayAvailability.day;
+                          updateSelectedDayInfo(dayAvailability);
+                          validateSelectedDate();
+                      });
+
+                    $("#availableDays").append(dayCard);
+                });
+            }
+
+            function updateSelectedDayInfo(dayAvailability) {
+                const dayNames = {
+                    'Sunday': 'Sunday',
+                    'Monday': 'Monday',
+                    'Tuesday': 'Tuesday',
+                    'Wednesday': 'Wednesday',
+                    'Thursday': 'Thursday',
+                    'Friday': 'Friday',
+                    'Saturday': 'Saturday'
+                };
+
+                $("#selectedDayText").html(`
+                    <strong>${dayNames[dayAvailability.day]}</strong>:
+                    ${formatTime(dayAvailability.start)} - ${formatTime(dayAvailability.end)}
+                    <br><small class="fst-italic">Please select a ${dayNames[dayAvailability.day]} for your appointment</small>
+                `);
+                $("#selectedDayInfo").show();
+            }
+
+            function validateSelectedDate() {
+                const selectedDate = $("#AppointmentDateOnly").val();
+                if (selectedDate && selectedDay) {
+                    const selectedDateObj = new Date(selectedDate);
+                    const selectedDateDay = selectedDateObj.toLocaleDateString('en-US', { weekday: 'long' });
+
+                    if (selectedDateDay !== selectedDay) {
+                        $("#dateError").text(`Warning: Selected date is ${selectedDateDay}, but doctor only works on ${selectedDay}.`);
+                    } else {
+                        $("#dateError").text("");
+                    }
+                }
+            }
+
+            function validateSelectedTime() {
+                const selectedTime = $("#AppointmentTimeOnly").val();
+                if (selectedTime && selectedDay) {
+                    // Find the availability for selected day
+                    const dayAvailability = doctorAvailability.find(avail => avail.day === selectedDay);
+                    if (dayAvailability) {
+                        const selectedTimeObj = new Date(`2000-01-01T${selectedTime}`);
+                        const startTimeObj = new Date(`2000-01-01T${dayAvailability.start}`);
+                        const endTimeObj = new Date(`2000-01-01T${dayAvailability.end}`);
+
+                        if (selectedTimeObj < startTimeObj || selectedTimeObj > endTimeObj) {
+                            $("#timeError").text(`Doctor works from ${formatTime(dayAvailability.start)} to ${formatTime(dayAvailability.end)} on ${selectedDay}`);
+                        } else {
+                            $("#timeError").text("");
+                        }
+                    }
+                }
+            }
+
+            function clearDaySelection() {
+                $(".day-card").removeClass("selected");
+                selectedDay = null;
+                $("#selectedDayInfo").hide();
+                $("#dateError").text("");
+                $("#timeError").text("");
+            }
+
+            function formatTime(timeString) {
+                const [hours, minutes] = timeString.split(':').map(Number);
+                const period = hours >= 12 ? 'PM' : 'AM';
+                const displayHours = hours % 12 || 12;
+                return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+            }
+
+            // Auto-select today's date
+            const today = new Date().toISOString().split('T')[0];
+            $("#AppointmentDateOnly").val(today);
+
+        });
     </script>
 }

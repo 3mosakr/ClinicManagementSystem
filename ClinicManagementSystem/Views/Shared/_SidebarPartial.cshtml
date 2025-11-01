@@ -9,7 +9,7 @@
                  class="brand-image opacity-75 shadow" /> *@
             <!--end::Brand Image-->
             <!--begin::Brand Text-->
-            <span class="brand-text fw-light">Clinic System</span>
+            <span class="brand-text fw-semibold">Clinic Management System</span>
             <!--end::Brand Text-->
         </a>
         <!--end::Brand Link-->
@@ -32,7 +32,9 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-
+                <li class="nav-header mt-2">
+                    <div class="text-uppercase small fw-semibold ms-2 mb-1">Management</div>
+                </li>
                 <li class="nav-item">
                     <a asp-controller="Doctors" asp-action="Index" class="nav-link">
                         <i class="nav-icon bi bi-person-badge"></i>
@@ -48,6 +50,15 @@
                 </li>
 
                 <li class="nav-item">
+                    <a asp-controller="Patients" asp-action="Index" class="nav-link">
+                        <i class="nav-icon bi bi-people"></i>
+                        <p>Patients</p>
+                    </a>
+                </li>
+                <li class="nav-header mt-2">
+                    <div class="text-uppercase small  fw-semibold ms-2 mb-1">Appointment</div>
+                </li>
+                <li class="nav-item">
                     <a asp-controller="Visit" asp-action="Index" class="nav-link">
                         <i class="nav-icon bi bi-journal-medical"></i>
                         <p>Visit</p>
@@ -58,13 +69,6 @@
                     <a asp-controller="DoctorAvailability" asp-action="Index" class="nav-link">
                         <i class="nav-icon bi bi-calendar-check"></i>
                         <p>Doctor Availability</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a asp-controller="Patients" asp-action="Index" class="nav-link">
-                        <i class="nav-icon bi bi-people"></i>
-                        <p>Patients</p>
                     </a>
                 </li>
 

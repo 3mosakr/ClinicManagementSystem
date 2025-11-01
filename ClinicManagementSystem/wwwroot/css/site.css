@@ -58,29 +58,29 @@ a {
     transition: 0.5s;
     cursor: pointer;
     margin-top: 40px;
+    color: white;
 }
 
-.card-link:hover {
-    transform: translateY(-5px);
-}
+    .card-link:hover {
+        transform: translateY(-5px);
+        
+    }
 
 .card-link-doctors {
-    background: linear-gradient(35deg,#0722edbd,#165ecb,#009dff);
-    color: white;
+    background: linear-gradient(181deg,#0722edbd,#165ecb,#009dff);
 }
 
 .card-link-patients {
-    background: linear-gradient(35deg,#01a7d1,#5bc1e6,#4adde2);
-    background-color: #00CAFF;
-    color: white;
+    background: linear-gradient(39deg,#01a7d1,#5bc1e6,#20b2b7);
 }
 
 .card-link-appointments {
-    background: linear-gradient(35deg,#4FB7B3,#43919B,#0aaec0);
-    background-color: #00FFDE;
-    color: white;
+    background: linear-gradient(3deg,#4FB7B3,#43919B,#0aaec0);
 }
 
+.card-link-receptionists {
+    background: linear-gradient(195deg,#50589C,#636CCB,#636CCB);
+}
 .icon-card {
     font-size: 21px;
     padding: 10px 13px;
@@ -123,4 +123,42 @@ input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     cursor: pointer;
+}
+
+.app-sidebar {
+    background-color: #102E50 !important;
+}
+.sidebar-brand {
+    background-color: #0e2845;
+}
+.nav-link p{
+    color: #fff;
+}
+.nav-header div {
+    color: #c9c9c9;
+}
+
+
+/*index home*/
+.additional{
+    margin-top:100px;
+}
+.today-appointment {
+    background-color: #696FC7;
+    color: white;
+}
+
+.table tbody tr td,
+.table thead tr th {
+    padding: 15px 12px !important;
+}
+.quik_icon {
+    color: #ffc107;
+}
+.doctor-available {
+    background-color: #17a2b8;
+    color:white;
+}
+.brand-text{
+    font-size:18px !important;
 }

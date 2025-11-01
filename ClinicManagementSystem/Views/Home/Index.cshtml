@@ -1,15 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home";
 }
 @model TotalCountOfDataViewModel
 
-<div class="container-fluid shadow-sm p-5">
+<div class="container-fluid  py-5 px-2">
     <div class="container-fluid py-4">
         <div class="row g-3">
 
             <!-- Doctors -->
             <div class="col-lg-3 col-md-6 col-12">
-                <div class="small-box bg-body shadow-sm border-0 p-3 d-flex align-items-center">
+                <div class="small-box bg-body shadow border-0 p-4 d-flex align-items-center">
                     <div class="icon-card icon-card-doctor me-3">
                         <i class="fa-solid fa-user-doctor"></i>
                     </div>
@@ -22,7 +22,7 @@
 
             <!-- Patients -->
             <div class="col-lg-3 col-md-6 col-12">
-                <div class="small-box bg-body shadow-sm border-0 p-3 d-flex align-items-center">
+                <div class="small-box bg-body shadow border-0 p-4 d-flex align-items-center">
                     <div class="icon-card icon-card-patient me-3">
                         <i class="fa-solid fa-user"></i>
                     </div>
@@ -35,7 +35,7 @@
 
             <!-- Today's Appointments -->
             <div class="col-lg-3 col-md-6 col-12">
-                <div class="small-box bg-body shadow-sm border-0 p-3 d-flex align-items-center">
+                <div class="small-box bg-body shadow border-0 p-4 d-flex align-items-center">
                     <div class="icon-card icon-card-appointment me-3">
                         <i class="fa-solid fa-calendar-week"></i>
                     </div>
@@ -48,7 +48,7 @@
 
             <!-- Canceled Appointments -->
             <div class="col-lg-3 col-md-6 col-12">
-                <div class="small-box bg-body shadow-sm border-0 p-3 d-flex align-items-center">
+                <div class="small-box bg-body shadow border-0 p-4 d-flex align-items-center">
                     <div class="icon-card icon-card-cancel me-3">
                         <i class="fa-solid fa-ban"></i>
                     </div>
@@ -61,20 +61,127 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <a class="card card-link card-link-doctors" asp-controller="Appointment" asp-action="ShowAllDoctors">
                 Doctors
             </a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <a class="card card-link card-link-receptionists" asp-controller="Receptionists" asp-action="Index">
+                Receptionists
+            </a>
+        </div>
+        <div class="col-md-3">
             <a class="card card-link card-link-patients" asp-controller="Patients" asp-action="Index">
                 Patients
             </a>
         </div>
-        <div class="col-md-4">
-            <a class="card card-link card-link-appointments" asp-controller="Appointment" asp-action="ShowAllAppointments">
+        <div class="col-md-3">
+            <a class="card card-link card-link-appointments" asp-controller="Appointment" asp-action="Index">
                 Appointments
             </a>
+        </div>
+
+    </div>
+    <div class="row additional">
+        <!-- Today's Schedule -->
+        <div class="col-lg-8 mb-4">
+            <div class="card section-card shadow">
+                <div class="card-header today-appointment">
+                    <i class="fa-solid fa-calendar-day me-2"></i>
+                    Today's Appointments
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    @* <th>Department</th> *@
+                                    <th>Status</th>
+                                    @* <th>Actions</th> *@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CurrentAppointments)
+                                {
+                                    <tr>
+                                        <td><strong>@item.AppointmentTimeOnly</strong></td>
+                                        <td>@item.PatientName</td>
+                                        <td>@item.DoctorName</td>
+                                        @* <td>Cardiology</td> *@
+                                        <td><span class="badge bg-warning appointment-badge">@item.Status</span></td>
+                                        @* <td>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="fa-solid fa-play"></i> Start
+                                            </button>
+                                        </td> *@
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions & Doctor Availability -->
+        <div class="col-lg-4">
+            <div class="row">
+                <!-- Quick Actions -->
+                <div class="col-12 mb-4">
+                    <div class="card section-card">
+                        <div class="card-header">
+                            <i class="fa-solid fa-bolt me-2 quik_icon"></i>
+                            Quick Actions
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-outline-primary quick-action-btn" asp-controller="Appointment" asp-action="CreateAppointment">
+                                    <i class="fa-solid fa-plus me-2"></i>New Appointment
+                                </a>
+                                <a class="btn btn-outline-success quick-action-btn" asp-controller="Patients" asp-action="Create">
+                                    <i class="fa-solid fa-user-plus me-2"></i>Add New Patient
+                                </a>
+                                <a class="btn btn-outline-info quick-action-btn" asp-controller="Doctors" asp-action="Create">
+                                    <i class="fa-solid fa-user-doctor me-2"></i>Add Doctor
+                                </a>
+                                <a class="btn btn-outline-warning quick-action-btn" asp-controller="DoctorAvailability" asp-action="Index">
+                                    <i class="fa-solid fa-clock me-2"></i>Set Availability
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor Availability -->
+                <div class="col-12">
+                    <div class="card section-card">
+                        <div class="card-header doctor-available">
+                            <i class="fa-solid fa-user-md me-2"></i>
+                            Doctor Availability
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                @foreach (var item in Model.doctorAvailabilities)
+                                {
+                                    <div class="list-group-item doctor-availability px-0">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">@item.DoctorName</h6>
+                                                <small class="text-muted">Cardiology • Room 201</small>
+                                            </div>
+                                            <span class="badge bg-success appointment-badge">Available</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
