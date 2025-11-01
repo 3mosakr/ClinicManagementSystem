@@ -203,7 +203,7 @@ namespace ClinicManagementSystem.Controllers
 
             var appointment = new Appointment
             {
-                ReceptionistId = "e16e76bf-f757-4c93-871a-3db69a87c2aa",
+                ReceptionistId = "5ff918b6-a160-4493-ae46-22f8c20d800a",
                 DoctorId = appointmentView.DoctorId,
                 PatientId = appointmentView.PatientId,
                 Date = appointmentView.AppointmentDateOnly.Value.Date + appointmentView.AppointmentTimeOnly.Value,
