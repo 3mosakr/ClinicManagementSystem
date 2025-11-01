@@ -89,7 +89,7 @@ namespace ClinicManagementSystem.Controllers
         }
 
 
-        // GET: /DoctorAvailability/Edit/5
+        // GET: /DoctorAvailability/Edit/{id}
         public IActionResult Edit(int id)
         {
             var vm = _service.GetById(id);
@@ -118,27 +118,22 @@ namespace ClinicManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: /DoctorAvailability/Delete/5
+        
+        // POST: /DoctorAvailability/Delete/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            var vm = _service.GetById(id);
-            if (vm == null)
-                return NotFound();
-
-            return View(vm);
-        }
-
-        //// POST: /DoctorAvailability/DeleteConfirmed/5
-        [HttpPost, ActionName("DeleteConfirmed")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-
             var record = _service.GetById(id);
             if (record == null)
                 return NotFound();
+
             _service.Delete(id);
+
+            TempData["ShowDeleteToast"] = true;
+
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

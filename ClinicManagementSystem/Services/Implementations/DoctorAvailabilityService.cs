@@ -109,27 +109,5 @@ namespace ClinicManagementSystem.Services.Implementations
                 EndTime = a.EndTime
             }).ToList();
         }
-
-
-
-        // helper to parse "HH:mm" or "hh:mm tt" etc.
-        //private TimeSpan? ParseTimeSpanOrNull(string input)
-        //{
-        //    if (string.IsNullOrWhiteSpace(input) || input == "N/A") return null;
-
-        //    // try parse hh:mm
-        //    if (TimeSpan.TryParseExact(input, @"hh\:mm", CultureInfo.InvariantCulture, out var ts))
-        //        return ts;
-
-        //    // try parse with AM/PM
-        //    if (DateTime.TryParse(input, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
-        //        return dt.TimeOfDay;
-
-        //    // fallback
-        //    if (TimeSpan.TryParse(input, out ts))
-        //        return ts;
-
-        //    return null;
-        //}
     }
 }
