@@ -79,7 +79,7 @@ namespace ClinicManagementSystem.Services.Implementations
 		// Get appointment select list (Create)
 		public List<SelectListItem> GetAppointmentsSelectList()
 		{
-			var appointments = _unitOfWork.VisitRepository.GetAppointmentsWithDetails();
+			var appointments = _unitOfWork.VisitRepository.GetAppointmentsWithDetails().Where(a => a.Status == "Scheduled").ToList();
 
 			return appointments.Select(a => new SelectListItem
 			{
@@ -91,7 +91,7 @@ namespace ClinicManagementSystem.Services.Implementations
 		// Get appointment select list (Edit)
 		public List<SelectListItem> GetAppointmentsSelectListForEdit(int currentAppointmentId)
 		{
-			var appointments = _unitOfWork.VisitRepository.GetAppointmentsForEdit(currentAppointmentId);
+			var appointments = _unitOfWork.VisitRepository.GetAppointmentsForEdit(currentAppointmentId).Where(a => a.Status == "Scheduled").ToList();
 
 			return appointments.Select(a => new SelectListItem
 			{

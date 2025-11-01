@@ -13,8 +13,8 @@ namespace ClinicManagementSystem.ViewModel
         [StringLength(150, MinimumLength = 3)]
         public string FullName { get; set; }
 
-        [Phone(ErrorMessage = "Invalid phone number")]
-		[StringLength(15, MinimumLength = 11, ErrorMessage = "Phone number must be 11 digits at least.")]
+		[DataType(DataType.PhoneNumber)]
+		[RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "Not a valid phone number")]
 		public string? PhoneNumber { get; set; }
 
         [StringLength(100)]
