@@ -24,7 +24,6 @@ else if (User.IsInRole("Admin"))
     <table class="table table-hover align-middle mb-0 ">
         <thead class="table-primary text-white">
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Id)</th>
                 <th>@Html.DisplayNameFor(model => model.DoctorName)</th>
                 <th>@Html.DisplayNameFor(model => model.DayOfWeek)</th>
                 <th>@Html.DisplayNameFor(model => model.StartTime)</th>
@@ -36,7 +35,6 @@ else if (User.IsInRole("Admin"))
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
                     <td>@Html.DisplayFor(modelItem => item.DoctorName)</td>
                     <td>@Html.DisplayFor(modelItem => item.DayOfWeek)</td>
                     <td>@Html.DisplayFor(modelItem => item.StartTime)</td>
