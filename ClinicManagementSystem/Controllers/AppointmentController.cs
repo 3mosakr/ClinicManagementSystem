@@ -25,23 +25,23 @@ namespace ClinicManagementSystem.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
-        {
-            var todaysDate = DateTime.Today;
-            var doctorsCount= (await _doctorService.GetAllAsync()).ToList().Count();
-            var patientsCount= _patientService.GetAllPatients().Count();
-            var curreentAppointmentsCount= _appointmentService.GetAllAppointments().Where(a=>a.AppointmentDateOnly == todaysDate).Count();
-            var cancelledAppointmentsCount= _appointmentService.GetAllAppointments().Where(a=>a.Status=="Canceled").Count();
+        //public async Task<IActionResult> Index()
+        //{
+        //    var todaysDate = DateTime.Today;
+        //    var doctorsCount= (await _doctorService.GetAllAsync()).ToList().Count();
+        //    var patientsCount= _patientService.GetAllPatients().Count();
+        //    var curreentAppointmentsCount= _appointmentService.GetAllAppointments().Where(a=>a.AppointmentDateOnly == todaysDate).Count();
+        //    var cancelledAppointmentsCount= _appointmentService.GetAllAppointments().Where(a=>a.Status=="Canceled").Count();
 
-            TotalCountOfDataViewModel totalCountOfData = new TotalCountOfDataViewModel
-            {
-                TotalDoctors = doctorsCount,
-                TotalPatients = patientsCount,
-                TotalCurrentAppointments = curreentAppointmentsCount,
-                TotalCancelAppointments = cancelledAppointmentsCount
-            };
-            return View("Index",totalCountOfData);
-        }
+        //    TotalCountOfDataViewModel totalCountOfData = new TotalCountOfDataViewModel
+        //    {
+        //        TotalDoctors = doctorsCount,
+        //        TotalPatients = patientsCount,
+        //        TotalCurrentAppointments = curreentAppointmentsCount,
+        //        TotalCancelAppointments = cancelledAppointmentsCount
+        //    };
+        //    return View("Index",totalCountOfData);
+        //}
 
         public async Task<IActionResult> ShowAllDoctors()
         {
@@ -71,10 +71,10 @@ namespace ClinicManagementSystem.Controllers
             return View("ShowAllPatients");
         }
 
-        public IActionResult ShowAllAppointments()
+        public IActionResult Index()
         {
             var appointments = _appointmentService.GetAllAppointments();
-            return View("ShowAllAppointments", appointments);
+            return View("Index", appointments);
         }
         public async Task<IActionResult> CreateAppointment(string? id)
         {
@@ -213,7 +213,8 @@ namespace ClinicManagementSystem.Controllers
             try
             {
                 _appointmentService.CreateAppointment(appointment);
-                return RedirectToAction("ShowAllAppointments");
+                var appointments = _appointmentService.GetAllAppointments();
+                return RedirectToAction("Index", appointments);
             }
             catch (Exception ex)
             {
@@ -259,7 +260,7 @@ namespace ClinicManagementSystem.Controllers
                 var appointment = new Appointment
                 {
                     Id = appointmentView.AppointmentId.Value,
-                    ReceptionistId = "e16e76bf-f757-4c93-871a-3db69a87c2aa", 
+                    ReceptionistId = "986eecc5-f7ff-4c7b-9787-f8b63fceb91f", 
                     DoctorId = appointmentView.DoctorId,
                     PatientId = appointmentView.PatientId,
                     Date = appointmentView.AppointmentDateOnly.Value.Date + appointmentView.AppointmentTimeOnly.Value,
@@ -270,7 +271,8 @@ namespace ClinicManagementSystem.Controllers
                 _appointmentService.UpdateAppointment(appointment);
 
                 TempData["SuccessMessage"] = "Appointment updated successfully!";
-                return RedirectToAction("ShowAllAppointments");
+                var appointments = _appointmentService.GetAllAppointments();
+                return RedirectToAction("Index", appointments);
             }
             catch (Exception ex)
             {
@@ -301,13 +303,14 @@ namespace ClinicManagementSystem.Controllers
             try
             {
                 _appointmentService.DeleteAppointment(appointment);
-                TempData["SuccessMessage"] = "Appointment deleted successfully!";
+                TempData["ShowDeleteToast"] = true; 
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = $"Error while deleting appointment: {ex.Message}";
             }
-            return RedirectToAction("ShowAllAppointments");
+            var appointments = _appointmentService.GetAllAppointments();
+            return RedirectToAction("Index", appointments);
         }
 
 

@@ -57,7 +57,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <a href="@Url.Action("ShowAllAppointments", "Appointment")" class="btn btn-outline-secondary me-2">
+                <a asp-action="Index" asp-controller="Appointment" class="btn btn-outline-secondary me-2">
                     <i class="bi bi-arrow-left"></i> Back
                 </a>
                 <a href="@Url.Action("EditAppointment", "Appointment", new { id = Model.AppointmentId })" class="btn btn-primary">

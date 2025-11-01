@@ -32,13 +32,16 @@ namespace ClinicManagementSystem.Controllers
 			var patientsCount = _patientService.GetAllPatients().Count();
 			var curreentAppointmentsCount = _appointmentService.GetAllAppointments().Where(a => a.AppointmentDateOnly == todaysDate).Count();
 			var cancelledAppointmentsCount = _appointmentService.GetAllAppointments().Where(a => a.Status == "Canceled").Count();
-
+            var TodayAppointments = _appointmentService.GetAllAppointments().Where(a => a.AppointmentDateOnly == todaysDate).ToList();
+			var DoctorAvalibalityToday = _availabilityService.GetAll().Where(a=>a.DayOfWeek==todaysDate.DayOfWeek).ToList();
 			TotalCountOfDataViewModel totalCountOfData = new TotalCountOfDataViewModel
 			{
 				TotalDoctors = doctorsCount,
 				TotalPatients = patientsCount,
 				TotalCurrentAppointments = curreentAppointmentsCount,
-				TotalCancelAppointments = cancelledAppointmentsCount
+				TotalCancelAppointments = cancelledAppointmentsCount,
+				CurrentAppointments = TodayAppointments,
+				doctorAvailabilities = DoctorAvalibalityToday
 			};
 			return View("Index", totalCountOfData);
 		}
