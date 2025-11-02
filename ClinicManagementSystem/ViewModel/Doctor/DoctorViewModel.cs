@@ -13,6 +13,9 @@ namespace ClinicManagementSystem.ViewModel.Doctor
         [EmailAddress]
         public string? Email { get; set; }
 
+        [Required]
+        public string? Specialty { get; set; } 
+
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "Not a valid phone number")]
         public string? PhoneNumber { get; set; }

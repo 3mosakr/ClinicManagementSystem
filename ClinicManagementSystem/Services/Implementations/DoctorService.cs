@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using ClinicManagementSystem.Enums;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Doctor;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ClinicManagementSystem.Services.Implementations
 {
@@ -20,9 +22,24 @@ namespace ClinicManagementSystem.Services.Implementations
 
         public async Task<List<DoctorViewModel>> GetAllAsync()
         {
-            var doctors = await _userManager.GetUsersInRoleAsync("Doctor");
+            var doctors = await _userManager.GetUsersInRoleAsync(UserRoles.Doctor);
             // mapping 
             var doctorsVM = _mapper.Map<List<DoctorViewModel>>(doctors);
+
+            // get each doctor's specialty claim
+            foreach (var doctor in doctors)
+            {
+                var doctorVM = doctorsVM.FirstOrDefault(d => d.Id == doctor.Id);
+                if (doctorVM != null)
+                {
+                    var claims = await _userManager.GetClaimsAsync(doctor);
+                    var specialtyClaim = claims.FirstOrDefault(c => c.Type == "Specialty");
+                    if (specialtyClaim != null)
+                    {
+                        doctorVM.Specialty = specialtyClaim.Value;
+                    }
+                }
+            }
 
             return doctorsVM;
 
@@ -35,8 +52,17 @@ namespace ClinicManagementSystem.Services.Implementations
             {
                 return null;
             }
+           
             // mapping
             var doctorVM = _mapper.Map<DoctorViewModel>(doctor);
+
+            // get doctor claims
+            var claims = await _userManager.GetClaimsAsync(doctor);
+            var specialtyClaim = claims.FirstOrDefault(c => c.Type == "Specialty");
+            if (specialtyClaim != null)
+            {
+                doctorVM.Specialty = specialtyClaim.Value;
+            }
 
             return doctorVM;
         }
@@ -59,7 +85,7 @@ namespace ClinicManagementSystem.Services.Implementations
             {
                 return false;
             }
-
+            // Create ApplicationUser instance (Mapping the user data)
             var user = new ApplicationUser
             {
                 UserName = model.UserName?.Trim(),
@@ -67,17 +93,26 @@ namespace ClinicManagementSystem.Services.Implementations
                 Email = model.Email?.Trim(),
                 PhoneNumber = model.PhoneNumber
             };
-
+            // Create user
             var createResult = await _userManager.CreateAsync(user, password);
             if (!createResult.Succeeded)
             {
                 return false;
             }
-
-            var addToRoleResult = await _userManager.AddToRoleAsync(user, "Doctor");
+            // Add Doctor role
+            var addToRoleResult = await _userManager.AddToRoleAsync(user, UserRoles.Doctor);
             if (!addToRoleResult.Succeeded)
             {
                 // Roll back user if role assignment fails
+                await _userManager.DeleteAsync(user);
+                return false;
+            }
+            // Add Doctor specialization claim
+            var addSpecializationClaimToDoctor = await _userManager.AddClaimAsync(user, new Claim("Specialty", model.Specialty));
+            if (!addSpecializationClaimToDoctor.Succeeded)
+            {
+                // Roll back user and role if claim assignment fails
+                await _userManager.RemoveFromRoleAsync(user, UserRoles.Doctor);
                 await _userManager.DeleteAsync(user);
                 return false;
             }
@@ -125,10 +160,42 @@ namespace ClinicManagementSystem.Services.Implementations
             //Update lockout enabled
             user.LockoutEnabled = model.LockoutEnabled;
 
+            // Update specialization claim
+            var updateClaimsResult = await UpdateDoctorClaims(user, model.Specialty!);
+            if (!updateClaimsResult)
+            {
+                return false;
+            }
+
             // Persist other property changes
             var updateResult = await _userManager.UpdateAsync(user);
             return updateResult.Succeeded;
         }
+
+        public async Task<bool> UpdateDoctorClaims(ApplicationUser user, string specialty)
+        {
+            var claims = await _userManager.GetClaimsAsync(user);
+
+            var specClaim = claims.FirstOrDefault(c => c.Type == "Specialty");
+            if (specClaim != null)
+            {
+                // Replace existing claim
+                var removeResult = await _userManager.RemoveClaimAsync(user, specClaim);
+                if (!removeResult.Succeeded)
+                {
+                    return false;
+                }
+            }
+
+            var addClaimResult = await _userManager.AddClaimAsync(user, new Claim("Specialty", specialty));
+            if (!addClaimResult.Succeeded)
+            {
+                return false;
+            }
+            //await _signInManager.RefreshSignInAsync(user);
+            return true;
+        }
+
 
         // delete
         public async Task<bool> DeleteAsync(string id)
