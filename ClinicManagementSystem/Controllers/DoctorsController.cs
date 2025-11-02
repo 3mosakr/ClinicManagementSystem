@@ -36,7 +36,7 @@ namespace ClinicManagementSystem.Controllers
         }
 
         // POST: Doctors/Create
-        [HttpPost]
+        [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateDoctorViewModel model)
         {
@@ -53,7 +53,9 @@ namespace ClinicManagementSystem.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(Index));
+			TempData["Message"] = "Doctor's Email Created successfully!";
+
+			return RedirectToAction(nameof(Index));
         }
 
 
@@ -89,8 +91,8 @@ namespace ClinicManagementSystem.Controllers
                 ModelState.AddModelError(string.Empty, "Unable to update doctor. Please check the inputs and try again.");
                 return View(model);
             }
-
-            return RedirectToAction(nameof(Details), new { id = model.Id });
+			TempData["Message"] = "Doctor's Email updated successfully!";
+			return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
         // GET: Doctors/Delete/id
@@ -126,8 +128,8 @@ namespace ClinicManagementSystem.Controllers
                 ModelState.AddModelError(string.Empty, "Unable to delete doctor. There may be dependent data or an internal error.");
                 return View("Delete", doctor);
             }
-
-            return RedirectToAction(nameof(Index));
+			TempData["ShowDeleteToast"] = true;
+			return RedirectToAction(nameof(Index));
         }
 
     }
