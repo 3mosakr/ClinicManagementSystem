@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Visit;
 using Microsoft.AspNetCore.Mvc;
@@ -20,23 +19,37 @@ namespace ClinicManagementSystem.Controllers
 		// =======================
 		// GET: Visit/Index
 		// =======================
-		public IActionResult Index(string? searchTerm, int page = 1)
+		public IActionResult Index(string searchTerm, string filterType, int page = 1)
 		{
 			//added pagination and search
 			var vm = _visitService.GetAllVisits();
 			if (!string.IsNullOrEmpty(searchTerm))
 			{
-				vm = vm.Where(v => v.PatientName!.ToLower().Contains(searchTerm.ToLower())
-								|| v.Diagnosis!.ToLower().Contains(searchTerm.ToLower())
-								|| v.Prescription!.ToLower().Contains(searchTerm.ToLower())
-								|| v.DoctorName!.ToLower().Contains(searchTerm.ToLower()))
-					   .ToList();
+				searchTerm = searchTerm.ToLower();
+
+				if (filterType == "Doctor")
+				{
+					vm = vm.Where(v => !string.IsNullOrEmpty(v.DoctorName) && v.DoctorName.ToLower().Contains(searchTerm)).ToList();
+				}
+				else if (filterType == "Patient")
+				{
+					vm = vm.Where(v => !string.IsNullOrEmpty(v.PatientName) && v.PatientName.ToLower().Contains(searchTerm)).ToList();
+				}
+				else
+				{
+					vm = vm.Where(v =>
+						(!string.IsNullOrEmpty(v.PatientName) && v.PatientName.ToLower().Contains(searchTerm)) ||
+						(!string.IsNullOrEmpty(v.DoctorName) && v.DoctorName.ToLower().Contains(searchTerm))
+					).ToList();
+				}
 			}
+
 			int pageSize = 10;
 			var pagedVisits = vm.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 			ViewBag.CurrentPage = page;
 			ViewBag.TotalPages = (int)Math.Ceiling((double)vm.Count / pageSize);
 			ViewBag.SearchTerm = searchTerm;
+			ViewBag.FilterType = filterType;
 			return View(pagedVisits);
 		}
 

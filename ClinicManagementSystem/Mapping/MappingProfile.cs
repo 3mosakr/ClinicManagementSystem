@@ -3,6 +3,7 @@ using ClinicManagementSystem.Enums;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.ViewModel;
 using ClinicManagementSystem.ViewModel.Doctor;
+using ClinicManagementSystem.ViewModel.DoctorAvailability;
 using ClinicManagementSystem.ViewModel.Receptionist;
 using ClinicManagementSystem.ViewModel.Visit;
 
@@ -18,6 +19,8 @@ namespace ClinicManagementSystem.Mapping
             CreateMap<ApplicationUser, ReceptionistViewModel>().ReverseMap();
 
 			CreateMap<Patient,PatientViewModel>().ReverseMap();
+
+			CreateMap<DoctorAvailability, DoctorAvailabilityViewModel>().ReverseMap();
 
 
 			// Add Mapping Visits
