@@ -33,7 +33,7 @@ namespace ClinicManagementSystem.Services.Implementations
                 if (doctorVM != null)
                 {
                     var claims = await _userManager.GetClaimsAsync(doctor);
-                    var specialtyClaim = claims.FirstOrDefault(c => c.Type == "Specialty");
+                    var specialtyClaim = claims.FirstOrDefault(c => c.Type == StaticData.Specialty);
                     if (specialtyClaim != null)
                     {
                         doctorVM.Specialty = specialtyClaim.Value;
@@ -58,7 +58,7 @@ namespace ClinicManagementSystem.Services.Implementations
 
             // get doctor claims
             var claims = await _userManager.GetClaimsAsync(doctor);
-            var specialtyClaim = claims.FirstOrDefault(c => c.Type == "Specialty");
+            var specialtyClaim = claims.FirstOrDefault(c => c.Type == StaticData.Specialty);
             if (specialtyClaim != null)
             {
                 doctorVM.Specialty = specialtyClaim.Value;
@@ -108,7 +108,7 @@ namespace ClinicManagementSystem.Services.Implementations
                 return false;
             }
             // Add Doctor specialization claim
-            var addSpecializationClaimToDoctor = await _userManager.AddClaimAsync(user, new Claim("Specialty", model.Specialty));
+            var addSpecializationClaimToDoctor = await _userManager.AddClaimAsync(user, new Claim(StaticData.Specialty, model.Specialty));
             if (!addSpecializationClaimToDoctor.Succeeded)
             {
                 // Roll back user and role if claim assignment fails
@@ -176,7 +176,7 @@ namespace ClinicManagementSystem.Services.Implementations
         {
             var claims = await _userManager.GetClaimsAsync(user);
 
-            var specClaim = claims.FirstOrDefault(c => c.Type == "Specialty");
+            var specClaim = claims.FirstOrDefault(c => c.Type == StaticData.Specialty);
             if (specClaim != null)
             {
                 // Replace existing claim
@@ -187,7 +187,7 @@ namespace ClinicManagementSystem.Services.Implementations
                 }
             }
 
-            var addClaimResult = await _userManager.AddClaimAsync(user, new Claim("Specialty", specialty));
+            var addClaimResult = await _userManager.AddClaimAsync(user, new Claim(StaticData.Specialty, specialty));
             if (!addClaimResult.Succeeded)
             {
                 return false;

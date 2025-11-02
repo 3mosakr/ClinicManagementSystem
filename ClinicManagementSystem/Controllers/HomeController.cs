@@ -1,13 +1,16 @@
 using System.Diagnostics;
+using ClinicManagementSystem.Enums;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Repository.Interfaces;
 using ClinicManagementSystem.Services.Implementations;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Appointment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicManagementSystem.Controllers
 {
+	[Authorize(Roles =UserRoles.Doctor)]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
