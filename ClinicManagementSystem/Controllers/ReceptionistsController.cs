@@ -55,7 +55,8 @@ namespace ClinicManagementSystem.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(Index));
+			TempData["Message"] = "Receptionist's Email updated successfully!";
+			return RedirectToAction(nameof(Index));
         }
 
         // GET: Receptionists/Edit/id
@@ -90,7 +91,8 @@ namespace ClinicManagementSystem.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(Details), new { id = model.Id });
+			TempData["Message"] = "Receptionist's Email updated successfully!";
+			return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
         // GET: Receptionists/Delete/id
@@ -127,7 +129,8 @@ namespace ClinicManagementSystem.Controllers
                 return View("Delete", receptionist);
             }
 
-            return RedirectToAction(nameof(Index));
+			TempData["ShowDeleteToast"] = true;
+			return RedirectToAction(nameof(Index));
         }
 
     }

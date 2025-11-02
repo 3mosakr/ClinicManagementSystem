@@ -6,10 +6,10 @@
 
 
 <div class="main-content">
-    <div class="container pb-5 px-lg-5">
-        <h2>Edit Doctor Data</h2>
+    <div class="pb-5 px-lg-5">
+        <h2 class="page-title my-5 text-primary">Edit Doctor Data</h2>
 
-        <form asp-action="Edit" class="card border rounded shadow-sm p-4">
+        <form asp-action="Edit" class="card border rounded shadow-sm p-4" novalidate>
             <div asp-validation-summary="All" class="text-danger"></div>
 
             @* <div class="form-group">
@@ -18,57 +18,61 @@
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div> *@
 
-            <!-- UserName -->
-            <div class="mb-4">
-                <label asp-for="UserName" class="form-label my-2">User Name</label>
-                <input asp-for="UserName" class="form-control py-3" placeholder="Enter username" />
-                <span asp-validation-for="UserName" class="text-danger small"></span>
-            </div>
+            <div class="card-body">
 
-            <!-- FullName -->
-            <div class="mb-4">
-                <label asp-for="FullName" class="form-label my-2">Full Name</label>
-                <input asp-for="FullName" class="form-control py-3" placeholder="Enter FullName" />
-                <span asp-validation-for="FullName" class="text-danger small"></span>
-            </div>
+                <!-- UserName -->
+                <div class="mb-4">
+                    <label asp-for="UserName" class="form-label my-2">User Name</label>
+                    <input asp-for="UserName" class="form-control py-3" placeholder="Enter username" />
+                    <span asp-validation-for="UserName" class="text-danger small"></span>
+                </div>
 
-            <!-- Email -->
-            <div class="mb-4">
-                <label asp-for="Email" class="form-label my-2"></label>
-                <input asp-for="Email" class="form-control py-3" placeholder="Enter email" />
-                <span asp-validation-for="Email" class="text-danger small"></span>
-            </div>
-            
-            <!-- Specialization -->
-            <div class="mb-4">
-                <label asp-for="Specialty" class="form-label my-2">Doctor Specialty</label>
-                <input asp-for="Specialty" class="form-control py-3" placeholder="Enter Doctor Specialty" />
-                <span asp-validation-for="Specialty" class="text-danger small"></span>
-            </div>
+                <!-- FullName -->
+                <div class="mb-4">
+                    <label asp-for="FullName" class="form-label my-2">Full Name</label>
+                    <input asp-for="FullName" class="form-control py-3" placeholder="Enter FullName" />
+                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                </div>
 
-            <!-- PhoneNumber -->
-            <div class="mb-4">
-                <label asp-for="PhoneNumber" class="form-label my-2">Phone Number</label>
-                <input asp-for="PhoneNumber" class="form-control py-3" placeholder="Enter phone number" />
-                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
-            </div>
+                <!-- Email -->
+                <div class="mb-4">
+                    <label asp-for="Email" class="form-label my-2"></label>
+                    <input asp-for="Email" class="form-control py-3" placeholder="Enter email" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
 
-            @* <div class="form-group">
-                <label asp-for="LockoutEnabled" class="control-label"></label>
-                <input asp-for="LockoutEnabled" class="form-control" />
-                <span asp-validation-for="LockoutEnabled" class="text-danger"></span>
-            </div> *@
+                <!-- Specialization -->
+                <div class="mb-4">
+                    <label asp-for="Specialty" class="form-label my-2">Doctor Specialty</label>
+                    <input asp-for="Specialty" class="form-control py-3" placeholder="Enter Doctor Specialty" />
+                    <span asp-validation-for="Specialty" class="text-danger small"></span>
+                </div>
 
-            <!-- LockoutEnabled --> 
-            <div class="mb-4">
-                <input class="form-check-input" type="checkbox" asp-for="LockoutEnabled">
-                <label class="form-check-label" asp-for="LockoutEnabled"></label>
-            </div>
+                <!-- PhoneNumber -->
+                <div class="mb-4">
+                    <label asp-for="PhoneNumber" class="form-label my-2">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control py-3" placeholder="Enter phone number" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                </div>
 
-            <!-- Buttons -->
-            <div class="d-flex justify-content-between gap-3">
-                <a asp-action="Index" class="btn btn-outline-secondary w-50 py-2">Cancel</a>
-                <button type="submit" class="btn btn-primary w-50 py-2">Save Changes</button>
+                @* <div class="form-group">
+                    <label asp-for="LockoutEnabled" class="control-label"></label>
+                    <input asp-for="LockoutEnabled" class="form-control" />
+                    <span asp-validation-for="LockoutEnabled" class="text-danger"></span>
+                </div> *@
+
+                <!-- LockoutEnabled -->
+                <div class="mb-4 d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="checkbox" asp-for="LockoutEnabled">
+                    <label class="form-check-label" asp-for="LockoutEnabled"></label>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between gap-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary w-50 py-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary w-50 py-2">Save Changes</button>
+                </div>
+
             </div>
         </form>
     </div>
@@ -76,5 +80,7 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
