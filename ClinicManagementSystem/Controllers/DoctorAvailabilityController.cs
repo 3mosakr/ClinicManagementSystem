@@ -1,6 +1,8 @@
-﻿using ClinicManagementSystem.Models;
+﻿using AutoMapper;
+using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Implementations;
 using ClinicManagementSystem.Services.Interfaces;
+using ClinicManagementSystem.ViewModel;
 using ClinicManagementSystem.ViewModel.DoctorAvailability;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,19 +15,45 @@ namespace ClinicManagementSystem.Controllers
     {
         private readonly IDoctorAvailabilityService _service;
         private readonly UserManager<ApplicationUser> _userManager;
+		private readonly IMapper _mapper;
 
-        public DoctorAvailabilityController(IDoctorAvailabilityService service, UserManager<ApplicationUser> userManager)
+
+		public DoctorAvailabilityController(IDoctorAvailabilityService service, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _service = service;
             _userManager = userManager;
+            _mapper = mapper;
+
         }
 
         //GET: /DoctorAvailability/
 
-        public IActionResult Index()
+        public IActionResult Index(string search , int page = 1)
         {
             var list = _service.GetAll();
-            return View(list);
+
+			int pageSize = 10;
+
+            	if (!string.IsNullOrEmpty(search))
+			    {
+			    	list = list.Where(p =>p.DoctorName!.ToLower().Contains(search.ToLower())).ToList();
+			    }
+
+			    var DoctorVM = _mapper.Map<List<DoctorAvailabilityViewModel>>(list);
+
+
+			var paged = DoctorVM
+				.Skip((page - 1) * pageSize)
+		        .Take(pageSize)
+		        .ToList();
+
+			    ViewBag.Search = search;
+			    ViewBag.CurrentPage = page;
+			    ViewBag.TotalPages = (int)Math.Ceiling((double)DoctorVM.Count / pageSize);
+
+
+
+			return View(paged);
         }
         // GET: /DoctorAvailability/
         //public async Task<IActionResult> Index()
@@ -79,7 +107,8 @@ namespace ClinicManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 _service.Add(model);
-                return RedirectToAction(nameof(Index));
+				TempData["Message"] = "Doctor Availability created successfully!";
+				return RedirectToAction(nameof(Index));
             }
 
             var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
@@ -111,11 +140,12 @@ namespace ClinicManagementSystem.Controllers
             {
                 var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
                 ViewBag.DoctorList = new SelectList(doctors, "Id", "FullName", model.DoctorId);
-                return View(model);
+				return View(model);
             }
 
             _service.Update(model);
-            return RedirectToAction(nameof(Index));
+			TempData["Message"] = "Doctor Availability Updated successfully!";
+			return RedirectToAction(nameof(Index));
         }
 
         

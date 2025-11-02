@@ -18,24 +18,32 @@
     <!-- Search Filter -->
     <div class="card shadow-sm border-0 mb-4 rounded-4">
         <div class="card-body">
-            <form class="row g-3 align-items-center" method="get">
-                <div class="col-md-6 d-flex gap-2">
+<form class="row g-3 align-items-center" method="get">
+    <div class="col-md-6 d-flex gap-2">
 
-                    <div class="flex-grow-1">
-                        <label class="form-label fw-semibold">Search (Patient / Doctor)</label>
-                        <input class="form-control" type="search" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Type to search..." />
-                    </div>
-
-                    <div class="mt-4">
-                        <button class="btn btn-outline-primary w-100 mt-2">
-                            <i class="bi bi-search"></i> Search
-                        </button>
-                    </div>
-
-                </div>
-            </form>
+        <div class="flex-grow-1">
+            <label class="form-label fw-semibold">Search Term</label>
+            <input class="form-control" type="search" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Type to search..." />
         </div>
+
+        <div>
+            <label class="form-label fw-semibold">Search By</label>
+            <select class="form-select" name="filterType">
+                <option value="Patient" asp-route-searchTerm="@(ViewBag.FilterType == "Patient" ? "selected" : "")">Patient</option>
+                <option value="Doctor" asp-route-searchTerm="@(ViewBag.FilterType == "Doctor" ? "selected" : "")">Doctor</option>
+            </select>
+        </div>
+
+        <div class="mt-4">
+            <button class="btn btn-outline-primary w-100 mt-2">
+                <i class="bi bi-search"></i> Search
+            </button>
+        </div>
+
     </div>
+</form>
+      </div>
+ </div>
 
 	<!-- Alert -->
     @if (TempData["Message"] != null)

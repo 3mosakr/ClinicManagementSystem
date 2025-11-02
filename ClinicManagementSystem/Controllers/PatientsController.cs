@@ -23,12 +23,10 @@ namespace ClinicManagementSystem.Controllers
 			var patients = _service.GetAllPatients(search).ToList();
 			int pageSize = 10;
 
+
 			if (!string.IsNullOrEmpty(search))
 			{
-				patients = patients.Where(p =>
-					p.FullName!.ToLower().Contains(search.ToLower()) ||
-					p.PhoneNumber!.Contains(search)
-				).ToList();
+				patients = patients.Where(p =>p.FullName!.ToLower().Contains(search.ToLower())).ToList();
 			}
 
 			var patientVM = _mapper.Map<List<PatientViewModel>>(patients);
@@ -52,7 +50,7 @@ namespace ClinicManagementSystem.Controllers
             return View(patient);
         }
 
-        public IActionResult Create()
+		public IActionResult Create()
         {
             return View(nameof(Create),new PatientViewModel());
         }

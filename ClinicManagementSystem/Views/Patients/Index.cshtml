@@ -101,7 +101,6 @@
                 <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
                     <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search">Previous</a>
                 </li>
-				<a href="e:\mvc\project\clinicmanagement\clinicmanagementsystem\clinicmanagementsystem\views\patients\index.cshtml">e:\mvc\project\clinicmanagement\clinicmanagementsystem\clinicmanagementsystem\views\patients\index.cshtml</a>
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
                     <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
