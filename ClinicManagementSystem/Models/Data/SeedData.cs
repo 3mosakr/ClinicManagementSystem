@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ClinicManagementSystem.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Numerics;
+using System.Security.Claims;
 
 namespace ClinicManagementSystem.Models.Data
 {
@@ -12,8 +14,8 @@ namespace ClinicManagementSystem.Models.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-            // 1️⃣ إنشاء الأدوار (Roles)
-            string[] roleNames = { "Admin", "Doctor", "Receptionist" };
+            // 1️ إنشاء الأدوار (Roles)
+            string[] roleNames = { UserRoles.Admin, UserRoles.Doctor, UserRoles.Receptionist };
 
             foreach (var roleName in roleNames)
             {
@@ -24,7 +26,7 @@ namespace ClinicManagementSystem.Models.Data
                 }
             }
 
-            // 2️⃣ إنشاء مستخدم إداري (Admin)
+            // 2️ إنشاء مستخدم إداري (Admin)
             var adminEmail = "admin@clinic.com";
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
@@ -41,7 +43,7 @@ namespace ClinicManagementSystem.Models.Data
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                    await userManager.AddToRoleAsync(adminUser, UserRoles.Admin);
                     Console.WriteLine("✅ Admin user created successfully.");
                 }
                 else
@@ -52,7 +54,7 @@ namespace ClinicManagementSystem.Models.Data
                 }
             }
 
-            // 3️⃣ إنشاء دكتور تجريبي
+            // 3️ إنشاء دكتور تجريبي
             var doctorEmail = "doctor@clinic.com";
             var doctorUser = await userManager.FindByEmailAsync(doctorEmail);
             if (doctorUser == null)
@@ -68,12 +70,14 @@ namespace ClinicManagementSystem.Models.Data
                 var result = await userManager.CreateAsync(doctorUser, "Doctor@123");
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(doctorUser, "Doctor");
+                    await userManager.AddToRoleAsync(doctorUser, UserRoles.Doctor);
+                    await userManager.AddClaimAsync(doctorUser, new Claim("Specialty", "GeneralPractitioner"));
+
                     Console.WriteLine("✅ Doctor user created successfully.");
                 }
             }
 
-            // 4️⃣ إنشاء ريسيبشن تجريبي
+            // 4 إنشاء ريسيبشن تجريبي
             var receptionEmail = "reception@clinic.com";
             var receptionUser = await userManager.FindByEmailAsync(receptionEmail);
             if (receptionUser == null)
@@ -89,7 +93,7 @@ namespace ClinicManagementSystem.Models.Data
                 var result = await userManager.CreateAsync(receptionUser, "Reception@123");
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(receptionUser, "Receptionist");
+                    await userManager.AddToRoleAsync(receptionUser, UserRoles.Receptionist);
                     Console.WriteLine("✅ Receptionist user created successfully.");
                 }
             }
