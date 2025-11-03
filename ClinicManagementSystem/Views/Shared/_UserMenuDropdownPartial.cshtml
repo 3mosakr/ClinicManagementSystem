@@ -33,13 +33,9 @@
                 }
                 else if(User.IsInRole("Receptionist"))
                 {
-                    <a class="btn btn-default btn-flat float-start" asp-controller="Receptionists" asp-action="Profile">Profile</a>
+                    <a class="btn btn-default btn-flat float-start" asp-controller="Receptionists" asp-action="Details" asp-route-id="@User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value">Profile</a>
                 }
-                else
-                {
-                    <a class="btn btn-default btn-flat float-start" asp-controller="Account" asp-action="Profile">Profile</a>
-                }
-    
+                
                 <a class="btn btn-default btn-flat float-end" asp-controller="Account" asp-action="Logout">Sign out</a>
             </li>
             <!--end::Menu Footer-->

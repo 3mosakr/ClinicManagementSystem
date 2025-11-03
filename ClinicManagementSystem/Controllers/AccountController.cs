@@ -52,7 +52,7 @@ namespace ClinicManagementSystem.Controllers
                             new Claim(ClaimTypes.Email, userFromDb.Email ?? ""),
                             new Claim("FullName", userFromDb.FullName)
                         };
-                        
+
                         await _signInManager.SignInWithClaimsAsync(userFromDb, userFromReq.RememberMe, Claims);
                         return RedirectToAction("Index", "Home");
                     }
@@ -70,5 +70,46 @@ namespace ClinicManagementSystem.Controllers
             return RedirectToAction("Login");
         }
         #endregion
+
+        // change password
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePasswordVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    var result = await _userManager.ChangePasswordAsync(user, changePasswordVM.OldPassword, changePasswordVM.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.RefreshSignInAsync(user);
+                        ViewBag.IsSuccess = true;
+                        ModelState.Clear();
+                        //return View();
+                        return RedirectToAction("Logout", "Account");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found.");
+                }
+            }
+            return View(changePasswordVM);
+
+        }
     }
 }

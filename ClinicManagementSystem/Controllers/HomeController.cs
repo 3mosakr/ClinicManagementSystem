@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicManagementSystem.Controllers
 {
-	[Authorize(Roles =UserRoles.Doctor)]
+	//[Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,7 +27,7 @@ namespace ClinicManagementSystem.Controllers
 			_doctorService = doctorService;
 			_availabilityService = availabilityService;
 		}
-
+		
 		public async Task<IActionResult> Index()
 		{
 			var todaysDate = DateTime.Today;
