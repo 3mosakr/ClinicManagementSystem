@@ -10,6 +10,9 @@ namespace ClinicManagementSystem.Repository.Interfaces
 			List<Appointment> GetAppointmentsWithDetails(int? Appointment = null);
 			List<Appointment> GetAppointmentsForEdit(int currentAppointmentId);
 
+			
+			void UpdateAppointmentStatus(int appointmentId, string status);
 
-	}
+
+    }
 }

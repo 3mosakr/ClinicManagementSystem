@@ -50,7 +50,9 @@ namespace ClinicManagementSystem.Services.Implementations
 
 			var visit = _mapper.Map<Visit>(vm);
 			_unitOfWork.VisitRepository.Add(visit);
-			_unitOfWork.Save();
+
+			_unitOfWork.VisitRepository.UpdateAppointmentStatus(vm.AppointmentId, "Completed");
+            _unitOfWork.Save();
 
 		}
 

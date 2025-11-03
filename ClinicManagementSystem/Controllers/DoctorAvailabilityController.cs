@@ -17,10 +17,10 @@ namespace ClinicManagementSystem.Controllers
     {
         private readonly IDoctorAvailabilityService _service;
         private readonly UserManager<ApplicationUser> _userManager;
-		private readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
 
-		public DoctorAvailabilityController(IDoctorAvailabilityService service, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public DoctorAvailabilityController(IDoctorAvailabilityService service, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _service = service;
             _userManager = userManager;
@@ -30,32 +30,44 @@ namespace ClinicManagementSystem.Controllers
 
         //GET: /DoctorAvailability/
 
-        public IActionResult Index(string search , int page = 1)
+        public IActionResult Index(string search, int page = 1)
         {
-            var list = _service.GetAll();
-
-			int pageSize = 10;
-
-            	if (!string.IsNullOrEmpty(search))
-			    {
-			    	list = list.Where(p =>p.DoctorName!.ToLower().Contains(search.ToLower())).ToList();
-			    }
-
-			    var DoctorVM = _mapper.Map<List<DoctorAvailabilityViewModel>>(list);
-
-
-			var paged = DoctorVM
-				.Skip((page - 1) * pageSize)
-		        .Take(pageSize)
-		        .ToList();
-
-			    ViewBag.Search = search;
-			    ViewBag.CurrentPage = page;
-			    ViewBag.TotalPages = (int)Math.Ceiling((double)DoctorVM.Count / pageSize);
+            List<DoctorAvailabilityViewModel> list;
+            if (!User.IsInRole(UserRoles.Admin))
+            {
+                // get all records for admin
+                list = _service.GetAll(null);
+            }
+            else
+            {
+                // get records for the logged-in doctor
+                var userId = _userManager.GetUserId(User);
+                list = _service.GetAll(userId);
+            }
 
 
+            int pageSize = 10;
 
-			return View(paged);
+            if (!string.IsNullOrEmpty(search))
+            {
+                list = list.Where(p => p.DoctorName!.ToLower().Contains(search.ToLower())).ToList();
+            }
+
+            var DoctorVM = _mapper.Map<List<DoctorAvailabilityViewModel>>(list);
+
+
+            var paged = DoctorVM
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.Search = search;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)DoctorVM.Count / pageSize);
+
+
+
+            return View(paged);
         }
         // GET: /DoctorAvailability/
         //public async Task<IActionResult> Index()
@@ -92,7 +104,7 @@ namespace ClinicManagementSystem.Controllers
             return View(vm);
         }
 
-        
+
         public IActionResult Create()
         {
             var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
@@ -101,7 +113,7 @@ namespace ClinicManagementSystem.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(DoctorAvailabilityViewModel model)
@@ -109,8 +121,8 @@ namespace ClinicManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 _service.Add(model);
-				TempData["Message"] = "Doctor Availability created successfully!";
-				return RedirectToAction(nameof(Index));
+                TempData["Message"] = "Doctor Availability created successfully!";
+                return RedirectToAction(nameof(Index));
             }
 
             var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
@@ -142,15 +154,15 @@ namespace ClinicManagementSystem.Controllers
             {
                 var doctors = _userManager.GetUsersInRoleAsync("Doctor").Result;
                 ViewBag.DoctorList = new SelectList(doctors, "Id", "FullName", model.DoctorId);
-				return View(model);
+                return View(model);
             }
 
             _service.Update(model);
-			TempData["Message"] = "Doctor Availability Updated successfully!";
-			return RedirectToAction(nameof(Index));
+            TempData["Message"] = "Doctor Availability Updated successfully!";
+            return RedirectToAction(nameof(Index));
         }
 
-        
+
         // POST: /DoctorAvailability/Delete/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]

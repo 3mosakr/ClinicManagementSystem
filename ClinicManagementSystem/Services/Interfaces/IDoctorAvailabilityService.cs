@@ -5,7 +5,7 @@ namespace ClinicManagementSystem.Services.Interfaces
 {
     public interface IDoctorAvailabilityService
     {
-        List<DoctorAvailabilityViewModel> GetAll();
+        List<DoctorAvailabilityViewModel> GetAll(string? doctorId);
         List<DoctorAvailabilityViewModel> GetByDoctorId(string id); 
         DoctorAvailabilityViewModel GetById(int id);
         void Add(DoctorAvailabilityViewModel doctorAvailability);

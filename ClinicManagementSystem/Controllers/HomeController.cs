@@ -37,7 +37,7 @@ namespace ClinicManagementSystem.Controllers
             var curreentAppointmentsCount = _appointmentService.GetAllAppointments().Where(a => a.AppointmentDateOnly == todaysDate).Count();
             var cancelledAppointmentsCount = _appointmentService.GetAllAppointments().Where(a => a.Status == "Canceled").Count();
             var TodayAppointments = _appointmentService.GetAllAppointments().Where(a => a.AppointmentDateOnly == todaysDate).ToList();
-            var DoctorAvalibalityToday = _availabilityService.GetAll().Where(a => a.DayOfWeek == todaysDate.DayOfWeek).ToList();
+            var DoctorAvalibalityToday = _availabilityService.GetAll("").Where(a => a.DayOfWeek == todaysDate.DayOfWeek).ToList();
             // get doctor claims for speciality and add it to doctor 
             List<AvailableDoctorWithSpecialityViewModel> doctorWithSpeciality = new List<AvailableDoctorWithSpecialityViewModel>();
             foreach (var availability in DoctorAvalibalityToday)

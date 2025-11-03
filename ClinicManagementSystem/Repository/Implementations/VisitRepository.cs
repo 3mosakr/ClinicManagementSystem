@@ -58,5 +58,15 @@ namespace ClinicManagementSystem.Repository.Implementations
 			return appointments;
 		}
 
-	}
+		public void UpdateAppointmentStatus(int appointmentId, string status)
+		{
+			var appointment = _context.Appointments.Find(appointmentId);
+			if (appointment != null)
+			{
+				appointment.Status = status;
+				_context.Appointments.Update(appointment);
+			}
+        }
+
+    }
 }

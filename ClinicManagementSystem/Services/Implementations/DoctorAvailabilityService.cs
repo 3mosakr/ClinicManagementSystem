@@ -3,22 +3,30 @@ using ClinicManagementSystem.ViewModel.DoctorAvailability;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Interfaces;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ClinicManagementSystem.Services.Implementations
 {
     public class DoctorAvailabilityService : IDoctorAvailabilityService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DoctorAvailabilityService(IUnitOfWork unitOfWork)
+        public DoctorAvailabilityService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         // Get all as ViewModel
-        public List<DoctorAvailabilityViewModel> GetAll()
+        public List<DoctorAvailabilityViewModel> GetAll(string? doctorId)
         {
+
             var availabilities = _unitOfWork.DoctorAvailabilityRepository.GetAll();
+            if (!string.IsNullOrEmpty(doctorId))
+            {
+                availabilities = availabilities.Where(a => a.DoctorId == doctorId).ToList();
+            }
 
             var result = availabilities.Select(a => new DoctorAvailabilityViewModel
             {
