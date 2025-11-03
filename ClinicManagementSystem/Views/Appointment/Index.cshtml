@@ -3,7 +3,7 @@
 }
 @model List<AppointmentViewModel>
 
-<div class="container my-5">
+<div class="my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-primary"><i class="bi bi-calendar-week"></i> Appointments</h2>
         <a class="btn btn-primary shadow-sm px-4" asp-action="CreateAppointment" asp-controller="Appointment">
@@ -14,23 +14,32 @@
     <!-- 🔍 Filters Section -->
     <div class="card shadow-sm border-0 mb-4 rounded-4">
         <div class="card-body">
-            <div class="row g-3 align-items-center">
+                <form class="row g-3 align-items-center" method="get">
+
+                        <div class="col-md-6 d-flex gap-2">
                 <!-- Search Type -->
-                <div class="col-md-3">
+                <div >
                     <label class="form-label fw-semibold">Search by</label>
-                    <select id="searchType" class="form-select">
-                        <option value="patient">Patient Name</option>
-                        <option value="doctor">Doctor Name</option>
+                        <select id="searchType" class="form-select" name="filterType">
+                        <option asp-route-searchTerm="@(ViewBag.FilterType == "Patient" ? "selected" : "")" value="Patient">Patient Name</option>
+                        <option asp-route-searchTerm="@(ViewBag.FilterType == "Doctor" ? "selected" : "")" value="Doctor">Doctor Name</option>
                     </select>
                 </div>
 
                 <!-- Search Input -->
-                <div class="col-md-5">
+                    <div class="flex-grow-1">
                     <label class="form-label fw-semibold">Keyword</label>
-                    <input type="text" class="form-control" placeholder="Type to search..." id="searchInput" />
+                    <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control" placeholder="Type to search..." id="searchInput" />
                 </div>
 
-                <!-- Status Filter -->
+                <div class="mt-4">
+                    <button class="btn btn-outline-primary w-100 mt-2">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+                </div>
+
+                 <!-- Status Filter -->
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Filter by Status</label>
                     <select id="statusFilter" class="form-select">
@@ -40,9 +49,18 @@
                         <option value="Canceled">Canceled</option>
                     </select>
                 </div>
+                </form>
             </div>
         </div>
-    </div>
+
+    	<!-- Alert -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle me-2"></i> @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
 
     <!-- 🧾 Appointments Table -->
     <div class="table-responsive shadow-sm rounded-4">
@@ -114,31 +132,57 @@
             </tbody>
         </table>
     </div>
+
+        <!-- Pagination -->
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-page="@(ViewBag.CurrentPage - 1)"
+                       asp-route-searchTerm="@ViewBag.SearchTerm">Previous</a>
+                </li>
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@i"
+                           asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-page="@(ViewBag.CurrentPage + 1)"
+                       asp-route-searchTerm="@ViewBag.SearchTerm">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>
+
 </div>
 
 <!-- 🧠 JS for Filter & Search -->
 <script>
-    const searchInput = document.getElementById("searchInput");
-    const searchType = document.getElementById("searchType");
     const statusFilter = document.getElementById("statusFilter");
     const rows = document.querySelectorAll("#appointmentTable tr");
 
-    function applyFilters() {
-        const keyword = searchInput.value.toLowerCase();
-        const type = searchType.value;
+    function applyStatusFilter() {
         const status = statusFilter.value;
 
         rows.forEach(row => {
-            const matchesKeyword = row.dataset[type]?.includes(keyword);
             const matchesStatus = (status === "all" || row.dataset.status === status);
-            row.style.display = (matchesKeyword && matchesStatus) ? "" : "none";
+            row.style.display = matchesStatus ? "" : "none";
         });
     }
 
-    searchInput.addEventListener("keyup", applyFilters);
-    searchType.addEventListener("change", applyFilters);
-    statusFilter.addEventListener("change", applyFilters);
+    statusFilter.addEventListener("change", applyStatusFilter);
 </script>
+
 
 @if (TempData["ShowDeleteToast"] != null)
 {

@@ -49,6 +49,7 @@ namespace ClinicManagementSystem.Controllers
         public async Task<IActionResult> ShowAllDoctors()
         {
             var doctors = await _doctorService.GetAllAsync(); /////////////////////////    محتاجة اعمل mapping خاص بيا
+
             return View("ShowAllDoctors", doctors);
         }
 
@@ -74,10 +75,36 @@ namespace ClinicManagementSystem.Controllers
             return View("ShowAllPatients");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchTerm, string filterType, int page = 1)
         {
             var appointments = _appointmentService.GetAllAppointments();
-            return View("Index", appointments);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+
+                if (filterType == "Doctor")
+                {
+                    appointments = appointments.Where(v => !string.IsNullOrEmpty(v.DoctorName) && v.DoctorName.ToLower().Contains(searchTerm)).ToList();
+                }
+                else if (filterType == "Patient")
+                {
+                    appointments = appointments.Where(v => !string.IsNullOrEmpty(v.PatientName) && v.PatientName.ToLower().Contains(searchTerm)).ToList();
+                }
+                else
+                {
+                    appointments = appointments.Where(v =>
+                        (!string.IsNullOrEmpty(v.PatientName) && v.PatientName.ToLower().Contains(searchTerm)) ||
+                        (!string.IsNullOrEmpty(v.DoctorName) && v.DoctorName.ToLower().Contains(searchTerm))
+                    ).ToList();
+                }
+            }
+
+            int pageSize = 10;
+			var paged = appointments.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+			ViewBag.CurrentPage = page;
+			ViewBag.TotalPages = (int)Math.Ceiling((double)appointments.Count / pageSize);
+			return View("Index", paged);
         }
         public async Task<IActionResult> CreateAppointment(string? id)
         {
@@ -217,7 +244,8 @@ namespace ClinicManagementSystem.Controllers
             {
                 _appointmentService.CreateAppointment(appointment);
                 var appointments = _appointmentService.GetAllAppointments();
-                return RedirectToAction("Index", appointments);
+				TempData["Message"] = "Appointment created successfully!";
+				return RedirectToAction("Index", appointments);
             }
             catch (Exception ex)
             {
