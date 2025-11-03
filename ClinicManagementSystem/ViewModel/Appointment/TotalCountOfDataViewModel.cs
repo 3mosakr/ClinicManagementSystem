@@ -11,7 +11,8 @@ namespace ClinicManagementSystem.ViewModel.Appointment
 
         public List<AppointmentViewModel> CurrentAppointments;
 
-        public List<DoctorAvailabilityViewModel> doctorAvailabilities;
+        public List<AvailableDoctorWithSpecialityViewModel> doctorAvailabilities;
+        //public List<DoctorAvailabilityViewModel> doctorAvailabilities;
 
-    }
+    } 
 }

@@ -14,7 +14,10 @@
             <!--begin::User Name-->
             <li class="user-header text-bg-primary">
                 <p>
-                    @User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value - @User.Claims.FirstOrDefault(c => c.Type == "Specialty")?.Value
+                    @User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value 
+                </p>
+                <p>
+                    @User.Claims.FirstOrDefault(c => c.Type == "Specialty")?.Value
                 </p>
             </li>
             <!--end::User Name-->
