@@ -73,35 +73,36 @@
                             <td>@appointment.AppointmentDateOnly?.ToString("yyyy-MM-dd")</td>
                             <td>@appointment.AppointmentTimeOnly?.ToString(@"hh\:mm")</td>
                             <td>
-                                <span class="badge
-                                                    @(appointment.Status == "Scheduled" ? "bg-info" :
-                                                                                                                  appointment.Status == "Completed" ? "bg-success" :
-                                                                                                                  appointment.Status == "Canceled" ? "bg-danger" : "bg-secondary") px-3 py-2">
-                            @appointment.Status
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <a class="btn btn-outline-success btn-sm me-2"
-                           asp-action="ViewAppointment"
-                           asp-route-id="@appointment.AppointmentId">
-                            <i class="bi bi-eye"></i> View
-                        </a>
-                        <a class="btn btn-outline-primary btn-sm me-2"
-                           asp-action="EditAppointment"
-                           asp-route-id="@appointment.AppointmentId">
-                            <i class="bi bi-pencil"></i> Edit
-                        </a>
-
-                                <form asp-action="DeleteAppointment" asp-route-id="@appointment.AppointmentId"
+                                <span class="badge @(appointment.Status == "Scheduled" ? "bg-info" :
+                                      appointment.Status == "Completed" ? "bg-success" :  appointment.Status == "Canceled" ? "bg-danger" : "bg-secondary") px-3 py-2">
+                                      @appointment.Status
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-outline-success btn-sm me-2"
+                                   asp-action="ViewAppointment"
+                                   asp-route-id="@appointment.AppointmentId">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                                <a class="btn btn-outline-primary btn-sm me-2"
+                                   asp-action="EditAppointment"
+                                   asp-route-id="@appointment.AppointmentId">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+                                @if (User.IsInRole(UserRoles.Admin))
+                                {
+                                    <form asp-action="DeleteAppointment" asp-route-id="@appointment.AppointmentId"
                                       method="post" style="display:inline;"
                                       onsubmit="return confirmDelete(event);">
-                                    <button class="btn btn-outline-danger btn-sm">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
-                                </form>
+                                        <button class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                }
+                                
                             </td>
                         </tr>
-                                index++;
+                        index++;
                     }
                 }
                 else

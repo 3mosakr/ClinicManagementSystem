@@ -56,26 +56,33 @@
                 </div>
             </div>
 
-            <div class="text-center mt-4">
-                <a asp-action="Index" class="btn btn-outline-secondary me-2">
-                    <i class="bi bi-arrow-left"></i> Back
-                </a>
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">
-                    <i class="bi bi-pencil"></i> Edit Doctor
-                </a>
-                <a asp-controller="Account" asp-action="ChangePassword" class="btn btn-primary me-2">
-                    <i class="bi bi-pencil"></i> Change Password
-                </a>
-                @* Keep delete here but we kept style same as patient page *@
-                @* <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
+            @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.Doctor))
+            {
+                <div class="text-center mt-4">
+                    @if (User.IsInRole(UserRoles.Admin))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary me-2">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </a>
+                    }
+                    
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary me-2">
+                        <i class="bi bi-pencil"></i> Edit Doctor
+                    </a>
+                    <a asp-controller="Account" asp-action="ChangePassword" class="btn btn-primary me-2">
+                        <i class="bi bi-pencil"></i> Change Password
+                    </a>
+                    @* Keep delete here but we kept style same as patient page *@
+                    @* <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
                     <i class="bi bi-trash"></i> Delete
                 </a> *@
-                @* <form asp-action="Delete" asp-route-id="@Model.Id" method="post" onsubmit="return confirmDelete(event);">
+                    @* <form asp-action="Delete" asp-route-id="@Model.Id" method="post" onsubmit="return confirmDelete(event);">
                     <button type="submit" class="btn btn-outline-danger w-100 py-2">
                         <i class="bi bi-trash me-2"></i> Delete Doctor
                     </button>
                 </form> *@
-            </div>
+                </div>
+            }
 
         </div>
     </div>

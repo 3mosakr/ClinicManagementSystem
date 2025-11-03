@@ -1,5 +1,4 @@
-﻿
-@model List<ReceptionistViewModel>
+﻿@model List<ReceptionistViewModel>
 
 @{
     ViewData["Title"] = "Receptionists";
@@ -64,12 +63,14 @@
                            asp-route-id="@receptionist.Id">
                             <i class="bi bi-trash"></i> Delete
                         </a> *@
-
-                        <form asp-action="Delete" asp-route-id="@receptionist.Id" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
-                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                <i class="bi bi-trash"></i> Delete
-                            </button>
-                        </form>
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <form asp-action="Delete" asp-route-id="@receptionist.Id" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </form>
+                        }
 
                     </td>
                 </tr>

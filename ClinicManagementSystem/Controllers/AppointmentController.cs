@@ -1,14 +1,17 @@
-﻿using ClinicManagementSystem.Models;
+﻿using ClinicManagementSystem.Enums;
+using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Implementations;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Appointment;
 using ClinicManagementSystem.ViewModel.Doctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Controllers
 {
+    [Authorize]
     public class AppointmentController : Controller
     {
         private readonly IAppointmentService _appointmentService;
@@ -199,11 +202,11 @@ namespace ClinicManagementSystem.Controllers
                 return View("CreateAppointment", appointmentView);
             }
 
-
+            var receptionistId = User.Claims.FirstOrDefault(c => c.Type.EndsWith("nameidentifier"))?.Value;
 
             var appointment = new Appointment
             {
-                ReceptionistId = "8dea504b-e2e3-41cc-81d7-2005c92af93c",
+                ReceptionistId = receptionistId,
                 DoctorId = appointmentView.DoctorId,
                 PatientId = appointmentView.PatientId,
                 Date = appointmentView.AppointmentDateOnly.Value.Date + appointmentView.AppointmentTimeOnly.Value,
@@ -257,10 +260,11 @@ namespace ClinicManagementSystem.Controllers
 
             try
             {
+                var receptionistId = User.Claims.FirstOrDefault(c => c.Type.EndsWith("nameidentifier"))?.Value;
                 var appointment = new Appointment
                 {
                     Id = appointmentView.AppointmentId.Value,
-                    ReceptionistId = "986eecc5-f7ff-4c7b-9787-f8b63fceb91f", 
+                    ReceptionistId = receptionistId, 
                     DoctorId = appointmentView.DoctorId,
                     PatientId = appointmentView.PatientId,
                     Date = appointmentView.AppointmentDateOnly.Value.Date + appointmentView.AppointmentTimeOnly.Value,
@@ -293,6 +297,7 @@ namespace ClinicManagementSystem.Controllers
             return View("ViewAppointment", appointmentView);
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult DeleteAppointment(int id)
         {
             var appointment = _appointmentService.GetAppointmentById(id);

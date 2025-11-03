@@ -11,7 +11,7 @@ namespace ClinicManagementSystem.Services
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 // Password settings.
-                options.Password.RequireDigit = true; // At least one digit
+                options.Password.RequireDigit = false; // No digit
                 options.Password.RequireLowercase = true; // At least one lowercase letter
                 options.Password.RequireUppercase = true; // At least one uppercase letter
                 options.Password.RequiredUniqueChars = 1; // At least one unique character

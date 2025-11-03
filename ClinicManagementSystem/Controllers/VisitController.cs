@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using ClinicManagementSystem.Enums;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Visit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicManagementSystem.Controllers
 {
-	public class VisitController : Controller
+    [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Doctor}")]
+    public class VisitController : Controller
 	{
 		private readonly IVisitService _visitService;
 		private readonly IMapper _mapper;
@@ -67,11 +70,15 @@ namespace ClinicManagementSystem.Controllers
 		// =======================
 		// GET: Visit/Create
 		// =======================
-		public IActionResult Create()
+		[HttpGet]
+        [Route("Visit/Create/{id:int?}")]
+		public IActionResult Create(int id)
 		{
-			ViewBag.Appointments = _visitService.GetAppointmentsSelectList();
-			return View();
-		}
+            
+            ViewBag.Appointments = _visitService.GetAppointmentsSelectList();
+            var model = new VisitCreateViewModel { AppointmentId = id };
+            return View(model);
+        }
 
 		// =======================
 		// POST: Visit/Create

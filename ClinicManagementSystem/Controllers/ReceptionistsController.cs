@@ -1,12 +1,15 @@
-﻿using ClinicManagementSystem.Services.Implementations;
+﻿using ClinicManagementSystem.Enums;
+using ClinicManagementSystem.Services.Implementations;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Doctor;
 using ClinicManagementSystem.ViewModel.Receptionist;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Controllers
 {
+    [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Doctor}")]
     public class ReceptionistsController : Controller
     {
         private readonly IReceptionistService _receptionistService;

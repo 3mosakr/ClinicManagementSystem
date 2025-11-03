@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using ClinicManagementSystem.Enums;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicManagementSystem.Controllers
 {
-    
+    [Authorize]
     public class PatientsController : Controller
     {
         private readonly IPatientService _service;
@@ -89,15 +91,11 @@ namespace ClinicManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Delete(int id)
-        {
-            var patient = _service.GetPatientById(id);
-            if (patient == null) return NotFound();
-            return View(patient);
-        }
+        
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
         public IActionResult DeleteConfirmed(int id)
         {
             _service.DeletePatient(id);

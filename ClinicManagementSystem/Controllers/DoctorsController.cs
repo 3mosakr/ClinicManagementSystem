@@ -1,11 +1,14 @@
-﻿using ClinicManagementSystem.Services.Interfaces;
+﻿using ClinicManagementSystem.Enums;
+using ClinicManagementSystem.Services.Interfaces;
 using ClinicManagementSystem.ViewModel.Doctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Controllers
 {
+    
     public class DoctorsController : Controller
     {
         private readonly IDoctorService _doctorService;
@@ -15,12 +18,14 @@ namespace ClinicManagementSystem.Controllers
             _doctorService = doctorService;
         }
 
+        [Authorize(Roles = $"{UserRoles.Admin}")]
         public async Task<IActionResult> Index()
         {
             var doctors = await _doctorService.GetAllAsync();
             return View(doctors);
         }
 
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Doctor}")]
         public async Task<IActionResult> Details(string id)
         {
             var doctor = await _doctorService.GetByIdAsync(id);
@@ -30,6 +35,7 @@ namespace ClinicManagementSystem.Controllers
         // Create 
         // GET: Doctors/Create
         [HttpGet]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
         public IActionResult Create()
         {
             return View(nameof(Create), new CreateDoctorViewModel());
@@ -38,6 +44,7 @@ namespace ClinicManagementSystem.Controllers
         // POST: Doctors/Create
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
         public async Task<IActionResult> Create(CreateDoctorViewModel model)
         {
             if (model == null)
@@ -62,6 +69,7 @@ namespace ClinicManagementSystem.Controllers
 
         // GET: Doctors/Edit/id
         [HttpGet]
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Doctor}")]
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -77,6 +85,7 @@ namespace ClinicManagementSystem.Controllers
         // POST: Doctors/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Doctor}")]
         public async Task<IActionResult> Edit(DoctorViewModel model)
         {
             if (model == null)
@@ -97,6 +106,7 @@ namespace ClinicManagementSystem.Controllers
 
         // GET: Doctors/Delete/id
         [HttpGet]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -112,6 +122,7 @@ namespace ClinicManagementSystem.Controllers
         // POST: Doctors/Delete/id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (string.IsNullOrWhiteSpace(id))

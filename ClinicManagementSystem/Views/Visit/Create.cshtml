@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create Visit";
+    
 }
 
 <div class="main-content">
@@ -14,7 +15,7 @@
                 <!-- Appointment -->
                 <div class="mb-4">
                     <label for="AppointmentId" class="form-label my-2">Appointment</label>
-                    <select asp-for="AppointmentId" class="form-select py-3" asp-items="ViewBag.Appointments">
+                    <select asp-for="AppointmentId" class="form-select py-3" asp-items="ViewBag.Appointments" >
                         <option value="">-- Select Appointment --</option>
                     </select>
                     <span asp-validation-for="AppointmentId" class="text-danger small"></span>

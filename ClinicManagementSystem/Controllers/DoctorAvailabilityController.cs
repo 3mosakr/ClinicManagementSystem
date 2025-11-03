@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClinicManagementSystem.Enums;
 using ClinicManagementSystem.Models;
 using ClinicManagementSystem.Services.Implementations;
 using ClinicManagementSystem.Services.Interfaces;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClinicManagementSystem.Controllers
 {
+    [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Doctor}")]
     public class DoctorAvailabilityController : Controller
     {
         private readonly IDoctorAvailabilityService _service;

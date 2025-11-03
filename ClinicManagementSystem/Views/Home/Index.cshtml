@@ -1,7 +1,8 @@
-﻿@{
+﻿@model TotalCountOfDataViewModel
+
+@{
     ViewData["Title"] = "Home";
 }
-@model TotalCountOfDataViewModel
 
 <div class="container-fluid  py-5 px-2">
     <div class="container-fluid py-4">
@@ -60,17 +61,22 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-md-3">
             <a class="card card-link card-link-doctors" asp-controller="Appointment" asp-action="ShowAllDoctors">
                 Doctors
             </a>
         </div>
-        <div class="col-md-3">
-            <a class="card card-link card-link-receptionists" asp-controller="Receptionists" asp-action="Index">
-                Receptionists
-            </a>
-        </div>
+        @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.Doctor))
+        {
+            <div class="col-md-3">
+                <a class="card card-link card-link-receptionists" asp-controller="Receptionists" asp-action="Index">
+                    Receptionists
+                </a>
+            </div>
+        }
+
+
         <div class="col-md-3">
             <a class="card card-link card-link-patients" asp-controller="Patients" asp-action="Index">
                 Patients
@@ -145,12 +151,19 @@
                                 <a class="btn btn-outline-success quick-action-btn" asp-controller="Patients" asp-action="Create">
                                     <i class="fa-solid fa-user-plus me-2"></i>Add New Patient
                                 </a>
-                                <a class="btn btn-outline-info quick-action-btn" asp-controller="Doctors" asp-action="Create">
-                                    <i class="fa-solid fa-user-doctor me-2"></i>Add Doctor
-                                </a>
-                                <a class="btn btn-outline-warning quick-action-btn" asp-controller="DoctorAvailability" asp-action="Index">
-                                    <i class="fa-solid fa-clock me-2"></i>Set Availability
-                                </a>
+                                @if (User.IsInRole(UserRoles.Admin))
+                                {
+                                    <a class="btn btn-outline-info quick-action-btn" asp-controller="Doctors" asp-action="Create">
+                                        <i class="fa-solid fa-user-doctor me-2"></i>Add Doctor
+                                    </a>
+
+                                }
+                                @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.Doctor))
+                                {
+                                    <a class="btn btn-outline-warning quick-action-btn" asp-controller="DoctorAvailability" asp-action="Index">
+                                        <i class="fa-solid fa-clock me-2"></i>Set Availability
+                                    </a>
+                                }
                             </div>
                         </div>
                     </div>

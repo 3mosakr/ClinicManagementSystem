@@ -35,19 +35,26 @@
                 <li class="nav-header mt-2">
                     <div class="text-uppercase small fw-semibold ms-2 mb-1">Management</div>
                 </li>
-                <li class="nav-item">
-                    <a asp-controller="Doctors" asp-action="Index" class="nav-link">
-                        <i class="nav-icon bi bi-person-badge"></i>
-                        <p>Doctors</p>
-                    </a>
-                </li>
+                @if (User.IsInRole(UserRoles.Admin))
+                {
+                    <li class="nav-item">
+                        <a asp-controller="Doctors" asp-action="Index" class="nav-link">
+                            <i class="nav-icon bi bi-person-badge"></i>
+                            <p>Doctors</p>
+                        </a>
+                    </li>
+                }
 
-                <li class="nav-item">
-                    <a asp-controller="Receptionists" asp-action="Index" class="nav-link">
-                        <i class="nav-icon bi bi-telephone-forward"></i>
-                        <p>Receptionists</p>
-                    </a>
-                </li>
+                @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.Doctor))
+                {
+                    <li class="nav-item">
+                        <a asp-controller="Receptionists" asp-action="Index" class="nav-link">
+                            <i class="nav-icon bi bi-telephone-forward"></i>
+                            <p>Receptionists</p>
+                        </a>
+                    </li>
+                }
+
 
                 <li class="nav-item">
                     <a asp-controller="Patients" asp-action="Index" class="nav-link">
@@ -58,20 +65,22 @@
                 <li class="nav-header mt-2">
                     <div class="text-uppercase small  fw-semibold ms-2 mb-1">Appointment</div>
                 </li>
-                <li class="nav-item">
-                    <a asp-controller="Visit" asp-action="Index" class="nav-link">
-                        <i class="nav-icon bi bi-journal-medical"></i>
-                        <p>Visit</p>
-                    </a>
-                </li>
+                @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.Doctor))
+                {
+                    <li class="nav-item">
+                        <a asp-controller="Visit" asp-action="Index" class="nav-link">
+                            <i class="nav-icon bi bi-journal-medical"></i>
+                            <p>Visit</p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a asp-controller="DoctorAvailability" asp-action="Index" class="nav-link">
-                        <i class="nav-icon bi bi-calendar-check"></i>
-                        <p>Doctor Availability</p>
-                    </a>
-                </li>
-
+                    <li class="nav-item">
+                        <a asp-controller="DoctorAvailability" asp-action="Index" class="nav-link">
+                            <i class="nav-icon bi bi-calendar-check"></i>
+                            <p>Doctor Availability</p>
+                        </a>
+                    </li>
+                }
                 <li class="nav-item">
                     <a asp-controller="Appointment" asp-action="Index" class="nav-link">
                         <i class="nav-icon bi bi-calendar-week"></i>
