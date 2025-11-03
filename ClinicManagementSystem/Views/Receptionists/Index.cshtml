@@ -32,7 +32,7 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
-                <th>Lockout Enabled</th>
+                @* <th>Lockout Enabled</th> *@
                 <th>Actions</th>
             </tr>
         </thead>
@@ -45,7 +45,7 @@
                     <td>@receptionist.FullName</td>
                     <td>@receptionist.Email</td>
                     <td>@receptionist.PhoneNumber</td>
-                    <td>@receptionist.LockoutEnabled</td>
+                    @* <td>@receptionist.LockoutEnabled</td> *@
                     <td>
                         @* <a asp-action="Lock" asp-route-id="@doctor.Id" class="btn btn-info ">Locked</a> *@
                         <a class="btn btn-outline-success btn-sm me-2"

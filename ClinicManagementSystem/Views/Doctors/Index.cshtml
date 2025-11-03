@@ -33,7 +33,7 @@
                 <th>Email</th>
                 <th>Doctor Specialty</th>
                 <th>Phone Number</th>
-                <th>Lock</th>
+                @* <th>Lock</th> *@
                 <th>Actions</th>
             </tr>
         </thead>
@@ -47,7 +47,7 @@
                     <td>@doctor.Email</td>
                     <td>@doctor.Specialty</td>
                     <td>@doctor.PhoneNumber</td>
-                    <td>@doctor.LockoutEnabled</td>
+                    @* <td>@doctor.LockoutEnabled</td> *@
                     <td>
                         @* <a asp-action="Lock" asp-route-id="@doctor.Id" class="btn btn-info ">Locked</a> *@
                         
