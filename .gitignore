@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /ClinicManagementSystem/appsettings.json
 /ClinicManagementSystem/appsettings.Development.json
+/ClinicManagementSystem/Migrations/20251031100305_Init.cs
