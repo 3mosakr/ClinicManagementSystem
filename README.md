@@ -15,7 +15,6 @@ ClinicManagementSystem is a web-based application for managing clinic operations
 - Entity Framework Core (for data access)
 - Bootstrap 5 & Bootstrap Icons
 - jQuery
-- Notiflix for notifications
 
 ## Getting Started
 
